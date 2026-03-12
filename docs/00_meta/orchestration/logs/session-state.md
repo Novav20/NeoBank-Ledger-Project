@@ -1,5 +1,7 @@
 # Session State: Week 11 (Mar 09 - Mar 15)
 
+> Live AI context snapshot. Overwrite this file at the start of each session; do not append historical logs here.
+
 ## Overview
 Current Date: Thursday, 2026-03-12
 Current Week: W11

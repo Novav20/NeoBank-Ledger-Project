@@ -1,6 +1,14 @@
 # Template: Copilot Prompt
+<!-- Template source for .github/copilot-instructions.md -->
 **Location:** docs/00_meta/orchestration/prompts/WXX/task_name.md
 
+---
+
+---
+status: pending
+issued_by: Gemini CLI
+issued_date: YYYY-MM-DD
+response_ref: docs/00_meta/orchestration/responses/WXX/task_name.md
 ---
 
 ## Task Context
