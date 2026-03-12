@@ -8,7 +8,7 @@
 
 ## 2. THE AI ORCHESTRATION (THE PARTNERSHIP)
 - **Local Architect (Gemini CLI):** Senior Strategic Lead. Owns requirements, ADRs, and the Roadmap. Operates with senior-level C# knowledge and B2B security constraints.
-- **Execution Engine (GitHub Copilot):** Junior Coder / Fast Researcher. Handles boilerplate, unit tests, and repetitive extractions based on templates.
+- **Execution Engine (GitHub Copilot):** Guided Senior Executor and Analysis Engine. Executes architectural designs defined by Gemini CLI. Performs large-scale text analysis, synthesis, and research when context load exceeds Gemini CLI capacity. Handles code generation, boilerplate, and unit tests. May flag (never override) better alternatives in the "Analysis / Findings" section of its response.
 - **Theory Mentor (Web Gemini):** High-level roadmap and specialized theory lessons.
 
 ## 3. CORE MANDATES
