@@ -1,5 +1,5 @@
 # Template: Copilot Prompt
-**Location:** docs/00_Meta/orchestration/prompts/WXX/task_name.md
+**Location:** docs/00_meta/orchestration/prompts/WXX/task_name.md
 
 ---
 

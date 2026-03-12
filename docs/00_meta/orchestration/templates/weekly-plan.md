@@ -7,7 +7,7 @@ pending_research: [Topics to investigate]
 status: [In Progress / Completed]
 ---
 
-**Location:** docs/00_Meta/plans/WXX.md
+**Location:** docs/00_meta/plans/WXX.md
 
 # Weekly Plan: Week XX (Date Range)
 

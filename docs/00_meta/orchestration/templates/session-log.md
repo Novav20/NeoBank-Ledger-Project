@@ -4,6 +4,7 @@
 - **Phase:** [Current Phase Name]
 - **Active Week:** [WXX]
 - **Goal Status:** [Summary of today's progress toward the weekly goal]
+- **Last Daily Log:** `docs/00_meta/orchestration/logs/weekly/WXX/YYYY-MM-DD.md`
 
 ## Key Decisions
 1. **Decision Title:** [Reasoning and outcome]

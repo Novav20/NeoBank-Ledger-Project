@@ -12,7 +12,7 @@
 - **Theory Mentor (Web Gemini):** High-level roadmap and specialized theory lessons.
 
 ## 3. CORE MANDATES
-1. **Sync Protocol:** Start every session by reading `docs/00_meta/orchestration/logs/session-state.md`.
+1. **Sync Protocol:** Start every session by reading `docs/00_meta/orchestration/logs/session-state.md`. That file contains a `Last Daily Log` field pointing to the most recent daily log — read it as well for full session context.
 2. **Docs-as-Code:** Every architectural change MUST be recorded in an ADR (`docs/00_meta/adr/`).
 3. **Execution Workflow:** Gemini CLI generates instructions in `docs/00_meta/orchestration/prompts/`. Copilot responses are saved in `docs/00_meta/orchestration/responses/`.
 4. **Seniority:** Use Mechatronics analogies for architectural logic. Enforce C# 14 / .NET 10 standards (Primary constructors, `ExecuteUpdate`).
