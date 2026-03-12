@@ -14,7 +14,7 @@
 ## 3. CORE MANDATES
 1. **Sync Protocol:** Start every session by reading `docs/00_meta/orchestration/logs/session-state.md`. That file contains a `Last Daily Log` field pointing to the most recent daily log — read it as well for full session context.
   - `session-state.md` is the live snapshot and is overwritten (not appended) at the start of each new session by Gemini CLI.
-  - At the end of each week, copy the final state to `docs/00_meta/orchestration/logs/weekly/WXX/YYYY-MM-DD.md`.
+  - At the end of each week, copy the final state to `docs/00_meta/orchestration/logs/weekly/wXX/YYYY-MM-DD.md`.
   - Weekly logs are the archive; `session-state.md` is always the current context.
 2. **Docs-as-Code:** Every architectural change MUST be recorded in an ADR (`docs/00_meta/adr/`).
 3. **Execution Workflow:** Gemini CLI generates instructions in `docs/00_meta/orchestration/prompts/`. Copilot responses are saved in `docs/00_meta/orchestration/responses/`.
@@ -26,7 +26,7 @@
 ## 4. PROJECT INDEX
 - **Orchestration Log:** `docs/00_meta/orchestration/logs/session-state.md`
 - **Orchestration Templates:** `docs/00_meta/orchestration/templates/`
-- **Weekly Plans:** `docs/00_meta/plans/` (e.g., `W11.md`)
+- **Weekly Plans:** `docs/00_meta/plans/` (e.g., `w11.md`)
 - **Traceability:** `docs/00_meta/Traceability.md`
 - **ADRs:** `docs/00_meta/adr/`
 - **Business Analysis:** `docs/02_analysis/`

@@ -1,5 +1,5 @@
 # Template: Copilot Response
-**Location:** docs/00_meta/orchestration/responses/WXX/task_name.md
+**Location:** docs/00_meta/orchestration/responses/wXX/task_name.md
 
 ---
 

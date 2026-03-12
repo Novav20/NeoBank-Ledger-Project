@@ -4,14 +4,14 @@
 
 ## Overview
 Current Date: Thursday, 2026-03-12
-Current Week: W11
+Current Week: w11
 Status: Infrastructure & Orchestration Finalized
-Last Daily Log: `docs/00_meta/orchestration/logs/weekly/W11/2026-03-12.md`
+Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w11/2026-03-12.md`
 
 ## Navigation
 - **Active Plan:** `docs/00_meta/Traceability.md`
 - **Naming Conventions:** `docs/00_meta/NamingConventions.md`
-- **Capsuler Sync:** `docs/00_meta/orchestration/responses/W11/01-capsuler-sync.md`
+- **Capsuler Sync:** `docs/00_meta/orchestration/responses/w11/01-capsuler-sync.md`
 
 ## Latest Synchronization
 - **Infrastructure**: Source of Truth restored to repository; Vault mirrored via symlink.

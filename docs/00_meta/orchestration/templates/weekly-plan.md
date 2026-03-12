@@ -7,9 +7,9 @@ pending_research: [Topics to investigate]
 status: [In Progress / Completed]
 ---
 
-**Location:** docs/00_meta/plans/WXX.md
+**Location:** docs/00_meta/plans/wXX.md
 
-# Weekly Plan: Week XX (Date Range)
+# Weekly Plan: week XX (Date Range)
 
 ## SMART Objectives
 - **Specific:** [Goal]
