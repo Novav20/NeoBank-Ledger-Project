@@ -1,5 +1,5 @@
 # Template: Copilot Prompt
-<!-- Template source for .github/copilot-instructions.md -->
+<!-- Template used by Gemini CLI to create task-specific prompts for Copilot -->
 **Location:** docs/00_meta/orchestration/prompts/WXX/task_name.md
 
 ---
