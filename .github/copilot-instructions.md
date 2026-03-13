@@ -19,8 +19,8 @@ You are the **Guided Senior Executor and Analysis Engine** for Juan David. You o
   - Language: English.
 - **Architecture:** Clean Architecture with a focus on high-transactionality and auditability (Immutability where possible).
 
-## Session Initialization
-At the start of every session, read `docs/00_meta/orchestration/logs/session-state.md` to understand the current project phase, active week, and pending tasks. That file contains a `Last Daily Log` field — if the task is non-trivial, read that log file as well for detailed recent context.
+## Session Initialization & Operational Protocols
+Operational rules (session bootstrap, escalation/rejection, naming conventions, ADR requirements, and traceability) are maintained in a single source of truth: `docs/00_meta/OrchestrationPolicy.md`. Read that file at session start and follow its instructions. The `session-state.md` referenced there remains the live snapshot for bootstrapping.
 
 ## Interaction Rules
 1. When asked to generate code, ensure it is idiomatically correct for .NET 10.
@@ -31,4 +31,4 @@ At the start of every session, read `docs/00_meta/orchestration/logs/session-sta
 ---
 
 ## Escalation & Rejection Protocol
-See `GEMINI.md` for the full protocol. If you identify a flaw in a prompt, execute as written but document your concern in the "Analysis / Findings" section of your response. If your response is rejected, it will be archived and a new prompt will be issued.
+See `docs/00_meta/OrchestrationPolicy.md` for the full escalation and rejection protocol. When flagging prompt issues, include an `Analysis / Findings` section in your response.
