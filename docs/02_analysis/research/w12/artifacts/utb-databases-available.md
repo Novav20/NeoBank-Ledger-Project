@@ -19,3 +19,32 @@
 | SpringerLink                   | Multidisciplinary journals and ebooks (large journal and ebook collections, publisher collections included).                              |
 | Taylor & Francis / Routledge   | Multidisciplinary journal collection and ebook access, with strong coverage in social sciences and engineering.                           |
 | vLex Colombia                  | Legal research platform with Colombian legislation, regulations, treaties, and legal commentary.                                          |
+
+---
+
+## Strategic Research Prioritization (Batch 01)
+
+### Top 5 Recommended Databases
+1. **ScienceDirect**: Primary source for peer-reviewed papers on Software Architecture, Distributed Systems, and Database Integrity.
+    *   *Search Terms*: "distributed ledger architecture", "ACID compliance financial systems", "API-first banking design", "immutable database patterns".
+2. **Emerald Insight**: Best for Business Case Studies on Fintech models and B2B payment workflows.
+    *   *Search Terms*: "B2B Neobanking case study", "Banking-as-a-Service ecosystem", "embedded finance B2B workflows", "fintech platform orchestration".
+3. **JSTOR**: Ideal for fundamental Economic and Accounting theory (Double-entry principles).
+    *   *Search Terms*: "history of double-entry bookkeeping", "accounting internal controls", "financial auditability standards", "theory of the firm banking".
+4. **Scopus**: The "Search Hub" to identify highly-cited research across all engineering/finance domains.
+    *   *Search Terms*: "Fintech API security", "ledger integrity verification", "real-time settlement systems", "ISO 20022 implementation challenges".
+5. **vLex Colombia**: Essential for local (Colombian) Regulatory Context and Fintech law.
+    *   *Search Terms*: "Ley Fintech Colombia", "Open Banking SFC", "Cuentas de ahorro de trámite simplificado", "Protección de datos financieros".
+
+### Architect's Strategy
+Start with **Scopus** to identify ~10 core papers from 2023-2025. Then, use **ScienceDirect** and **Emerald Insight** to retrieve full-text PDFs for the first NotebookLM ingestion.
+
+### Most Important Source Types for This Research:
+1. Process Flow & Case Studies: (Emerald Insight / ScienceDirect) - Papers describing how Banking-as-a-Service (BaaS) platforms orchestrate funds between a Fintech and a Sponsor Bank.
+   2. Data Integrity & Architecture Whitepapers: (ScienceDirect / Scopus) - Research on ACID compliance, Event Sourcing or Immutable Ledger databases.
+   3. Regulatory & Standards Frameworks: (vLex / Emerald) - Information on ISO 20022 (the global standard for financial messaging) and local Colombian banking regulations.
+   4. Accounting First Principles: (JSTOR) - Peer-reviewed deep dives into the logic of Double-entry bookkeeping to ensure the "Plant" (the Ledger) is always balanced.
+### Source Filtering Guidance (Avoiding System Noise)
+- **Prioritize**: B2B Payment Rails, Reconciliation Processes, BaaS Governance, Ledger Interoperability, and 'Technical Plumbing'.
+- **Avoid**: Marketing, Consumer Behavior, UI/UX, and AI Chatbots (these are 'System Noise' for Backend Logic).
+- **High-Signal Tip**: Look for chapters titled 'The Plumbing of Fintech' or similar in Handbooks (e.g., Emerald Handbook of Fintech).

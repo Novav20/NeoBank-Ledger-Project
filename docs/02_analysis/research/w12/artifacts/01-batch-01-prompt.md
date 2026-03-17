@@ -3,7 +3,9 @@
 **Context:** I am building a B2B Neobank Ledger API. This batch focuses on establishing the theoretical and operational foundations of financial ledgers and the Banking-as-a-Service (BaaS) landscape.
 
 **Instructions:**
-Analyze the provided sources and extract information for the following Research Questions. Use the **Copyable Answer Format** provided below. If information is missing for a category, state "Information not found." **Do not hallucinate or assume.**
+Analyze the provided sources and extract information for the following Research Questions. Use the **Copyable Answer Format** provided below. If information is missing for a primary category, state "Information not found." 
+
+**Flexibility Rule:** If you find information that is highly relevant to the project's technical or business success but does not strictly fit the four primary questions, annotate it in the "Other Relevant Information" section. **Do not hallucinate or assume.**
 
 ---
 
@@ -18,24 +20,25 @@ Analyze the provided sources and extract information for the following Research 
 ## Copyable Answer Format (Template)
 
 ```markdown
-### [Source Title / Identifier]
-
-**YAML Metadata:**
+(main_author, year)
 ---
+title: [Source Title]
+year: [Publication Year]
+main_author: [Author(s)]
+main_contribution: [One-sentence summary of the source's main contribution to our research questions]
 evidence_type: [Journal Article / Industry Report / Whitepaper]
 key_entities: [List 2-3 entities for domain modeling]
 technical_constraints: [Any mentioned technical rules]
-reference: [APA format reference or DOI if available]
+reference: [APA format reference]
+doi: [DOI or URL]
 ---
+
+### [Source Title / Identifier]
 
 **Findings:**
-- **Stakeholders**: [Extraction]
-- **As-Is Logic**: [Extraction]
-- **Pain Points**: [Extraction]
-- **Principles**: [Extraction]
+- **Stakeholders**: [Extraction / Information not found]
+- **As-Is Logic**: [Extraction / Information not found]
+- **Pain Points**: [Extraction / Information not found]
+- **Principles**: [Extraction / Information not found]
+- **Other Relevant Information**: [Capture similar or relevant tangential information here]
 ```
-
----
-
-**Missing Information Section:**
-At the end of your full report, list all categories that were "Not Found" across all sources and suggest 3-5 specific technical or financial keywords to improve the next research batch.
