@@ -5,20 +5,17 @@
 ## Overview
 Current Date: Monday, 2026-03-16
 Current Week: w12
-Status: Phase 1: Domain Discovery Started
-Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w11/2026-03-13.md`
+Status: Source Harvesting [40m Session]
+Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w12/2026-03-16.md`
 
 ## Navigation
 - **Active Plan:** `docs/00_meta/plans/w12.md`
 - **Orchestration Policy:** `docs/00_meta/OrchestrationPolicy.md`
-- **Scrum Framework:** `docs/00_meta/plans/scrum-framework.md`
 
 ## Latest Synchronization
-- **Infrastructure**: Verified and stable (Docs-as-Code + Vault Symlink).
-- **Methodology**: Scrum ceremonies (Sprint Planning, DoD) active.
-- **Workflow**: 2h daily limit and Stop Criteria enforced.
+- **Schedule Shift**: Monday research moved to Tuesday.
+- **Goal**: Collect high-signal sources for NotebookLM.
 
-## Immediate Focus
-1. **Research**: Neobank B2B Model vs Ledger Role.
-2. **Double-Entry**: Principles of Debits, Credits, and Balances.
-3. **Drafting**: Initialize `docs/02_analysis/DomainSummary.md`.
+## Immediate Focus (Next Session: Tuesday, Mar 17)
+1. **Research Execution**: Use the 2h block to extract "As-Is" and "Context" data from the harvested sources.
+2. **BPA Modeling**: Initialize `docs/02_analysis/bpa/BPA_Report.md`.

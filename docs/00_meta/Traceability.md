@@ -1,15 +1,14 @@
 # Traceability & Logs
 
-## Scope
-- **Purpose**: Human-readable, high-level project timeline (weeks and milestones).
-- **Update cadence**: End-of-week checkpoints or major milestone transitions.
-- **Complementary log**: Live AI session context is tracked in `docs/00_meta/orchestration/logs/session-state.md`.
-
 ## Project Timeline
-- **Setup Week (W11):** Mar 09 - Mar 15.
-- **Planning Phase (W12):** Starts Mar 16.
+- **Setup Week (w11):** Mar 09 - Mar 15. [Completed]
+- **BPA & Domain Discovery (w12):** Mar 16 - Mar 22. [In Progress]
 
 ## Weekly Logs
-### [W11] Mar 09 - Mar 15
-- **2026-03-11:** Initialized AI Orchestration workflow. Migrated templates from VIREC+ style to B2B/Fintech integrated structure within `docs/00_meta/`.
-- **2026-03-13:** Consolidated orchestration policies. Moved session bootstrap, naming conventions, and escalation/rejection protocol to centralized `docs/00_meta/OrchestrationPolicy.md`. Updated `GEMINI.md` and `.github/copilot-instructions.md` to reference the single source of truth.
+### [w11] Mar 09 - Mar 15
+- **2026-03-11:** Initialized AI Orchestration workflow.
+- **2026-03-12:** Verified Source of Truth and symlink mirror.
+- **2026-03-13:** Integrated Scrum framework and updated policy.
+
+### [w12] Mar 16 - Mar 22
+- **2026-03-16:** Transitioned to BPA-focused discovery. Initialized BPA prompt for NotebookLM and restructured analysis directory.
