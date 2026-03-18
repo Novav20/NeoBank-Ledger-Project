@@ -48,3 +48,33 @@ Start with **Scopus** to identify ~10 core papers from 2023-2025. Then, use **Sc
 - **Prioritize**: B2B Payment Rails, Reconciliation Processes, BaaS Governance, Ledger Interoperability, and 'Technical Plumbing'.
 - **Avoid**: Marketing, Consumer Behavior, UI/UX, and AI Chatbots (these are 'System Noise' for Backend Logic).
 - **High-Signal Tip**: Look for chapters titled 'The Plumbing of Fintech' or similar in Handbooks (e.g., Emerald Handbook of Fintech).
+
+---
+
+### Another Search Terms (Nature Springer Link)
+
+- "double-entry bookkeeping" OR "double entry ledger"
+- "ledger architecture" OR "ledger database"
+- "distributed ledger architecture" AND "financial" OR "banking"
+- "reconciliation process" OR "reconciliation ledger"
+- "immutable ledger" OR "immutable database" OR "event sourcing"
+- "high throughput ledger" OR "scalability consensus sharding"
+- "ISO 20022" OR "financial messaging standards"
+- "payment rails" OR "real-time settlement"
+
+---
+
+   1. New Query 1 (Systems Logic): "distributed database" AND "atomicity" AND "transactions" AND "consistency"
+   2. New Query 2 (Accounting Logic): "double-entry" AND "ledger" AND "architecture" AND "database design"
+   3. New Query 3 (Industrial Patterns): "event sourcing" AND "ledger" AND "audit log" AND "architecture"
+
+---
+
+   1. Journal of Systems Architecture: (High signal for our architectural pattern needs).
+   2. Information Systems: (The core journal for database design and transactional theory).
+   3. Computers in Industry: (Excellent for B2B industrial-grade workflows).
+   4. Journal of Industrial Information Integration: (Focuses on how systems talk to each other—perfect for
+      BaaS).
+   5. Information Processing & Management: (Covers data integrity and management patterns).
+   6. Journal of Parallel and Distributed Computing: (Crucial for the "distributed" aspect of our ledger
+      consistency).
