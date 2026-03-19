@@ -21,14 +21,14 @@ Analyze the provided sources and extract information for the following Research 
 
 ```markdown
 ---
-title: [Source Title]
+title: "[Source Title]"
 year: [Publication Year]
 main_author: [Author(s)]
 main_contribution: [One-sentence summary of the source's main contribution to our research questions]
 evidence_type: [Journal Article / Industry Report / Whitepaper]
 key_entities: [List 2-3 entities for domain modeling]
 technical_constraints: [Any mentioned technical rules]
-reference: [APA format reference]
+reference: "[APA format reference]"
 doi: [DOI or URL]
 ---
 

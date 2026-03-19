@@ -1,3 +1,54 @@
 docs/01_lessons/w0/
 docs/00_meta/archive/audits/
-docs/02_analysis/research/w12/raw
+
+# Raw batch folders (ignore their contents by default)
+docs/**/raw/
+# But keep any backup (.bak) files produced by the extractor inside raw folders
+!docs/**/raw/**/*.bak
+!docs/**/raw/*.bak
+
+# Python virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Testing and build artifacts
+.pytest_cache/
+pip-wheel-metadata/
+build/
+dist/
+*.egg-info/
+.eggs/
+.mypy_cache/
+.tox/
+.cache/
+
+# Coverage
+.coverage
+.coverage.*
+htmlcov/
+
+# IDEs and editors
+.vscode/
+*~
+
+# Environment files
+.env
+.env.local
+
+# Node
+node_modules/
+
+# Script outputs (any 'output' folder created by scripts)
+**/output/
+
+# Obsidian Artifacts
+*.base
