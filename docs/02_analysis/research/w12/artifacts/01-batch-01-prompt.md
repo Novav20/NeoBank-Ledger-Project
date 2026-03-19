@@ -17,10 +17,9 @@ Analyze the provided sources and extract information for the following Research 
 
 ---
 
-## Copyable Answer Format (Template)
+## Answer Format (Template)
 
 ```markdown
-(main_author, year)
 ---
 title: [Source Title]
 year: [Publication Year]
