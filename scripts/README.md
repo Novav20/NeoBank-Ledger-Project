@@ -18,7 +18,7 @@ source .venv/bin/activate
 deactivate
 ```
 
-extract_batch_snippets.py
+## extract_batch_snippets.py
 - Purpose: split a raw batch markdown file containing fenced code blocks into individual `.md` artifacts.
 - Location: `scripts/extract_batch_snippets.py`
 
@@ -51,6 +51,27 @@ Recommended workflow
 2. Run a dry-run to inspect planned outputs.
 3. Run with `--commit --skip-existing` to write only new files.
 4. Verify outputs, then add/commit artifacts to the repository as needed.
+
+## update_bpa_citations.py
+- Purpose: read the BPA Report to identify cited research sources, and update the `cited_in_bpa` boolean property in the YAML frontmatter of batch source files. This provides an easy way to assert all sources were added.
+- Location: `scripts/update_bpa_citations.py`
+
+Usage (dry-run default)
+```bash
+# show what would be updated (no files modified)
+python3 scripts/update_bpa_citations.py --bpa-report docs/02_analysis/bpa/BPA_Report.md --sources-dir docs/02_analysis/research/w12/raw/batch-01/
+```
+
+Write files
+```bash
+# actually update the YAML frontmatter of the source files
+python3 scripts/update_bpa_citations.py --bpa-report docs/02_analysis/bpa/BPA_Report.md --sources-dir docs/02_analysis/research/w12/raw/batch-01/ --commit
+```
+
+Common flags
+- `--bpa-report <path>`: required; path to the BPA Report markdown file.
+- `--sources-dir <path>`: required; path to the directory containing `.md` research sources.
+- `--commit`: actually modify the source files; default is dry-run.
 
 Support and extension
 - If you need additional deduplication or metadata-driven naming rules, update `scripts/extract_batch_snippets.py` and follow the repository contribution conventions.
