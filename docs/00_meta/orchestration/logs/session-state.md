@@ -5,18 +5,21 @@
 ## Overview
 Current Date: Friday, 2026-03-20
 Current Week: w12
-Status: BPA Integration (Handover to IDE Agent)
+Status: Batch 01 Integration Finalized; Ready for Batch 02
 Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w12/2026-03-20.md`
 
 ## Navigation
 - **Active Plan:** `docs/00_meta/plans/w12.md`
-- **Integration Prompt**: `docs/00_meta/orchestration/prompts/w12/02-bpa-integration.md`
-- **Glossary**: `docs/02_analysis/bpa/Glossary.md`
+- **BPA Report:** `docs/02_analysis/bpa/BPA_Report.md` (v1.0)
+- **Research Guide:** `docs/02_analysis/research/w12/artifacts/ResearchGuide.md`
+- **Batch 02 Prompt:** `docs/02_analysis/research/w12/artifacts/02-batch-02-prompt.md`
 
 ## Latest Synchronization
-- **Log Discipline**: Daily log for 2026-03-20 created before session state update to ensure persistence.
-- **Artifacts Created**: Glossary and BPA Integration Prompt are complete.
+- **BPA Integration**: Batch 01 Meta-Analysis findings fully integrated and cited.
+- **Guidance**: Established formal `ResearchGuide.md` for consistent source harvesting.
+- **Workflow**: Hardened "Archive-First" and "Delta Update" logging protocols.
 
 ## Immediate Focus
-1. **Awaiting IDE Agent**: User is directing their IDE agent ("antigravity") to execute the BPA integration prompt.
-2. **Next Step**: Once complete, we will review the updated `BPA_Report.md`.
+1. **Batch 02 Harvesting**: Use `ResearchGuide.md` to collect 15-25 technical implementation sources.
+2. **Extraction**: Run Batch 02 prompt in NotebookLM.
+3. **Weekly Sync**: Prepare the final sync report for "The Capsuler".
