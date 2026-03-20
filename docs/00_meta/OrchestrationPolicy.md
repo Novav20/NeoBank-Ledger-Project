@@ -25,6 +25,9 @@ Purpose: centralize evolving orchestration rules, session bootstrap, escalation 
 
 ## ADRs & Traceability
 - All architecture-relevant changes MUST be recorded as ADRs under `docs/00_meta/adr/`.
+  - **Timing:** Draft ADRs *before* major implementation begins (e.g., choosing DAG vs Chain).
+  - **Pivots:** Document mid-code discoveries (e.g., an incompatible .NET 10 library) via a new or superseded ADR.
+  - **Constraints:** Document reactive architectural choices (e.g., indexing strategy shifts after a failed test).
 - Update `docs/00_meta/Traceability.md` at end-of-week checkpoints with high-level progress and links to ADRs and plans.
 
 ## Session Logging
