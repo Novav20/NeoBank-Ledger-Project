@@ -1,6 +1,6 @@
 ---
 title: Orchestration Policy
-version: 1.0
+version: 1.1
 ---
 
 # Orchestration Policy (single source of truth)
@@ -29,6 +29,12 @@ Purpose: centralize evolving orchestration rules, session bootstrap, escalation 
 
 ## Session Logging
 - `session-state.md` contains machine-readable fields (current week, date, status, Last Daily Log) and is authoritative for AI session bootstrap. Do not append historical logs to it.
+
+### The Archive-First Principle
+At the end of a session, the daily log (`.../logs/weekly/wXX/YYYY-MM-DD.md`) MUST be created or updated with the session's completed work *before* the live `session-state.md` is updated for the next session's handover. This ensures no work is lost if a session is unexpectedly terminated.
+
+### Append-Only Discipline for Daily Logs
+If multiple distinct milestones are achieved within the same day's session, the `YYYY-MM-DD.md` file for that day MUST be appended to, not overwritten. New entries should be separated by a horizontal rule (`---`) and a sequential `### UPDATE-02`, `### UPDATE-03`, etc., header. This creates a running, deterministic log of the day's full activities.
 
 ## Review & Maintenance
 - Keep this policy small and review it when workflow or tooling changes. Update the `version` header when making breaking changes to protocol.
