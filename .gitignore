@@ -6,6 +6,7 @@ docs/00_meta/archive/audits/
 docs/02_analysis/research/**/batch-*/
 !docs/02_analysis/research/**/batch-*/**/*.bak
 !docs/02_analysis/research/**/batch-*/.bak
+docs/02_analysis/research/artifacts/raw
 
 # Legacy: remove raw/ .bak exceptions (all new batches use batch-* folders)
 
