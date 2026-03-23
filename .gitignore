@@ -1,11 +1,13 @@
 docs/01_lessons/w0/
 docs/00_meta/archive/audits/
 
-# Raw batch folders (ignore their contents by default)
-docs/**/raw/
-# But keep any backup (.bak) files produced by the extractor inside raw folders
-!docs/**/raw/**/*.bak
-!docs/**/raw/*.bak
+
+# Research batch folders (ignore contents by default, but keep .bak backups in any batch folder)
+docs/02_analysis/research/**/batch-*/
+!docs/02_analysis/research/**/batch-*/**/*.bak
+!docs/02_analysis/research/**/batch-*/.bak
+
+# Legacy: remove raw/ .bak exceptions (all new batches use batch-* folders)
 
 # Python virtual environments
 .venv/
