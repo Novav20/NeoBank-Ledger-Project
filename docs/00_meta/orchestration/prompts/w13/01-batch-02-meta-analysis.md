@@ -16,6 +16,7 @@ We are performing a **two-phase meta-analysis** on the Batch 02 technical source
 1.  **Phase 1**: Create a baseline meta-analysis from a small, high-priority set of sources.
 2.  **Phase 2**: Update the baseline with findings from the remaining sources.
 3.  Add a `priority` flag to all source files for focused synthesis.
+4.  Add `processed: true/false` to each source’s YAML frontmatter when that source is extracted into the meta-analysis, to support traceability and batch progress tracking.
 
 ## Constraints & Requirements
 -   **Input Folder**: `docs/02_analysis/research/w13/batch-02/`
