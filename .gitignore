@@ -3,9 +3,11 @@ docs/00_meta/archive/audits/
 
 
 # Research batch folders (ignore contents by default, but keep .bak backups in any batch folder)
-docs/02_analysis/research/**/batch-*/
+docs/02_analysis/research/**/batch-*/**
 !docs/02_analysis/research/**/batch-*/**/*.bak
-!docs/02_analysis/research/**/batch-*/.bak
+!docs/02_analysis/research/**/batch-*/
+# Also keep all .bak files tracked globally for backups and audit history
+!**/*.bak
 docs/02_analysis/research/artifacts/raw
 
 # Legacy: remove raw/ .bak exceptions (all new batches use batch-* folders)
