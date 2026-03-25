@@ -14,8 +14,9 @@ We have completed the **Batch 02 Meta-Analysis**, which provides the technical i
 
 ## Objectives
 1.  Enrich the `docs/02_analysis/bpa/BPA_Report.md` with the technical findings from Batch 02.
-2.  Create a new **Section 5: Technical Architecture & "To-Be" Model**.
-3.  Ensure all new information is cited using the existing `[[...]]` format.
+2.  Update `docs/02_analysis/bpa/Glossary.md` with any new terms or definitions needed for Batch 02 concepts.
+3.  Create a new **Section 5: Technical Architecture & "To-Be" Model**.
+4.  Ensure all new information is cited using the existing `[[...]]` format.
 
 ## Constraints & Requirements
 -   **Input Source**: `docs/00_meta/orchestration/responses/w13/01-batch-02-meta-analysis.md`.

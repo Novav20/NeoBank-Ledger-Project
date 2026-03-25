@@ -22,3 +22,10 @@
 - **Event Sourcing**: Storing every state change as an immutable event in a log, rather than just updating the final state. It's like having a high-speed video recording of your entire assembly line, not just a photo of the finished product.
 - **CQRS (Command Query Responsibility Segregation)**: Using different data models for "Writing" (Commands, optimized for speed) and "Reading" (Queries, optimized for analytics). It's like having a separate, high-speed input for your CNC machine's real-time control, and a different output for generating slow, detailed performance reports.
 - **Directed Acyclic Graph (DAG)**: A data structure for transactions that doesn't require a single chain. Think of it as a parallel processing workflow where multiple steps can happen at once, as long as their dependencies are met, allowing for higher throughput than a single, sequential assembly line.
+- **Execute-Order-Validate (EOV)**: A permissioned-ledger transaction pattern where execution/simulation happens before final ordering, and validation happens after ordering to confirm version consistency and policy rules before commit.
+- **MVCC (Multi-Version Concurrency Control)**: A consistency mechanism that tracks object versions so concurrent transactions can be validated against read/write conflicts without global locking.
+- **Finality Model**: The rule defining when a transaction is considered irreversible. It can be probabilistic (confidence grows over confirmations) or deterministic (immediate/absolute once committed).
+- **Cross-Shard Atomicity**: Guarantee that a transaction touching multiple shards is applied everywhere or nowhere, preventing partial commits and broken balances.
+- **Sequencer / Orderer**: The component responsible for producing a deterministic transaction order used by validators and auditors for replayable history.
+- **Validation Shard**: A shard specialized in conflict checks, dependency verification, and cross-shard consistency before append-to-log commit.
+- **State Projection (Read Model)**: A derived, query-optimized representation (e.g., balances) continuously materialized from the append-only event log.
