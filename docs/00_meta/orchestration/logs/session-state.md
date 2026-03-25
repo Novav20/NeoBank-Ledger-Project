@@ -5,7 +5,7 @@
 ## Overview
 Current Date: Wednesday, 2026-03-25
 Current Week: w13
-Status: Batch 02 Fully Integrated and Vetted
+Status: Batch 02 Integrated; Ready for Batch 03 Discovery
 Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w13/2026-03-25.md`
 
 ## Navigation
@@ -15,8 +15,9 @@ Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w13/2026-03-25.md`
 
 ## Latest Synchronization
 - **BPA Enrichment**: Corrected 7/20 to 20/20 citation alignment.
-- **Metadata**: `cited_in_bpa` and `cited_in_meta_analysis` synced across 25 files.
+- **Protocol**: Purged premature ADR stubs; enforced Analysis-First mandate.
 
 ## Immediate Focus
-1. **Batch 03**: Initialize research for NFRs, Compliance, and Operational Assurance.
-2. **ADRs**: Draft Batch 02 architectural decisions (Finality, Sharding, EOV).
+1. **Batch 03 Harvesting**: Harvest 15-25 sources for NFRs/Compliance (Mar 26).
+2. **Batch 03 Prioritization**: Tag YAML with `priority` flags.
+3. **BPA Integration**: Integrate Batch 03 into the BPA (Mar 27).
