@@ -1,3 +1,6 @@
+from __future__ import annotations
+import difflib
+
 #!/usr/bin/env python3
 """
 extract_batch_snippets.py
@@ -6,7 +9,7 @@ Read a markdown file containing multiple triple-backticked code blocks (each con
 YAML-like frontmatter and content) and write each block into a separate .md file.
 
 Usage:
-  python3 scripts/extract_batch_snippets.py input.md output_dir
+    python3 scripts/extract_batch_snippets.py input.md output_dir
 
 Behavior:
 - Finds all ```...``` fenced blocks and extracts the inner text.
@@ -14,17 +17,15 @@ Behavior:
 - Builds a sanitized filename from the first-listed author and year: mainauthor_YYYY.md
 - Avoids overwriting by adding a, b, c suffix when necessary: mainauthor_YYYY_a.md
 - Replaces unusual characters in author names with safe ASCII characters per repo
-  naming rules.
+    naming rules.
 """
-
-from __future__ import annotations
 
 import argparse
 import re
 import sys
 import unicodedata
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Dict, Set
 
 
 def slugify(value: str) -> str:
@@ -49,17 +50,20 @@ def find_fenced_blocks(text: str) -> List[str]:
     return pattern.findall(text)
 
 
-def parse_frontmatter(block: str) -> Tuple[Optional[str], Optional[str]]:
-    """Extract main_author and year from a YAML-like frontmatter inside the block.
 
-    Returns (main_author, year) or (None, None) if not found.
+def parse_frontmatter(block: str) -> Tuple[Optional[str], Optional[str], Optional[str], Optional[str]]:
+    """Extract main_author, year, title, and doi from a YAML-like frontmatter inside the block.
+
+    Returns (main_author, year, title, doi) or (None, None, None, None) if not found.
     """
     fm_match = re.search(r"---\s*(.*?)\s*---", block, re.DOTALL)
     if not fm_match:
-        return None, None
+        return None, None, None, None
     fm = fm_match.group(1)
     ma = None
     yr = None
+    title = None
+    doi = None
     for line in fm.splitlines():
         line = line.strip()
         if line.lower().startswith("main_author:"):
@@ -74,7 +78,80 @@ def parse_frontmatter(block: str) -> Tuple[Optional[str], Optional[str]]:
             y_match = re.search(r"(20\d{2}|19\d{2})", val)
             if y_match:
                 yr = y_match.group(1)
-    return ma, yr
+        elif line.lower().startswith("title:"):
+            _, val = line.split(":", 1)
+            val = val.strip()
+            if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
+                val = val[1:-1]
+            title = val
+        elif line.lower().startswith("doi:"):
+            _, val = line.split(":", 1)
+            val = val.strip()
+            if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
+                val = val[1:-1]
+            doi = val
+    return ma, yr, title, doi
+
+import string
+
+def normalize_title(title: str) -> str:
+    """Normalize title for robust duplicate detection: lowercase, strip, collapse spaces, remove punctuation."""
+    if not title:
+        return ""
+    t = title.lower().strip()
+    t = ' '.join(t.split())  # collapse whitespace
+    t = t.translate(str.maketrans('', '', string.punctuation))  # remove punctuation
+    return t
+
+def collect_titles_and_dois_from_dir(directory: Path) -> Tuple[Set[str], Set[str]]:
+    """Collect all normalized titles and dois from markdown files in a directory.
+    Handles both single YAML frontmatter and fenced blocks."""
+    titles = set()
+    dois = set()
+    for file in directory.glob("*.md"):
+        try:
+            text = file.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        found = False
+        # Try to find all fenced blocks first
+        blocks = find_fenced_blocks(text)
+        if blocks:
+            for block in blocks:
+                _, _, title, doi = parse_frontmatter(block)
+                if title:
+                    titles.add(normalize_title(title))
+                    print(f"[DEBUG] (fenced) {file.name}: found title '{title}'")
+                if doi:
+                    dois.add(doi.strip().lower())
+            found = True
+        # If no fenced blocks, try to parse as a single YAML frontmatter at the top
+        if not found:
+            fm_match = re.search(r"---\s*(.*?)\s*---", text, re.DOTALL)
+            if fm_match:
+                fm = fm_match.group(1)
+                title = None
+                doi = None
+                for line in fm.splitlines():
+                    line = line.strip()
+                    if line.lower().startswith("title:"):
+                        _, val = line.split(":", 1)
+                        val = val.strip()
+                        if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
+                            val = val[1:-1]
+                        title = val
+                    elif line.lower().startswith("doi:"):
+                        _, val = line.split(":", 1)
+                        val = val.strip()
+                        if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
+                            val = val[1:-1]
+                        doi = val
+                if title:
+                    titles.add(normalize_title(title))
+                    print(f"[DEBUG] (single) {file.name}: found title '{title}'")
+                if doi:
+                    dois.add(doi.strip().lower())
+    return titles, dois
 
 
 def detect_batch_from_path(path: Path) -> Optional[str]:
@@ -199,18 +276,59 @@ def extract_and_write(input_path: Path, output_dir: Path, commit: bool = False, 
     if batch_number is None:
         batch_number = detect_batch_from_path(input_path)
     previous_dirs = previous_dirs or []
+    # Collect all titles and dois from previous batch directories
+    prev_titles = set()
+    prev_dois = set()
+    for prev_dir in previous_dirs:
+        t, d = collect_titles_and_dois_from_dir(prev_dir)
+        prev_titles.update(t)
+        prev_dois.update(d)
+    print("[DEBUG] Previous batch normalized titles:")
+    for pt in sorted(prev_titles):
+        print(f"  - {pt}")
+    print("[DEBUG] Previous batch DOIs:")
+    for pd in sorted(prev_dois):
+        print(f"  - {pd}")
+
     created: List[Path] = []
     seen_bases = set()
     for block in blocks:
         block = inject_batch_into_frontmatter(block, batch_number)
-        main_author_field, year = parse_frontmatter(block)
+        main_author_field, year, title, doi = parse_frontmatter(block)
         author_label = choose_author_label(main_author_field)
         year_label = year if year else "xxxx"
         base = f"{author_label}_{year_label}"
 
+        # Debug: print normalized title for this block
+        norm_title = normalize_title(title) if title else None
+        print(f"[DEBUG] Current block title: '{title}' | Normalized: '{norm_title}'")
+
+        # Check for reused source by title or doi (exact and fuzzy match)
+        reused = False
+        if norm_title and norm_title in prev_titles:
+            print(f"NOTE: Source with title '{title}' is reused from previous batch (exact match).")
+            reused = True
+        else:
+            # Fuzzy match: check if any previous title is >=95% similar
+            if norm_title:
+                for prev_title in prev_titles:
+                    ratio = difflib.SequenceMatcher(None, norm_title, prev_title).ratio()
+                    if ratio >= 0.95:
+                        print(f"FUZZY NOTE: Source with title '{title}' is {ratio:.2%} similar to previous batch title '{prev_title}'.")
+                        reused = True
+                        break
+        if doi and doi.strip().lower() in prev_dois:
+            print(f"NOTE: Source with DOI '{doi}' is reused from previous batch.")
+            reused = True
+
+        # If reused, add _batchXX suffix
+        base_with_batch = base
+        if reused and batch_number:
+            base_with_batch = f"{base}_batch{str(batch_number).zfill(2)}"
+
         # Candidate path resolution with previous batches considered
         block_content = block.strip("\n") + "\n"
-        out_path, reason = resolve_output_path(output_dir, base, block_content, previous_dirs)
+        out_path, reason = resolve_output_path(output_dir, base_with_batch, block_content, previous_dirs)
         if out_path is None:
             print(f"Skipping: {reason}")
             continue
@@ -220,7 +338,7 @@ def extract_and_write(input_path: Path, output_dir: Path, commit: bool = False, 
             continue
 
         created.append(out_path)
-        seen_bases.add(base)
+        seen_bases.add(base_with_batch)
         if commit:
             out_path.write_text(block_content, encoding="utf-8")
             print(f"Wrote: {out_path}")
