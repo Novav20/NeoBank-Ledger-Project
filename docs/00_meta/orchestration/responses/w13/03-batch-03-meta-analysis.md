@@ -73,12 +73,53 @@ Based on Block 01, the following NFR candidates are provisionally identified for
 
 ---
 
-## 4. Block Processing Log
+---
+### UPDATE-01 (Block 02: chan_2018 → guggenberger_2022)
 
-| Block | Sources Processed | Status |
-|---|---|---|
-| Block 01 | abdi_2025, al_bassam_2018, alzahrani_2025, barger_2021, benedetti_2022, berger_2023, berger_2023a, berger_2023b, bernauer_2021 | Complete |
-| Block 02 | chan_2018 ... frey_2024 | Pending |
-| Block 03 | georgiou_2023 ... muratov_2018 | Pending |
-| Block 04 | nasir_2022_batch03 ... sonnino_2021 | Pending |
-| Block 05 | trestioreanu_2021 ... zhong_2025 | Pending |
+**Sources Processed:** chan_2018, choi_2018, chuen_2017, fan_2025_batch03, far_2025, flamini_2021, frey_2024, georgiou_2023, guggenberger_2022
+
+#### Critical Assessment
+
+**High Signal (Reinforces NFRs):**
+
+- **chuen_2017 [CRITICAL]**: The only Block 02 source to explicitly cite **ISO 20022**, **ISO 8583**, **MiFID II**, **LEI/UTI identifiers**, and **Ricardian Contracts**. This is the compliance anchor for the entire Batch 03 analysis. It confirms the 1ms timestamping requirement under MiFID II for audit event ordering. It also introduces a critical operational risk NFR via Chapter 11: **open-source governance failure** (e.g., Heartbleed, Bitcoin block-size debate) is a systemic risk for any ledger relying on community-maintained dependencies ([[chuen_2017|Lee & Deng, 2017]]).
+- **guggenberger_2022 [HIGH]**: The most practically grounded Fabric benchmark in the batch. **Critical finding:** LevelDB outperforms CouchDB by 3x on write throughput. Private Data Collections (PDC) cost **2–3x throughput reduction**. Leader orderer crash recovery takes ~5 seconds under RAFT. These are directly actionable configuration constraints, not theoretical bounds ([[guggenberger_2022|Guggenberger et al., 2022]]).
+- **chan_2018 [HIGH]**: Provides a rigorous analytical model for BFT timer calibration. The HotStuff/IBFT crossover analysis is critical: IBFT is faster for small validator sets but fails at scale due to $O(n^2)$ message complexity. **Design implication**: if the Ledger API uses <15 validators, IBFT is viable; beyond that, linear protocols (HotStuff) are mandatory ([[chan_2018|Chan et al., 2018]]).
+- **frey_2024 [MEDIUM - Critical Note]**: PCOs/CRDTs are theoretically elegant—preventing double-spending without total ordering is a significant innovation. However, the source **provides no production TPS or latency numbers**. It cites FastPay as a related benchmark but does not integrate it. For the B2B Ledger, this is a research signal, not an implementation blueprint. Its value is in informing the **conflict-avoidance layer**, not the primary consensus mechanism ([[frey_2024|Frey et al., 2024]]).
+- **georgiou_2023 [MEDIUM]**: Self-stabilizing recycling is highly relevant for **long-running ledger deployments** that must handle transient faults (bit flips, memory corruption) without rollback. Stabilization in $O(\kappa)$ rounds is promising, but the $O(n^2)$ message overhead of the consensus objects it manages is a concern at scale ([[georgiou_2023|Georgiou et al., 2023]]).
+- **flamini_2021 [MEDIUM]**: Cob's Synchronization Chain model and leaderless epoch reconfiguration address the shard takeover risk identified in Block 01. The broadcast weight comparison (200 MB vs 5,000 MB vs Algorand) is useful for infrastructure sizing. However, the absence of concrete TPS figures limits direct NFR translation ([[flamini_2021|Flamini et al., 2021]]).
+
+**Low Signal (Downgraded):**
+
+- **far_2025 [LOW]**: Digital Twins on heterogeneous blockchains is a tangential domain. The L3 ZK Rollup latency (120ms) and cross-shard TPS (>140k) figures are for a 6G/IoT context, not financial settlement. The dNFT and sovereignty framing is irrelevant to B2B Ledger compliance ([[far_2025|Far & Bamakan, 2025]]).
+- **fan_2025_batch03 [LOW-MEDIUM]**: Shard-DAG targets 6G networks with 1,200-node simulations. The 2,800–3,000 TPS figure is credible for a permissioned parallel, but the dependency on PoW for intra-shard consensus is a compliance risk (energy consumption, non-deterministic finality) for B2B regulated environments ([[fan_2025_batch03|Fan et al., 2025]]).
+- **choi_2018 [LOW]**: Fantom/Lachesis is a permissionless public DAG. Its leaderless design is interesting but it provides **no concrete TPS/latency figures** and was benchmarked against a general asynchronous model, not financial infrastructure. DAG-based asynchronous finality without total ordering is architecturally incompatible with the deterministic finality required for a B2B ledger ([[choi_2018|Choi et al., 2018]]).
+
+#### Updated Synthesis: Compliance Gap Resolved
+
+Block 02 finally provides the **regulatory compliance foundation** that Block 01 lacked. The Handbook (chuen_2017) surfaces the full compliance stack:
+- **ISO 20022**: Machine-readable financial messaging standard — must be a design constraint for all inter-ledger B2B communication.
+- **MiFID II + LEI/UTI**: Require 1ms-precision event timestamping and legal entity attribution for every trade event.
+- **Ricardian Contracts**: The bridge between executable ledger logic and enforceable legal text — a direct complement to Daml's signatory model (Bernauer, Block 01).
+
+**Revised Benchmark Table (Block 01 + Block 02):**
+
+| Context | Protocol | TPS | Latency | Source |
+|---|---|---|---|---|
+| Permissioned LAN (7 nodes) | BFT-SMART (Fabric) | ~2,500 | ~133ms (WAN avg) | barger_2021 |
+| Permissioned Fabric (production config) | RAFT + LevelDB | >1,000 | 1.2s (WAN) | guggenberger_2022 |
+| Sharded (15 shards, 60 cores) | Chainspace S-BAC | 350 | 69–210ms | al_bassam_2018 |
+| Cross-chain (CBOR optimized) | Alzahrani DSM | 250 | 5ms | alzahrani_2025 |
+| Geographically distributed (400 nodes) | Kauri | 4,584 op/s | N/A | berger_2023 |
+| CBDC pilot (22 nodes, 8 AWS regions) | FBFT (Bank of Italy) | N/A | 1.7–13s | benedetti_2022 |
+
+**Critical Infrastructure Decision Emerging**: The Fabric RAFT config (guggenberger) shows 1.2s WAN latency at >1,000 TPS. This exceeds the 210ms anchor from Block 01 (Chainspace). This divergence implies the Ledger API will need **tiered SLAs**: sub-300ms for intra-cluster operations, tolerating up to 1.5s for WAN cross-organization settlement.
+
+#### New NFR Candidates (Block 02)
+
+6. **NFR-COMP-01**: All inter-ledger B2B messages MUST comply with ISO 20022 machine-readable format.
+7. **NFR-COMP-02**: Every trade event MUST carry a Legal Entity Identifier (LEI) and Unique Transaction Identifier (UTI), timestamped to 1ms precision, to satisfy MiFID II auditability.
+8. **NFR-RISK-01**: All third-party open-source dependencies MUST be tracked, versioned, and subject to a defined security patching SLA to mitigate open-source operational risk (Heartbleed class vulnerabilities).
+9. **NFR-CONFIG-01**: Fabric deployments MUST use LevelDB (not CouchDB) for write-heavy ledger workloads. Private Data Collections SHOULD be used only when confidentiality requirements justify the 2–3x throughput penalty.
+10. **NFR-PERF-03**: The consensus timer initial value ($\tau_0$) MUST be set to at least 3 standard deviations above the expected consensus round-trip time to prevent spurious view changes under network congestion.
+
