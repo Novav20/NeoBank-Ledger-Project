@@ -78,8 +78,9 @@ def main():
         stem = source_file.stem  # e.g., alt_2025
         
         # Check if the stem is cited in the BPA report
-        # We look for the exact stem name, which should be in the citing wikilink e.g., [[alt_2025|...]]
-        is_cited = stem in bpa_content
+        # We look for the exact stem name using word boundaries to avoid substring matches 
+        # (e.g., 'li_2023' should not match 'li_2023a')
+        is_cited = bool(re.search(rf"\b{re.escape(stem)}\b", bpa_content))
         
         if is_cited:
             cited_count += 1
