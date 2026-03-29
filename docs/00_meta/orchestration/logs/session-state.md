@@ -21,6 +21,6 @@ Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w13/2026-03-29.md`
 
 ## Immediate Focus
 1. **Knowledge Transfer**: Deep dive into BPA v1.2 and Glossary with the user.
-2. **ADR-001**: Draft resolution for GDPR vs. Immutability conflict (Zhao et al. logic).
+2. **ADR-001/004**: Architecture Decisions (GDPR, Finality, Sharding, EOV).
 3. **HLD Drafting**: Initialize System Decomposition and Service boundaries.
 4. **Session Lock**: Perform final commit and archive Batch 03 research artifacts.
