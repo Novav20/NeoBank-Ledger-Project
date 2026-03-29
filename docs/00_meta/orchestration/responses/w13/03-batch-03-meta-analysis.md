@@ -182,5 +182,94 @@ Block 03 opens two new NFR dimensions not previously surfaced:
 | Block 01 | abdi_2025, al_bassam_2018, alzahrani_2025, barger_2021, benedetti_2022, berger_2023, berger_2023a, berger_2023b, bernauer_2021 | Complete |
 | Block 02 | chan_2018, choi_2018, chuen_2017, fan_2025_batch03, far_2025, flamini_2021, frey_2024, georgiou_2023, guggenberger_2022 | Complete |
 | Block 03 | gunn_2019, hellings_2020, li_2024, liu_2024a, liu_2025, mishra_2025, muratov_2018, nasir_2022_batch03, nguyen_2021 | Complete |
-| Block 04 | praveen_2024, ren_2018, sonnino_2021, trestioreanu_2021, wang_2024a, wang_2026, yu_2023_batch03, zhao_2024, zhen_2024 | Pending |
-| Block 05 | zhong_2025 + (overflow/unmatched) | Pending |
+| Block 04 | praveen_2024, ren_2018, sonnino_2021, trestioreanu_2021, wang_2024a, wang_2026, yu_2023_batch03, zhao_2024, zhen_2024, zhong_2025 | Complete |
+
+---
+### UPDATE-03 (Block 04/Final: praveen_2024 → zhong_2025)
+
+**Sources Processed:** praveen_2024, ren_2018, sonnino_2021, trestioreanu_2021, wang_2024a, wang_2026, yu_2023_batch03, zhao_2024, zhen_2024, zhong_2025
+
+#### Critical Assessment
+
+**High Signal:**
+
+- **sonnino_2021 [CRITICAL — Apex Source]**: FastPay is the strongest applied performance evidence in the entire 37-source corpus. **160,000 TPS** on 48 physical cores, **<100ms intra-continental**, ~200ms US-to-Europe — empirically measured, not modeled. This is the only source that simultaneously (a) cites **ISO 20022** explicitly as the target standard for high-performance financial infrastructure, (b) frames the system as a **Real-Time Gross Settlement (RTGS)** mechanism eliminating counterparty risk, and (c) provides a full auditing framework (signed hash-chain checkpoints, partial + full audit paths). The Byzcuit/Chainspace sharded layer adds 1,550 TPS/10-shard and <1s latency as a more conservative permissioned-shard baseline. This source must anchor Section 5 of the BPA Report ([[sonnino_2021|Sonnino, 2021]]).
+- **trestioreanu_2021 [HIGH — New Threat Layer]**: SPON is the only source in the entire batch that addresses the **transport-layer threat surface** for inter-ledger payments. BGP hijacking — where an ISP or AS-level adversary re-routes payment traffic — is a real, documented attack vector for B2B financial systems. A **33% latency improvement at 5% packet loss** via redundant overlay routing is meaningful in degraded network conditions. **Critical limitation**: tested only at 15 Mbps bandwidth, which is orders of magnitude below production B2B requirements. The architectural concept (intrusion-tolerant overlay + ILP) is valid; the benchmark numbers require extrapolation ([[trestioreanu_2021|Trestioreanu et al., 2021]]).
+- **praveen_2024 [HIGH — Formal Verification Standard]**: Moonshot is the only BFT protocol in the batch with machine-checked safety proofs via IVy/Z3 — 190 inductive invariants confirmed fork-free across 23 monitors. The Direct Commit rule (two adjacent QCs → immediate finality) is a clean protocol design for the B2B Ledger's deterministic finality requirement. **1 block per network hop** throughput is an elegant per-unit metric. The protocol's weakness: no empirical TPS figure, only hop-normalized throughput. Useful as design intent + safety proof template ([[praveen_2024|Praveen et al., 2024]]).
+- **wang_2026 [HIGH — Deployable Configuration Formula]**: The SPSN algorithm is the only source providing a **closed-form, empirically-grounded formula** for determining the optimal shard count. For 1,000 nodes with PBFT: **k=7** is optimal. For 10,000 nodes with PBFT: **k=9**. For Raft/2PC configurations the optimal is higher (k=15–16). The 100-nodes-per-shard minimum and the system failure probability constraint ($P_f \leq \eta$) are directly usable design inputs. The post-quantum flag (SIKE/SIDH acceleration required) is the first mention in the batch — an emerging NFR ([[wang_2026|Wang et al., 2026]]).
+
+**Medium Signal:**
+
+- **zhao_2024 [MEDIUM — Compliance Dimension: GDPR/Redactability]**: Redactable blockchains address the regulatory conflict between **immutability** (financial audit requirement) and **right to erasure** (GDPR Article 17 / Ley 1581 in Colombia). Concordit's chameleon hash approach with device-binding UDI is the most governance-aware mechanism in the batch. The 10s maximum delay for redaction finalization is acceptable. **Critical caveat**: redactable ledgers are incompatible with the immutability assumption underlying most NFR-SAFE-* requirements above — this is a genuine design conflict that must surface in the ADR ([[zhao_2024|Zhao et al., 2024]]).
+- **zhong_2025 [MEDIUM — Data Governance]**: The six-stage integration pipeline's **purpose logs** (graded authorization per query), **lineage hashes** (SHA-256 chain of source-to-output), and **portable evidence bundles** are directly applicable to the Ledger API's data governance layer. The 12.9s per-1000-records latency is too slow for real-time settlement but acceptable for batch audit reporting. ISO-formatted timestamps and FD pass-rate validation (e.g., firm_id ↔ registration_date consistency) are useful compliance primitives ([[zhong_2025|Zhong et al., 2025]]).
+
+**Low Signal (Downgraded):**
+
+- **ren_2018 [LOW]**: "Unbounded throughput" via implicit consensus is theoretically interesting but fundamentally incompatible with the B2B Ledger's requirement for **synchronous, auditable, globally-ordered settlement**. The self-interest proof mechanism assumes rational actors — unacceptable in an adversarial regulated environment ([[ren_2018|Ren et al., 2018]]).
+- **yu_2023_batch03 [LOW]**: OverShard achieves 2,344 TPS via PoW simultaneous mining — the PoW dependency is an immediate disqualification for energy-constrained B2B compliance. The virtual accounts model is conceptually interesting but not directly applicable ([[yu_2023_batch03|Yu et al., 2023]]).
+- **wang_2024a [LOW]**: Hedera/Hashgraph hybrid sharding is conceptual modeling with no empirical TPS figures. The $O(B/s)$ bandwidth reduction per shard is valid theoretically but not tested ([[wang_2024a|Wang et al., 2024]]).
+- **zhen_2024 [LOW]**: DSSBD achieves 128.92 TPS with **63.72s confirmation latency**. The crowdsourcing domain and RL-based parameter tuning are interesting research directions but the latency is an order of magnitude above acceptable for B2B settlement ([[zhen_2024|Zhen et al., 2024]]).
+
+#### Final Synthesis: Batch 03 Closed
+
+The 37-source corpus converges on a clear, multi-layer NFR architecture for the B2B Ledger:
+
+**Performance Tier (empirically anchored):**
+- FastPay (sonnino_2021): 160,000 TPS / <100ms — aspirational upper bound
+- Proteus (mishra_2025): 345,000 TPS / 2.6x lower than BFT — TEE-gated upper bound
+- BFT-SMART/Fabric (barger_2021): 2,500 TPS / 133ms — realistic production LAN baseline
+- Fabric RAFT/LevelDB (guggenberger_2022): >1,000 TPS / 1.2s WAN — conservative production WAN baseline
+
+**Compliance Tier (standards-grounded):**
+- ISO 20022 (chuen_2017, sonnino_2021): B2B financial message format
+- MiFID II LEI/UTI + 1ms timestamps (chuen_2017): trade event auditability
+- Committed vs. Audited finality (mishra_2025): legal settlement threshold
+- GDPR/redactability conflict (zhao_2024): must be resolved via ADR
+
+**Safety Tier (formally grounded):**
+- QC-based double-spend prevention (berger_2023b, praveen_2024)
+- MEV/fair-ordering threat (li_2024): permissioned context risk
+- BGP hijacking / inter-ledger transport (trestioreanu_2021): infrastructure risk
+
+**Configuration Tier (deployable formulas):**
+- PBFT 1,000 nodes → k=7 shards (wang_2026)
+- LevelDB over CouchDB → 3x write throughput (guggenberger_2022)
+- IBFT viable up to ~15 validators; beyond → HotStuff (chan_2018)
+- 20–25% m-node ratio for sharded storage (liu_2025)
+- τ₀ ≥ 3σ for consensus timer (chan_2018)
+
+#### Final NFR Candidates (Block 04, NFRs 15–19)
+
+15. **NFR-PERF-04**: The Ledger MUST target sub-100ms intra-cluster settlement latency under normal load, aligned with the FastPay empirical baseline (sonnino_2021), with a tiered WAN ceiling of 1.5s.
+16. **NFR-COMP-04**: The Ledger API MUST frame all high-value B2B settlement flows as **RTGS** (Real-Time Gross Settlement), eliminating net-settlement credit exposure.
+17. **NFR-INFRA-01**: The inter-ledger communication path MUST use an intrusion-tolerant overlay (multi-path routing) to mitigate BGP hijacking and AS-level network partition risks.
+18. **NFR-SAFE-03**: The consensus protocol SHOULD be formally verified (IVy-equivalent, Z3 SMT) against fork-freedom and double-spend invariants prior to production deployment.
+19. **NFR-COMP-05 (Emerging)**: The Ledger architecture MUST document a strategy for **post-quantum cryptographic migration**, with hardware acceleration targets for SIKE/SIDH as a long-term dependency.
+
+---
+
+## 5. Consolidated NFR Registry (All Blocks)
+
+| ID | Category | Statement | Primary Source(s) |
+|---|---|---|---|
+| NFR-AVAIL-01 | Availability | $3F+1$ nodes, BFT, view-change <30s | barger_2021, berger_2023b |
+| NFR-PERF-01 | Performance | <210ms intra-cluster latency (normal load) | al_bassam_2018 |
+| NFR-PERF-02 | Performance | ≥2,500 TPS in 7-node LAN | barger_2021 |
+| NFR-PERF-03 | Performance | τ₀ ≥ 3σ consensus timer | chan_2018 |
+| NFR-PERF-04 | Performance | <100ms target, 1.5s WAN ceiling (tiered SLA) | sonnino_2021, guggenberger_2022 |
+| NFR-SAFE-01 | Safety | QC-enforced finality, double-spend impossible | berger_2023b, benedetti_2022 |
+| NFR-SAFE-02 | Safety | Committed vs. Audited finality formally distinguished | mishra_2025 |
+| NFR-SAFE-03 | Safety | Formal verification (IVy/Z3) of fork-freedom | praveen_2024 |
+| NFR-AUDIT-01 | Audit | $2F+1$ QC per block, independently auditable | barger_2021 |
+| NFR-COMP-01 | Compliance | ISO 20022 inter-ledger messaging | chuen_2017, sonnino_2021 |
+| NFR-COMP-02 | Compliance | LEI + UTI + 1ms timestamp per trade event (MiFID II) | chuen_2017 |
+| NFR-COMP-03 | Compliance | Fair-ordering policy on Ordering Service (MEV mitigation) | li_2024 |
+| NFR-COMP-04 | Compliance | RTGS settlement model (no net-settlement exposure) | sonnino_2021 |
+| NFR-COMP-05 | Compliance | Post-quantum cryptographic migration roadmap | wang_2026 |
+| NFR-RISK-01 | Risk | OSS dependency SLA + CVE patching policy | chuen_2017 |
+| NFR-CONFIG-01 | Config | LevelDB over CouchDB; PDC only if justified | guggenberger_2022 |
+| NFR-CONFIG-02 | Config | 20–25% m-node shard ratio | liu_2025 |
+| NFR-CONFIG-03 | Config | PBFT k=7 shards at 1,000 nodes | wang_2026 |
+| NFR-STORE-01 | Storage | Epoch checkpointing; per-node cap defined at design time | nasir_2022_batch03 |
+| NFR-INFRA-01 | Infra | Multi-path intrusion-tolerant inter-ledger overlay | trestioreanu_2021 |
+
