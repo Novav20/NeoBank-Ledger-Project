@@ -123,3 +123,64 @@ Block 02 finally provides the **regulatory compliance foundation** that Block 01
 9. **NFR-CONFIG-01**: Fabric deployments MUST use LevelDB (not CouchDB) for write-heavy ledger workloads. Private Data Collections SHOULD be used only when confidentiality requirements justify the 2–3x throughput penalty.
 10. **NFR-PERF-03**: The consensus timer initial value ($\tau_0$) MUST be set to at least 3 standard deviations above the expected consensus round-trip time to prevent spurious view changes under network congestion.
 
+
+---
+### UPDATE-02 (Block 03: gunn_2019 → nguyen_2021)
+
+**Sources Processed:** gunn_2019, hellings_2020, li_2024, liu_2024a, liu_2025, mishra_2025, muratov_2018, nasir_2022_batch03, nguyen_2021
+
+#### Critical Assessment
+
+**High Signal:**
+
+- **mishra_2025 [CRITICAL]**: Proteus is the single most architecturally relevant source in the batch for the B2B Ledger's **audit and compliance pipeline**. Its peak throughput of **345,000 txn/s** (bandwidth-limited) is the highest reliable figure across all 27 sources processed. More critically, it formally distinguishes **Committed** from **Audited** finality — the first source to do so. A transaction may be committed (durable if TEEs are secure) but not yet **audited** (safe against platform compromise). For a regulated B2B ledger, audit-level finality may be the correct legal threshold. The **Code Transparency Service (CTS)** for software supply chain provenance is a direct match for the pending NFR-RISK-01 from Block 02 ([[mishra_2025|Mishra et al., 2025]]).
+- **hellings_2020 [HIGH]**: Cerberus provides the strongest theoretical TPS ceiling in the dataset ($10^5$–$10^7$ TPS via sharding to $2^{14}$ shards). Its **first-pledge rule** for UTXO double-spend prevention is the cleanest permissioned-shard safety model seen. **Critical limitation**: throughput figures are derived from modeling with 100 Mbps bandwidth caps, not empirical tests. The $71B annual transactional friction elimination claim is credible context for ROI framing. ([[hellings_2020|Hellings et al., 2020]]).
+- **gunn_2019 [HIGH]**: SACZyzzyva is the only source to formally prove the **impossibility of exceeding $3F+1$ without TEEs**. The 35µs/replica datacenter overhead and the 25µs/replica internet-wide overhead are the most precise latency increments per node in the entire batch. **Remote Attestation (SGX/TrustZone)** as a compliance primitive — proving counter integrity to external auditors — is novel and directly applicable to the Ledger's auditability NFR ([[gunn_2019|Gunn et al., 2019]]).
+- **nasir_2022_batch03 [HIGH]**: The best systematic benchmark aggregation in the batch. Confirms FastBFT at 100,000 TPS and RapidChain at 7,380 TPS/8.7s. The explicit enumeration of the **DSS Trilemma** as a design constraint is a useful architectural framing tool. **Storage scalability** is flagged as a neglected NFR: Bitcoin's ledger exceeds 280 GB. This is directly relevant to the B2B Ledger's long-term archival strategy ([[nasir_2022_batch03|Nasir et al., 2022]]).
+
+**Medium Signal:**
+
+- **li_2024 [MEDIUM — New Threat Surface Identified]**: MEV (Maximal Extractable Value) front-running causes ~$200M USD annual losses in public chains. The "Fair Consensus Factory" framework is admirable, but its most honest data point is the cost: enforcing strict FIFO fair ordering in optimized Themis still yields only **750–1,000 TPS at 400ms latency** on 20 nodes. **Design implication**: for the B2B Ledger, the MEV attack surface must be acknowledged as a compliance NFR even in a permissioned context — an adversarial orderer node can reorder transactions to extract value ([[li_2024|Li & Pournaras, 2024]]).
+- **liu_2024a [MEDIUM]**: The Fabric contention rate figure is critical: **up to 40% transaction abortion rate** under high contention with OCC/MVCC. This directly threatens the >1,000 TPS target from guggenberger_2022. The contention model is a key input for capacity planning under read-write conflict scenarios ([[liu_2024a|Liu et al., 2024]]).
+- **liu_2025 [MEDIUM]**: MSSP's **2,654 TPS** with 14 shards is credible and empirically tested. The **space-for-time tradeoff** (8.5x storage overhead for ~3x throughput) is an honest engineering constraint. The 20–25% m-node ratio for optimal throughput is a deployable configuration recommendation ([[liu_2025|Liu et al., 2025]]).
+
+**Low Signal (Downgraded):**
+
+- **muratov_2018 [LOW]**: YAC/Hyperledger Iroha shows catastrophic throughput degradation at scale: **<1 proposal/s at 64 nodes**. The 20ms vote delay requirement at 64 nodes turns a "consensus parameter" into a hard scaling ceiling. This is an anti-pattern reference, not a design template. Do not use ([[muratov_2018|Muratov et al., 2018]]).
+- **nguyen_2021 [LOW]**: Fantom Foundation whitepaper with 11,000 TPS on a 7-node testnet. Like choi_2018 (Block 02), this is a permissionless PoS/DAG product-paper with inadequate controlled benchmarking. **High-latency condition (300–700ms added to 1/3 of nodes) degraded TTF to 4.64s** — unacceptable for real-time B2B settlement. Do not use ([[nguyen_2021|Nguyen et al., 2021]]).
+
+#### Updated Synthesis: Two New NFR Dimensions
+
+Block 03 opens two new NFR dimensions not previously surfaced:
+
+1. **Committed vs. Audited Finality** (Proteus): The B2B Ledger must formally specify whether its settlement guarantee is at commit-level or audit-level. This has direct legal implications — regulators may require audit-level finality before a transaction is considered irrevocable.
+
+2. **MEV / Orderer Collusion** (li_2024, Liu 2024a): In a permissioned context, the entity controlling the Ordering Service (Fabric) or the primary replica (BFT) can reorder transactions with millisecond precision. Without fair-ordering enforcement, this is an exploitable attack vector. This must be addressed in the adversary model, not just the performance model.
+
+**Expanded Benchmark Table (Blocks 01–03, ranked by practical relevance):**
+
+| Context | Protocol | TPS | Latency | Signal | Source |
+|---|---|---|---|---|---|
+| TEE-backed, bandwidth-limited | Proteus (CFT+BFT) | 345,000 | 2.6× lower than BFT | High | mishra_2025 |
+| Theoretical sharded ($2^{14}$ shards) | Cerberus | $10^5$–$10^7$ | N/A (modeled) | High | hellings_2020 |
+| Permissioned LAN (7 nodes) | BFT-SMART (Fabric) | ~2,500 | ~133ms (WAN) | High | barger_2021 |
+| Sharded, empirical (14 shards) | MSSP/PBFT | 2,654 | N/A | Medium | liu_2025 |
+| Permissioned Fabric (WAN config) | RAFT + LevelDB | >1,000 | 1.2s | High | guggenberger_2022 |
+| Fair-ordering (20 nodes) | Optimized Themis | 750–1,000 | ~400ms | Medium | li_2024 |
+
+#### New NFR Candidates (Block 03)
+
+11. **NFR-SAFE-02**: The Ledger MUST formally distinguish **Committed** (CFT-durable) from **Audited** (BFT-verified) finality states. External settlement obligations SHOULD require audit-level finality.
+12. **NFR-COMP-03**: The Ordering Service MUST implement a demonstrable fair-ordering policy (FIFO or equivalent) to prevent MEV-class attacks by adversarial ordering nodes.
+13. **NFR-STORE-01**: The ledger storage strategy MUST include pruning or epoch-checkpointing to prevent unbounded state growth; a per-node storage cap MUST be defined at design time.
+14. **NFR-CONFIG-02**: Shard m-node ratio MUST be configured within the **20–25%** range to balance throughput and storage overhead, per MSSP empirical results.
+
+## 4. Block Processing Log
+
+| Block | Sources Processed | Status |
+|---|---|---|
+| Block 01 | abdi_2025, al_bassam_2018, alzahrani_2025, barger_2021, benedetti_2022, berger_2023, berger_2023a, berger_2023b, bernauer_2021 | Complete |
+| Block 02 | chan_2018, choi_2018, chuen_2017, fan_2025_batch03, far_2025, flamini_2021, frey_2024, georgiou_2023, guggenberger_2022 | Complete |
+| Block 03 | gunn_2019, hellings_2020, li_2024, liu_2024a, liu_2025, mishra_2025, muratov_2018, nasir_2022_batch03, nguyen_2021 | Complete |
+| Block 04 | praveen_2024, ren_2018, sonnino_2021, trestioreanu_2021, wang_2024a, wang_2026, yu_2023_batch03, zhao_2024, zhen_2024 | Pending |
+| Block 05 | zhong_2025 + (overflow/unmatched) | Pending |
