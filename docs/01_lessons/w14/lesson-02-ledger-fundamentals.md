@@ -19,21 +19,35 @@ Distinguish between the History (the immutable Event Log) and the Current Realit
 - **Recovery**: Replaying events deterministically rebuilds state after failure.
 - **Integrity**: Immutable events provide tamper-evidence and provable history.
 
+---
+
 ## Definitions
-- **Event**: an immutable record describing an intent or occurrence (e.g., Deposit, Transfer, Reversal).
-- **Projection / World State**: a materialized view derived from applying events in order (e.g., account balances).
-- **Aggregate**: a domain entity (e.g., Account) that enforces invariants when processing events.
-- **Snapshot**: a periodic capture of World State to speed recovery.
-- **Append-only**: events are inserted and not modified (compensating events or redaction protocols are used instead of deletion).
+
+| Term | Definition |
+|---|---|
+| **Event** | An immutable record describing something that happened (e.g., `Deposit`, `Transfer`, `Reversal`). |
+| **Command** | A request to do something (e.g., `RequestTransfer`). It produces an Event if valid. |
+| **Projection / World State** | A materialized view derived by applying events in order (e.g., current account balances). |
+| **Aggregate** | A domain entity (e.g., `Account`) that enforces business rules when processing commands. |
+| **Snapshot** | A periodic capture of the World State to speed up recovery without replaying all history. |
+| **Append-only** | Events are only inserted, never modified. Corrections use compensating events. |
+| **Idempotency Key** | A unique ID on a command so that retrying it never produces duplicate effects. |
+
+---
 
 ## Key Concepts
 
 ### 1. The Append-Only Log (The "Truth")
-- Record intent as events rather than updating balances inline.
-- Example: instead of `UPDATE account SET balance = 150`, record `Event: Deposit +50`.
-- Property: immutability — once appended, an event is part of the official history.
+Instead of updating a balance directly, you record the **intent** as an event.
 
-### Event schema (example)
+| Approach | What happens in the database |
+|---|---|
+| **CRUD** | `UPDATE account SET balance = 150` — history is destroyed |
+| **Event Sourcing** | `INSERT event (Deposit, +50)` — history is preserved |
+
+Property: **immutability** — once appended, an event is a permanent part of the official history. You cannot delete it; you can only add a compensating event (e.g., a `Reversal`).
+
+#### Event Schema (example)
 ```json
 {
   "id": "evt-0001",
@@ -43,87 +57,180 @@ Distinguish between the History (the immutable Event Log) and the Current Realit
   "amount": 10000,
   "currency": "USD",
   "timestamp": "2026-03-31T10:00:00Z",
-  "metadata": {"contractId":"C-1234","vendorId":"V-987"},
+  "metadata": { "contractId": "C-1234", "vendorId": "V-987" },
   "idempotencyKey": "cmd-abc-123"
 }
 ```
+> **Always use integer minor units** (e.g., cents, not dollars with decimals). Floating-point arithmetic is non-deterministic and will corrupt a ledger.
+
+---
 
 ### 2. The World State (The "View")
-- The World State is derived from the log: InitialState + Σ(events) = CurrentState.
-- Materialized views support low-latency queries (e.g., "Does this user have enough funds?").
-- Use snapshots to avoid replaying the entire history on recovery.
+The World State is **derived** from the log:
+```
+CurrentState = InitialState + Σ(all events in order)
+```
 
-### 3. Processing Steps (ingest → validate → append → project)
-1. **Ingest**: receive command (API), normalize payload, check schema.
-2. **Validate**: business rules, balance simulation, anti-fraud checks.
-3. **Append**: persist the event atomically to the append-only log (assign sequence).
-4. **Project**: apply the event to projections (update balances, journal entries).
-5. **Notify / Finalize**: emit finality status, audit proofs, and client response.
+- Materialized views support low-latency queries (e.g., "Does this account
+  have enough funds right now?").
+- Use **Snapshots** to avoid replaying the entire history on every recovery.
+  Instead: `Snapshot(at T) + Σ(events after T) = CurrentState`.
 
-- **Idempotency**: include `idempotencyKey` on commands to deduplicate retries.
-- **Ordering & Concurrency**: use sequencer/orderer or MVCC and conflict-aware ordering to avoid anomalies.
+---
 
-### 4. Event Sourcing vs. CRUD
-- **CRUD** mutates current state directly; **Event Sourcing** records events and derives state.
-- Benefits: full audit trail, deterministic rebuild, temporal queries.
-- Costs: storage growth, replay complexity, schema evolution overhead.
+### 3. Processing Pipeline: ingest → validate → append → project
+```mermaid
+flowchart TD
+    A["Client Command <br>(e.g. Transfer Request)"] --> B["Ingest<br>(Normalize & Schema Check)"]
+    B --> C["Validate<br>(Business Rules + Balance Simulation)"]
+    C --> D{Valid?}
+    D -- No --> E[Reject<br>Return Error to Client]
+    D -- Yes --> F["Append<br>(Write Event to Log; Assign Sequence Number)"]
+    F --> G["Project<br>(Update Balance Projections; Create Journal Postings)"]
+    G --> H["Notify / Finalize<br>(Emit Finality Status; Audit Proof + Client Response)"]
+```
+
+| Step         | What happens                                                    | Key concern                             |
+| ------------ | --------------------------------------------------------------- | --------------------------------------- |
+| **Ingest**   | Receive command via API, normalize payload, check schema        | Malformed input                         |
+| **Validate** | Business rules, balance simulation, anti-fraud checks           | Insufficient funds, duplicate detection |
+| **Append**   | Persist event atomically; sequencer assigns order               | Ordering, concurrency                   |
+| **Project**  | Apply event to read models; update balances and journal entries | Eventual consistency                    |
+| **Notify**   | Emit finality status, audit proof, client response              | At-least-once delivery                  |
+
+---
+
+### 4. CQRS: Separating Writes from Reads
+
+**CQRS (Command Query Responsibility Segregation)** is the pattern that naturally pairs with Event Sourcing. The idea is simple:
+- The **Write Side (Command)** receives commands, validates them, and appends events to the log.
+- The **Read Side (Query)** serves balance lookups and reports from pre-computed projections.
+```mermaid
+flowchart LR
+    subgraph Write Side
+        CMD["Command<br>(e.g. Transfer)"] --> AGG["Aggregate<br>(Validates Rules)"]
+        AGG --> LOG["Event Log<br>(Append-Only)"]
+    end
+    subgraph Read Side
+        LOG --> PROJ["Projector<br>(Builds Views)"]
+        PROJ --> VIEW["Projections<br>(e.g. Balances)"]
+        VIEW --> QRY["Query<br>(e.g. GET /balance)"]
+    end
+```
+
+Why does this matter for your project? Your .NET API will have separate **Command Handlers** and **Query Handlers** — this is the architecture CQRS describes. Libraries like **MediatR** in .NET implement this pattern.
+
+---
+
+### 5. Event Sourcing vs. CRUD — Full Comparison
+
+| Dimension | CRUD | Event Sourcing |
+|---|---|---|
+| Storage | Current state only | Full history of events |
+| Audit trail | Requires extra logging | Built-in (the log IS the truth) |
+| Recovery after failure | Restore last backup | Replay events from log (or snapshot) |
+| Temporal queries | Hard ("what was the balance on Jan 1?") | Easy (replay up to that date) |
+| Complexity | Low | Higher (projection management, schema evolution) |
+| Regulatory fit | Weak | Strong (immutability + full history) |
+
+---
 
 ## Mapping to Double-Entry Accounting
-- A `Transfer` event maps to balanced journal postings derived from a single event:
+
+A single `Transfer` event produces balanced journal **postings**:
 ```json
 {
   "eventId": "evt-0001",
   "postings": [
-    {"account":"acct:A","debit":10000,"credit":0,"currency":"USD"},
-    {"account":"acct:B","debit":0,"credit":10000,"currency":"USD"}
+    { "account": "acct:A", "debit": 10000, "credit": 0,     "currency": "USD" },
+    { "account": "acct:B", "debit": 0,     "credit": 10000, "currency": "USD" }
   ]
 }
 ```
-- The ledger enforces atomicity: postings from one event must preserve Debits = Credits.
+
+The ledger enforces **atomicity**: the sum of debits must always equal the sum of credits. This is the "physics" of money — value is conserved, not created or destroyed. (Lesson 03 will cover this in depth.)
+
+---
 
 ## Trade-offs and Mitigations
-- **Storage growth**: mitigate with snapshots, compaction, and retention policies.
-- **Replay cost**: tune snapshot frequency to meet recovery-time objectives (RTO).
-- **Schema evolution**: version event schemas and provide migration tooling.
-- **GDPR vs immutability**: prefer reversal/compensating events or plan for redactable-ledger ADRs.
+
+| Challenge | Mitigation |
+|---|---|
+| Storage growth | Snapshots, compaction, retention policies |
+| Slow recovery | Tune snapshot frequency to meet RTO targets |
+| Schema evolution | Version event schemas; provide migration tooling |
+| GDPR vs immutability | Use reversal/compensating events; plan redactable-ledger ADRs |
+| Concurrency anomalies | Use MVCC or a sequencer/orderer service |
+
+---
 
 ## Common Pitfalls
-- Updating state without an event (breaks the source of truth).
-- Using floating-point amounts (use integer minor units instead).
-- Missing idempotency keys leading to duplicate effects.
-- Ignoring partner-bank reconciliation and cross-ledger mapping semantics.
+- Updating state **without** an event — breaks the source of truth.
+- Using **floating-point** for monetary amounts — use integer minor units.
+- Missing **idempotency keys** — leads to duplicate transactions on retry.
+- Ignoring **partner-bank reconciliation** — cross-ledger mapping must be explicitly modeled.
+- Confusing a **Command** with an **Event** — a Command is a request that *might* be rejected; an Event is a fact that *already happened*.
+
+---
 
 ## Mental Model: The Mechatronics Analogy
-- The log is the instruction list (G-Code); the world state is machine position.
-- After power loss, replay the instruction list or apply a recent snapshot to recover deterministically.
 
-## Applied Example (Transaction Flow)
-1. Client submits `Transfer` command with `idempotencyKey`.
-2. API validates and simulates the effect against current projection.
-3. Event appended with sequence number; sequencer enforces order.
-4. Projections update balances and create audit postings that reference the event id.
-5. Client receives finality status once committed and projected.
+| Ledger concept | Mechatronics equivalent |
+|---|---|
+| Event Log | G-Code instruction list (the program) |
+| World State | Current machine position (X, Y, Z) |
+| Snapshot | Homing / known reference position |
+| Replay | Re-running the G-Code from a reference point |
+| Compensating Event | A correction move (G-Code line that undoes a previous one) |
 
-## Operational Notes (short checklist)
-- Use integers for monetary amounts; avoid floats.
-- Include `idempotencyKey` on all commands.
-- Record `contractId`, `vendorId`, and other metadata for auditability.
-- Choose snapshot cadence based on TPS and acceptable RTO.
+After a power loss, you don't guess the machine's position — you either home it (full replay) or restore from a reference snapshot and continue. The ledger works exactly the same way.
+
+---
+
+## Applied Example: Payroll at a Construction Company
+
+**Company A** (100 employees) runs payroll through our Neobank Ledger.
+
+1. **Command**: `RunPayroll` for 100 employees, total $250,000.
+2. **Ingest**: API receives the batch command with an `idempotencyKey`.
+3. **Validate**: Check that Company A's operating account has ≥ $250,000.
+4. **Append**: One `PayrollBatch` event is written to the log with all 100 employee entries and metadata (`payrollRunId`, `periodEnd`).
+5. **Project**: 101 balance projections are updated (1 debit from Company A, 100 credits to employees). Journal postings are created.
+6. **Notify**: Each employee's account receives a finality confirmation. Accounting software (QuickBooks/SAP) is updated via webhook.
+
+**What if the network fails after step 4?** The event is already in the log. On retry, the `idempotencyKey` prevents a duplicate — the system detects the event was already appended and returns the original result.
+
+---
+
+## Operational Checklist
+- [ ] Use integers for monetary amounts (cents, not dollars).
+- [ ] Include `idempotencyKey` on all commands.
+- [ ] Record `contractId`, `vendorId`, and metadata for auditability.
+- [ ] Set snapshot cadence based on TPS and acceptable RTO.
+- [ ] Version all event schemas from day one.
+
+---
 
 ## Interview Notes
-- Event Sourcing: immutable events; projections = read models.
-- Snapshotting speeds recovery; use reversal events instead of deletion.
-- CQRS pairs naturally with Event Sourcing (separate command/write and query/read models).
+- **Event Sourcing**: immutable events are the source of truth; projections are derived read models that can be rebuilt at any time.
+- **Snapshotting** speeds recovery; never delete events — use reversal events.
+- **CQRS** separates Command (write) and Query (read) responsibilities; in .NET, MediatR is the standard library for this pattern.
+- **Why not CRUD for a ledger?** Regulators require an audit trail. CRUD destroys history; Event Sourcing preserves it by design.
+
+---
 
 ## Sources
 - [[fulbier_2023|Fülbier & Sellhorn, 2023]] — context on double-entry and financial reporting.
 - [[kahmann_2023|Kahmann et al., 2023]] — performance contrasts (DAG vs. blockchain).
 - [[wu_2026|Wu et al., 2026]] — conflict-aware ordering (cited in meta-analysis).
 
-Note: `wu_2026` bibliographic entry was not found in the repo; please confirm or add its reference file.
+
+---
 
 ## TODO to Internalize
-- [ ] Diagram a "Deposit" event vs. a "CRUD Update" on a whiteboard.
-- [ ] Research "Snapshotting" best practices for high-throughput ledgers.
-- [ ] Explain why deleting a transaction is impossible in a compliant ledger (use a "Reversal Event").
-- [ ] Practice mapping a `Transfer` event into journal postings and audit proofs.
+- [ ] On paper: draw the pipeline diagram (ingest → validate → append → project → notify) for a `Deposit` command.
+- [ ] Explain why `amount: 100.50` is dangerous and `amount: 10050` is safe.
+- [ ] Explain CQRS in one sentence and name the .NET library that implements it.
+- [ ] Diagram a `Transfer` event producing two journal postings.
+- [ ] Explain why deleting a transaction is impossible in a compliant ledger — describe what a "Reversal Event" does instead.
+- [ ] Research: what is an acceptable RTO for a fintech ledger? How does snapshot frequency affect it?
