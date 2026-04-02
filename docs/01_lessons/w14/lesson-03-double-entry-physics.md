@@ -162,22 +162,52 @@ Result: still balanced, with economics made explicit.
 ```
 
 
+> [!hint]- Debit and Credit by account type
+> In common language:
+>
+> - "Debit" = money leaving your account (bad)
+> - "Credit" = money arriving (good)
+>
+> In accounting, **it depends on the account type**:
+>
+> |Account Type|Debit effect|Credit effect|
+> |---|---|---|
+> |**Asset** (e.g. Cash)|⬆ Increases|⬇ Decreases|
+> |**Liability** (e.g. Loan)|⬇ Decreases|⬆ Increases|
+> |**Expense** (e.g. Fees)|⬆ Increases|⬇ Decreases|
+> |**Revenue** (e.g. Fees earned)|⬇ Decreases|⬆ Increases|
+>
+> So when the lesson wrote `Cash:CompanyA` on the **Credit side**, it means Company A's cash **decreased** — which is correct, they paid $102.
 
-In common language:
+## Account Types & Normal Balances (Double-Entry Reference)
 
-- "Debit" = money leaving your account (bad)
-- "Credit" = money arriving (good)
+The accounting equation: **Assets = Liabilities + Equity**
+Every account belongs to one of five categories.
 
-In accounting, **it depends on the account type**:
+| Category      | Belongs to            | Normal Balance | Increases with | Decreases with | Examples                                            |
+| ------------- | --------------------- | -------------- | -------------- | -------------- | --------------------------------------------------- |
+| **Asset**     | Assets                | Debit          | Debit (DR)     | Credit (CR)    | `Cash`, `AccountsReceivable`, `Equipment`           |
+| **Liability** | Liabilities           | Credit         | Credit (CR)    | Debit (DR)     | `AccountsPayable`, `LoanPayable`, `DeferredRevenue` |
+| **Equity**    | Equity                | Credit         | Credit (CR)    | Debit (DR)     | `OwnersCapital`, `RetainedEarnings`                 |
+| **Revenue**   | Equity (increases it) | Credit         | Credit (CR)    | Debit (DR)     | `Revenue:Sales`, `Revenue:ProcessingFees`           |
+| **Expense**   | Equity (decreases it) | Debit          | Debit (DR)     | Credit (CR)    | `Expense:Payroll`, `Expense:ProcessingFee`          |
 
-|Account Type|Debit effect|Credit effect|
-|---|---|---|
-|**Asset** (e.g. Cash)|⬆ Increases|⬇ Decreases|
-|**Liability** (e.g. Loan)|⬇ Decreases|⬆ Increases|
-|**Expense** (e.g. Fees)|⬆ Increases|⬇ Decreases|
-|**Revenue** (e.g. Fees earned)|⬇ Decreases|⬆ Increases|
+### The Memory Rule
+**DEALER** — the order of normal balances:
+- **D**ividends → Debit
+- **E**xpenses → Debit
+- **A**ssets → Debit
+- **L**iabilities → Credit
+- **E**quity → Credit
+- **R**evenue → Credit
 
-So when the lesson wrote `Cash:CompanyA` on the **Credit side**, it means Company A's cash **decreased** — which is correct, they paid $102.
+### Why it works
+Revenue and Expense are sub-categories of Equity:
+- Revenue **increases** Equity → same normal balance (Credit)
+- Expense **decreases** Equity → opposite normal balance (Debit)
+
+This is why the equation holds after every transaction:
+if DR = CR, then Assets = Liabilities + Equity is preserved.
 
 ---
 
