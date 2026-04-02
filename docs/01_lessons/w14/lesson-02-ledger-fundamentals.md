@@ -23,15 +23,17 @@ Distinguish between the History (the immutable Event Log) and the Current Realit
 
 ## Definitions
 
-| Term | Definition |
-|---|---|
-| **Event** | An immutable record describing something that happened (e.g., `Deposit`, `Transfer`, `Reversal`). |
-| **Command** | A request to do something (e.g., `RequestTransfer`). It produces an Event if valid. |
-| **Projection / World State** | A materialized view derived by applying events in order (e.g., current account balances). |
-| **Aggregate** | A domain entity (e.g., `Account`) that enforces business rules when processing commands. |
-| **Snapshot** | A periodic capture of the World State to speed up recovery without replaying all history. |
-| **Append-only** | Events are only inserted, never modified. Corrections use compensating events. |
-| **Idempotency Key** | A unique ID on a command so that retrying it never produces duplicate effects. |
+| Term                         | Definition                                                                                                                                                                                                                                                                                |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Event**                    | An immutable record describing something that happened (e.g., `Deposit`, `Transfer`, `Reversal`).                                                                                                                                                                                         |
+| **Command**                  | A request to do something (e.g., `RequestTransfer`). It produces an Event if valid.                                                                                                                                                                                                       |
+| **Projection / World State** | A materialized view derived by applying events in order (e.g., current account balances).                                                                                                                                                                                                 |
+| **Aggregate**                | A domain entity (e.g., `Account`) that enforces business rules when processing commands.                                                                                                                                                                                                  |
+| **Snapshot**                 | A periodic capture of the World State to speed up recovery without replaying all history.                                                                                                                                                                                                 |
+| **Append-only**              | Events are only inserted, never modified. Corrections use compensating events.                                                                                                                                                                                                            |
+| **Idempotency Key**          | A unique ID on a command so that retrying it never produces duplicate effects.                                                                                                                                                                                                            |
+| **TPS**                      | Transactions Per Second — the number of fully processed, committed and projected transactions the ledger can sustain per second under a specified test profile and topology (e.g., intra-cluster LAN vs. WAN). Measured on end-to-end committed throughput, not merely received commands. |
+| **RTO**                      | Recovery Time Objective — the maximum acceptable time to restore operational state after an outage. For a ledger this is the time to recover projections to a usable point (snapshot + replay) so normal processing and balance guarantees resume.                                        |
 
 ---
 
