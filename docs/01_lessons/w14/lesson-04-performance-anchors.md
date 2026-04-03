@@ -83,11 +83,11 @@ Performance controls are not isolated to one module:
 
 ## Performance Anchors (How to Read Them)
 
-| Profile | Indicative TPS | Indicative Latency | Interpretation |
-| --- | --- | --- | --- |
-| **Apex protocol benchmark** | up to 160,000 | sub-100 ms (controlled context) | Upper-bound reference, not default production expectation. |
-| **BFT consortium baseline (LAN)** | around 2,500 | around 100-200 ms | Practical architecture anchor for enterprise permissioned setups. |
-| **WAN production baseline** | above 1,000 | around 1.2-1.5 s | Realistic cross-region operating regime with network constraints. |
+| Profile | Indicative TPS | Indicative Latency | Source/Context | Interpretation |
+| --- | --- | --- | --- | --- |
+| **Apex protocol benchmark** | up to 160,000 | sub-100 ms (controlled context) | FastPay-style RTGS benchmark | Upper-bound reference, not default production expectation. |
+| **BFT consortium baseline (LAN)** | around 2,500 | around 100-200 ms | BFT permissioned consortium | Practical architecture anchor for enterprise permissioned setups. |
+| **WAN production baseline** | above 1,000 | around 1.2-1.5 s | Cross-region WAN production | Realistic cross-region operating regime with network constraints. |
 
 Planning takeaway:
 - Choose targets by business window and topology, not by maximal published number.
@@ -149,6 +149,9 @@ $$
 Engineering implication:
 - A 1,000 TPS WAN baseline may pass, but little headroom remains for retries/spikes.
 - You need admission control, queueing policy, and backpressure to preserve finality latency.
+
+### Correctness Under Load
+Every one of those 833 TPS still has to pass the Lesson 03 validation pipeline before commit, including schema checks, business-rule checks, and balance validation with $DR = CR$. High throughput does not relax the double-entry invariant; it only increases the pressure on the system to enforce it consistently. That is why admission control and backpressure exist: to protect correctness first, and latency second. If the system cannot validate safely, it should slow down or reject work rather than admit unbalanced or stale transactions.
 
 ---
 
