@@ -8,7 +8,7 @@ This series provides the foundational knowledge required to understand the **Neo
 | **02** | [Ledger Fundamentals](lesson-02-ledger-fundamentals.md) | Append-only storage & Event Log. | 🟡 Draft |
 | **03** | [The Double-Entry "Physics"](lesson-03-double-entry-physics.md) | Conservation of value logic. | 🟡 Draft |
 | **04** | [High-Performance Metrics](lesson-04-performance-anchors.md) | TPS, Latency, and Benchmarks. | 🟡 Draft |
-| **05** | Distributed Consensus | Nodes, Ordering, and Finality. | ⚪ Pending |
+| **05** | [Distributed Consensus](lesson-05-distributed-consensus.md) | Nodes, Ordering, and Finality. | 🟡 Draft |
 | **06** | Regulatory Anchors | ISO 20022 and GDPR 101. | ⚪ Pending |
 | **07** | Bridge to Architecture | Preparing for ADR-001. | ⚪ Pending |
 
