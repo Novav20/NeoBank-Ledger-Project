@@ -1,5 +1,9 @@
 ---
-source: [Web Gemini | Notion | Microsoft Learn | Self-study]
+source: 
+    - Web Gemini 
+    - Notion 
+    - Microsoft Learn 
+    - Self-study
 phase: architecture
 status: draft
 last-updated: 2026-04-02

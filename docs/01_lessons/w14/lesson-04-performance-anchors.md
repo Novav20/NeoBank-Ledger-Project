@@ -1,6 +1,9 @@
 ---
 source:
-  - Al-Bassam (2018) | Sonnino (2021) | Barger (2021) | Guggenberger (2022)
+  - Al-Bassam (2018) 
+  - Sonnino (2021) 
+  - Barger (2021)
+  - Guggenberger (2022)
 phase: performance
 status: draft
 last-updated: 2026-03-31
