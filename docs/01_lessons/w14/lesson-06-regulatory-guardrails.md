@@ -21,6 +21,14 @@ Understand the regulatory constraints that shape a production ledger before you 
 - **Audit quality**: MiFID II requires precise traces, including identifiers and timestamp discipline, so the ledger can be investigated later.
 - **Engineering discipline**: Regulations are not paperwork only; they are design constraints that affect schema, storage, logging, redaction, and event flow.
 
+## Definitions
+
+| Term | Definition |
+| --- | --- |
+| ISO 20022 | International standard for financial message schemas. Defines typed, machine-readable fields for payments, settlements, and reporting — equivalent to a field protocol (like Modbus or CAN bus) for money. |
+| GDPR | General Data Protection Regulation. EU privacy law that constrains how personal data is collected, stored, used, and deleted. For a ledger, it creates tension with immutability requirements. |
+| MiFID II | Markets in Financial Instruments Directive II. EU regulation requiring precise audit trails for financial transactions, including Legal Entity Identifiers (LEI), Unique Transaction Identifiers (UTI), and 1ms timestamp synchronization. |
+
 ## Key Concepts
 
 ### 1. ISO 20022 as a Universal Data Protocol
@@ -64,7 +72,7 @@ Regulation is not something we add at the end.
 - It affects retention and redaction rules.
 - It affects what belongs in the write model versus what belongs in the audit or identity subsystem.
 
-## Mental Model (Mermaid)
+## Mental Model
 ```mermaid
 flowchart TD
     A[Business Event] --> B[ISO 20022 Message Schema]
@@ -75,6 +83,16 @@ flowchart TD
     D --> G[Redaction or Retention Policy]
     G --> F
 ```
+
+## Mechatronics Bridge
+
+| Regulatory Concept | Mechatronics Analogy | Why It Matters |
+| --- | --- | --- |
+| ISO 20022 message schema | Modbus/CAN bus frame format | Structured fields prevent misinterpretation between systems, just as a CAN frame layout prevents sensor misreads. |
+| GDPR data minimization | Storing only required sensor readings, not raw dumps | Unnecessary data creates liability, just as logging every raw ADC value wastes storage and exposes noise. |
+| MiFID II timestamp precision | Calibration certificate on a measurement instrument | A sloppy timestamp makes the audit trail legally weak, like an uncalibrated sensor making a test report invalid. |
+| Redaction policy | Controlled parameter reset without erasing the machine log | Personal data can be removed from the payload while the financial event record remains intact, like clearing a setpoint without deleting the PLC history. |
+| Immutable financial log | Append-only PLC fault history buffer | The record of what happened cannot be altered retroactively, only annotated or compensated. |
 
 ## Applied Example (.NET 10 / C# 14)
 The example below shows a simple record for a compliant ledger transaction. It separates the financial event from the compliance metadata so the ledger can remain auditable while still carrying regulatory context.

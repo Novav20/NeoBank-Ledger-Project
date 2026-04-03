@@ -93,7 +93,11 @@ public record ConsensusProposal(
 );
 
 // High-level logic:
-if (ValidatorVotes > (TotalNodes / 2)) 
+int faultyNodes = 1; // F
+int totalNodes = (3 * faultyNodes) + 1; // N = 3F + 1
+int requiredVotes = (2 * faultyNodes) + 1; // BFT commit quorum
+
+if (ValidatorVotes >= requiredVotes)
 {
     CommitToLedger(proposal); // The "Latching" action
 }
