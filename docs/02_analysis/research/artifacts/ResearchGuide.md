@@ -45,3 +45,10 @@ Shift from foundational logic to concrete implementation. Prioritize:
 2. **Event Sourcing & CQRS**: State machine replication for financial audit trails. Search: `"Event Sourcing" AND "Financial Accounting" AND "Consistency"`.
 3. **Concurrency Control & ACID**: MVCC/OCC for distributed databases during high-concurrency ledger updates. Search: `"ACID compliance" AND "concurrency control" AND "financial ledger"`.
 4. **Integrity Verification & Self-Repair**: Vector commitments and cryptographic proofs of integrity. Search: `"Cryptographic Proof" AND "Audit Log Integrity"`.
+
+## 6. Batch 03 Focus (NFRs & Compliance)
+Focus on operational assurance, regulatory safety, and performance ceilings. Prioritize:
+1. **Availability & Fault Tolerance**: Shard recovery, leaderless sync, and partition resilience. Search: `("availability" OR "fault tolerance") AND "distributed ledger" AND "shard takeover"`.
+2. **Performance Benchmarks**: Latency (ms) and throughput (TPS) metrics for B2B financial systems. Search: `("latency" OR "throughput") AND "B2B" AND "distributed ledger" AND "benchmark"`.
+3. **Compliance by Design**: ISO 20022 alignment, machine-readable rules, and automated auditing. Search: `("ISO 20022" OR "regulatory compliance") AND "ledger architecture" AND "automation"`.
+4. **Safety & Double-Spending**: State coherence and transactional safety in distributed environments. Search: `("double spending" OR "state coherence") AND "distributed ledger" AND "safety proofs"`.

@@ -1,3 +1,6 @@
+from __future__ import annotations
+import difflib
+
 #!/usr/bin/env python3
 """
 extract_batch_snippets.py
@@ -6,7 +9,7 @@ Read a markdown file containing multiple triple-backticked code blocks (each con
 YAML-like frontmatter and content) and write each block into a separate .md file.
 
 Usage:
-  python3 scripts/extract_batch_snippets.py input.md output_dir
+    python3 scripts/extract_batch_snippets.py input.md output_dir
 
 Behavior:
 - Finds all ```...``` fenced blocks and extracts the inner text.
@@ -14,17 +17,15 @@ Behavior:
 - Builds a sanitized filename from the first-listed author and year: mainauthor_YYYY.md
 - Avoids overwriting by adding a, b, c suffix when necessary: mainauthor_YYYY_a.md
 - Replaces unusual characters in author names with safe ASCII characters per repo
-  naming rules.
+    naming rules.
 """
-
-from __future__ import annotations
 
 import argparse
 import re
 import sys
 import unicodedata
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Dict, Set
 
 
 def slugify(value: str) -> str:
@@ -49,17 +50,20 @@ def find_fenced_blocks(text: str) -> List[str]:
     return pattern.findall(text)
 
 
-def parse_frontmatter(block: str) -> Tuple[Optional[str], Optional[str]]:
-    """Extract main_author and year from a YAML-like frontmatter inside the block.
 
-    Returns (main_author, year) or (None, None) if not found.
+def parse_frontmatter(block: str) -> Tuple[Optional[str], Optional[str], Optional[str], Optional[str]]:
+    """Extract main_author, year, title, and doi from a YAML-like frontmatter inside the block.
+
+    Returns (main_author, year, title, doi) or (None, None, None, None) if not found.
     """
     fm_match = re.search(r"---\s*(.*?)\s*---", block, re.DOTALL)
     if not fm_match:
-        return None, None
+        return None, None, None, None
     fm = fm_match.group(1)
     ma = None
     yr = None
+    title = None
+    doi = None
     for line in fm.splitlines():
         line = line.strip()
         if line.lower().startswith("main_author:"):
@@ -74,7 +78,108 @@ def parse_frontmatter(block: str) -> Tuple[Optional[str], Optional[str]]:
             y_match = re.search(r"(20\d{2}|19\d{2})", val)
             if y_match:
                 yr = y_match.group(1)
-    return ma, yr
+        elif line.lower().startswith("title:"):
+            _, val = line.split(":", 1)
+            val = val.strip()
+            if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
+                val = val[1:-1]
+            title = val
+        elif line.lower().startswith("doi:"):
+            _, val = line.split(":", 1)
+            val = val.strip()
+            if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
+                val = val[1:-1]
+            doi = val
+    return ma, yr, title, doi
+
+import string
+
+def normalize_title(title: str) -> str:
+    """Normalize title for robust duplicate detection: lowercase, strip, collapse spaces, remove punctuation."""
+    if not title:
+        return ""
+    t = title.lower().strip()
+    t = ' '.join(t.split())  # collapse whitespace
+    t = t.translate(str.maketrans('', '', string.punctuation))  # remove punctuation
+    return t
+
+def collect_titles_and_dois_from_dir(directory: Path) -> Tuple[Set[str], Set[str]]:
+    """Collect all normalized titles and dois from markdown files in a directory.
+    Handles both single YAML frontmatter and fenced blocks."""
+    titles = set()
+    dois = set()
+    for file in directory.glob("*.md"):
+        try:
+            text = file.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        found = False
+        # Try to find all fenced blocks first
+        blocks = find_fenced_blocks(text)
+        if blocks:
+            for block in blocks:
+                _, _, title, doi = parse_frontmatter(block)
+                if title:
+                    titles.add(normalize_title(title))
+                    print(f"[DEBUG] (fenced) {file.name}: found title '{title}'")
+                if doi:
+                    dois.add(doi.strip().lower())
+            found = True
+        # If no fenced blocks, try to parse as a single YAML frontmatter at the top
+        if not found:
+            fm_match = re.search(r"---\s*(.*?)\s*---", text, re.DOTALL)
+            if fm_match:
+                fm = fm_match.group(1)
+                title = None
+                doi = None
+                for line in fm.splitlines():
+                    line = line.strip()
+                    if line.lower().startswith("title:"):
+                        _, val = line.split(":", 1)
+                        val = val.strip()
+                        if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
+                            val = val[1:-1]
+                        title = val
+                    elif line.lower().startswith("doi:"):
+                        _, val = line.split(":", 1)
+                        val = val.strip()
+                        if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
+                            val = val[1:-1]
+                        doi = val
+                if title:
+                    titles.add(normalize_title(title))
+                    print(f"[DEBUG] (single) {file.name}: found title '{title}'")
+                if doi:
+                    dois.add(doi.strip().lower())
+    return titles, dois
+
+
+def detect_batch_from_path(path: Path) -> Optional[str]:
+    """Extract batch number from path segments like batch-02 or batch_02."""
+    m = re.search(r"batch[-_](\d{1,2})", str(path), re.IGNORECASE)
+    if not m:
+        return None
+    return m.group(1)
+
+
+def inject_batch_into_frontmatter(block: str, batch_number: Optional[str]) -> str:
+    """Add batch: <number> to YAML frontmatter when missing."""
+    if not batch_number:
+        return block
+
+    match = re.search(r"^(---\n)(.*?)(\n---)(.*)$", block, re.DOTALL)
+    if not match:
+        # No frontmatter, nothing to inject
+        return block
+
+    prefix, body, suffix, rest = match.groups()
+    if re.search(r"(?m)^batch\s*:", body):
+        # already contains batch key
+        return block
+
+    batch_line = f"batch: \"{batch_number}\"\n"
+    body = body.rstrip("\n") + "\n" + batch_line
+    return prefix + body + suffix + rest
 
 
 def choose_author_label(main_author_field: Optional[str]) -> str:
@@ -92,29 +197,75 @@ def choose_author_label(main_author_field: Optional[str]) -> str:
     return slugify(candidate)
 
 
-def unique_filename(directory: Path, base: str, ext: str = ".md") -> Path:
+def unique_filename(directory: Path, base: str, ext: str = ".md", require_suffix: bool = False) -> Path:
     """Return a Path inside `directory` that does not overwrite existing files.
 
-    If base.ext exists, append _a, _b, ... before the extension.
+    If base.ext exists, append a, b, ... before the extension (e.g., basea.md).
+    If require_suffix is True, always start with basea.md even if base.md is free.
     """
     directory.mkdir(parents=True, exist_ok=True)
     candidate = directory / f"{base}{ext}"
-    if not candidate.exists():
+    if not require_suffix and not candidate.exists():
         return candidate
+
+    # Choose suffix from a..z first
     for i in range(1, 100):
         suffix = chr(ord("a") + (i - 1))
-        candidate = directory / f"{base}_{suffix}{ext}"
+        candidate = directory / f"{base}{suffix}{ext}"
         if not candidate.exists():
             return candidate
+
+    # Fallback to numeric suffixes when letters are exhausted.
     i = 1
     while True:
-        candidate = directory / f"{base}_{i}{ext}"
+        candidate = directory / f"{base}{i}{ext}"
         if not candidate.exists():
             return candidate
         i += 1
 
 
-def extract_and_write(input_path: Path, output_dir: Path, commit: bool = False, skip_existing: bool = False) -> List[Path]:
+def file_content_matches(path: Path, content: str) -> bool:
+    """Compare existing file text to content normalized with newline semantics."""
+    if not path.exists():
+        return False
+    existing = path.read_text(encoding="utf-8").rstrip("\n")
+    normalized = content.rstrip("\n")
+    return existing == normalized
+
+
+def resolve_output_path(output_dir: Path, base: str, block_content: str, previous_dirs: List[Path]) -> Tuple[Optional[Path], Optional[str]]:
+    """Determine output path and return (path, reason).
+
+    If a content-equivalent file already exists, return (None, reason).
+    Otherwise return a unique path in output_dir.
+    """
+    candidate = output_dir / f"{base}.md"
+    conflict_with_previous = False
+
+    # Search previous directories for exact content or conflicts.
+    for prev_dir in previous_dirs:
+        prev_file = Path(prev_dir) / f"{base}.md"
+        if prev_file.exists():
+            if file_content_matches(prev_file, block_content):
+                return None, f"duplicate content in previous batch: {prev_file}"
+            conflict_with_previous = True
+            # keep looking in case another previous dir has exact duplicate
+
+    if not candidate.exists():
+        if conflict_with_previous:
+            unique_path = unique_filename(output_dir, base, ext=".md", require_suffix=True)
+            return unique_path, f"name conflict with previous batch; using {unique_path}"
+        return candidate, None
+
+    if file_content_matches(candidate, block_content):
+        return None, f"duplicate content in output: {candidate}"
+
+    # existing conflict in output; find unique path
+    unique_path = unique_filename(output_dir, base, ext=".md")
+    return unique_path, f"conflict with existing file, using {unique_path}"
+
+
+def extract_and_write(input_path: Path, output_dir: Path, commit: bool = False, skip_existing: bool = False, previous_dirs: Optional[List[Path]] = None, batch_number: Optional[str] = None) -> List[Path]:
     """Extract fenced blocks from `input_path` and optionally write them to `output_dir`.
 
     If `commit` is False the function performs a dry-run: it calculates the files
@@ -122,35 +273,74 @@ def extract_and_write(input_path: Path, output_dir: Path, commit: bool = False, 
     """
     text = input_path.read_text(encoding="utf-8")
     blocks = find_fenced_blocks(text)
+    if batch_number is None:
+        batch_number = detect_batch_from_path(input_path)
+    previous_dirs = previous_dirs or []
+    # Collect all titles and dois from previous batch directories
+    prev_titles = set()
+    prev_dois = set()
+    for prev_dir in previous_dirs:
+        t, d = collect_titles_and_dois_from_dir(prev_dir)
+        prev_titles.update(t)
+        prev_dois.update(d)
+    print("[DEBUG] Previous batch normalized titles:")
+    for pt in sorted(prev_titles):
+        print(f"  - {pt}")
+    print("[DEBUG] Previous batch DOIs:")
+    for pd in sorted(prev_dois):
+        print(f"  - {pd}")
+
     created: List[Path] = []
     seen_bases = set()
     for block in blocks:
-        main_author_field, year = parse_frontmatter(block)
+        block = inject_batch_into_frontmatter(block, batch_number)
+        main_author_field, year, title, doi = parse_frontmatter(block)
         author_label = choose_author_label(main_author_field)
         year_label = year if year else "xxxx"
         base = f"{author_label}_{year_label}"
 
-        # Candidate path without suffix
-        candidate = output_dir / f"{base}.md"
+        # Debug: print normalized title for this block
+        norm_title = normalize_title(title) if title else None
+        print(f"[DEBUG] Current block title: '{title}' | Normalized: '{norm_title}'")
 
-        if candidate.exists():
-            if skip_existing:
-                print(f"Skipping existing: {candidate}")
-                continue
-            # else fall through and generate a unique filename (adds _a, _b...)
-
-        # If candidate does not exist, use it; otherwise find a unique filename
-        if not candidate.exists():
-            out_path = candidate
+        # Check for reused source by title or doi (exact and fuzzy match)
+        reused = False
+        if norm_title and norm_title in prev_titles:
+            print(f"NOTE: Source with title '{title}' is reused from previous batch (exact match).")
+            reused = True
         else:
-            out_path = unique_filename(output_dir, base, ext=".md")
+            # Fuzzy match: check if any previous title is >=95% similar
+            if norm_title:
+                for prev_title in prev_titles:
+                    ratio = difflib.SequenceMatcher(None, norm_title, prev_title).ratio()
+                    if ratio >= 0.95:
+                        print(f"FUZZY NOTE: Source with title '{title}' is {ratio:.2%} similar to previous batch title '{prev_title}'.")
+                        reused = True
+                        break
+        if doi and doi.strip().lower() in prev_dois:
+            print(f"NOTE: Source with DOI '{doi}' is reused from previous batch.")
+            reused = True
+
+        # If reused, add _batchXX suffix
+        base_with_batch = base
+        if reused and batch_number:
+            base_with_batch = f"{base}_batch{str(batch_number).zfill(2)}"
+
+        # Candidate path resolution with previous batches considered
+        block_content = block.strip("\n") + "\n"
+        out_path, reason = resolve_output_path(output_dir, base_with_batch, block_content, previous_dirs)
+        if out_path is None:
+            print(f"Skipping: {reason}")
+            continue
+
+        if out_path.exists() and skip_existing and reason is None:
+            print(f"Skipping existing: {out_path}")
+            continue
 
         created.append(out_path)
-        seen_bases.add(base)
+        seen_bases.add(base_with_batch)
         if commit:
-            # Write the block content (trim leading/trailing blank lines)
-            content = block.strip("\n") + "\n"
-            out_path.write_text(content, encoding="utf-8")
+            out_path.write_text(block_content, encoding="utf-8")
             print(f"Wrote: {out_path}")
         else:
             print(f"Would create: {out_path}")
@@ -164,6 +354,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     p.add_argument("input", nargs="?", default=None, help="(Deprecated) Path to input markdown file or directory. Use --batch-path instead.")
     p.add_argument("--batch-path", dest="batch_path", help="Path to input markdown file or directory (file or folder). Preferred over positional 'input'.")
     p.add_argument("output_dir", nargs="?", help="Directory to write output files (default: ./output relative to each input)", default=None)
+    p.add_argument("--batch", dest="batch_number", help="Explicit batch number to inject into frontier as batch: <number> (overrides auto-detection from path).")
+    p.add_argument("--previous-batch-paths", nargs="*", default=[], help="List of batch directories to check for existing name collisions and duplicates.")
     p.add_argument("--commit", action="store_true", help="Actually write files and backup originals. Default: dry-run (no changes).")
     p.add_argument("--skip-existing", action="store_true", help="When committing, skip creating files whose exact author_year.md already exists (prevents duplicates).")
     args = p.parse_args(argv)
@@ -177,6 +369,17 @@ def main(argv: Optional[List[str]] = None) -> int:
     if not input_path.exists():
         print(f"Input path not found: {input_path}", file=sys.stderr)
         return 2
+
+    previous_dirs = [Path(p) for p in args.previous_batch_paths if p]
+    for p in previous_dirs:
+        if not p.exists() or not p.is_dir():
+            print(f"Warning: previous batch path does not exist or is not a directory: {p}", file=sys.stderr)
+
+    if args.batch_number:
+        # if explicit batch set, ensure injection uses it
+        batch_number = args.batch_number
+    else:
+        batch_number = None
 
     # Collect input files: single file or all .md files in a directory (non-recursive)
     inputs: List[Path] = []
@@ -196,7 +399,14 @@ def main(argv: Optional[List[str]] = None) -> int:
         else:
             # Default: write output files next to the original input file
             outdir = inp.parent
-        planned = extract_and_write(inp, outdir, commit=args.commit, skip_existing=args.skip_existing)
+        planned = extract_and_write(
+            inp,
+            outdir,
+            commit=args.commit,
+            skip_existing=args.skip_existing,
+            previous_dirs=previous_dirs,
+            batch_number=batch_number,
+        )
         total_planned += len(planned)
         if args.commit:
             # If commit was requested and at least one file written, backup original

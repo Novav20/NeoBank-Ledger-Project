@@ -11,7 +11,7 @@ High-level role definitions remain here; operational protocols and session rules
 
 Role summary:
 - **Local Architect (Gemini CLI):** Senior Strategic Lead. Owns requirements, ADRs, and the roadmap. **Mandate: Suggest research sources and architectural approaches only. Do NOT provide general knowledge on domain concepts (e.g., Ledger, Neobank) unless verifying a specific user-provided discovery.**
-- **Execution Engine (GitHub Copilot):** Guided Senior Executor and Analysis Engine. Executes Gemini instructions and documents concerns in an `Analysis / Findings` section.
+- **Neobank Ledger Executor Engine (GitHub Copilot Agent):** Guided Senior Executor and Analysis Engine. Executes Gemini instructions and documents concerns in an `Analysis / Findings` section.
 
 ## 3. CORE MANDATES
 1. **Source Validation Priority**: All domain logic MUST be traced back to user-provided research (e.g., NotebookLM summaries in `docs/02_analysis/research/`).

@@ -1,0 +1,372 @@
+```
+---
+title: "Adoption of Blockchain in Banking Industry: Challenges and Perspectives"
+year: 2024
+main_author: Sidharth Quamara, Nitin Arvind Shelke, and Gauri Kitukale
+main_contribution: This research evaluates how distributed ledger technology (DLT) can modernize traditional banking by enhancing transparency and security while identifying significant barriers like scalability and regulatory hurdles.
+evidence_type: Research Article (Conference Proceedings)
+key_entities: Block, Transaction, Consensus Mechanism
+technical_constraints: SHA256 hashing for block mapping, 32-byte array constraints, and P2P consensus protocols.
+reference: "Quamara, S., Shelke, N. A., & Kitukale, G. (2024). Adoption of Blockchain in Banking Industry: Challenges and Perspectives. In S. Tanwar et al. (Eds.), Proceedings of Fifth International Conference on Computing, Communications, and Cyber-Security (pp. 905-913). Springer Nature Singapore."
+doi: https://doi.org/10.1007/978-981-97-2550-2
+---
+
+### Adoption of Blockchain in Banking Industry / IC4S’05 Volume 1
+
+**Findings:**
+- **Stakeholders**: The ecosystem involves **Regulators** (such as the RBI for licensing), **Financial Institutions** (banks like JPMorgan Chase, Standard Chartered, or ING), and **Intermediaries** including clearinghouses and settlement agencies. Furthermore, **Network Nodes/Miners** validate transactions, while **Users/Consumers** leverage digital identities to maintain control over their transaction histories.
+- **As-Is Logic**: Traditional banking infrastructure relies on **centralized servers** where a trusted authority handles all record management, including updates and deletions. These legacy systems are characterized by high "friction," such as **settlement delays of up to three days** in stock markets and manual, high-cost processes for **KYC (Know-Your-Customer)** verification.
+- **Pain Points**: Distributed financial chains encounter **Scalability** risks, as current blockchain technology may struggle with the immense daily transaction volumes of global banks. **Interoperability** remains a challenge due to a lack of standard communication protocols between different ledger networks. Additionally, **Regulatory Ambiguity** and the decentralized nature of DLT complicate compliance with strict **AML (Anti-Money Laundering)** and legal standards.
+- **Principles**: The "non-negotiable" foundations of the ledgers include **Immutability** (resistance to data alteration via cryptographic hashing), **Decentralization** (removal of single governing authorities), and **Data Integrity via Consensus** (agreement among participants for state changes). The source also notes a shift toward **Triple-entry accounting** through blockchain implementation.
+- **Other Relevant Information**: Blockchain adoption is projected to cut bank infrastructure costs by **30% (approximately $15–$20 billion)** by eliminating middleman fees. **Smart Contracts** are highlighted as a key tool for automating self-executing agreements in loans, insurance, and bond issuance. The research also identifies three ledger types: **Public (permissionless), Private (permissioned), and Consortium (shared)**, each offering different trade-offs for B2B financial services.
+```
+
+---
+
+```
+---
+title: "The Fintech Disruption: How Financial Innovation Is Transforming the Banking Industry"
+year: 2023
+main_author: Thomas Walker, Elaheh Nikbakht, and Maher Kooli (Editors)
+main_contribution: This comprehensive research volume analyzes the structural transition of the banking sector from traditional universal pipeline models to modular, platform-based ecosystems facilitated by Open Banking and the PSD2 regulatory framework.
+evidence_type: Edited Research Volume
+key_entities: Account Servicing Payment Service Provider (ASPSP), Third-Party Provider (TPP), Application Programming Interface (API)
+technical_constraints: Adherence to Regulatory Technical Standards (RTS) for Strong Customer Authentication (SCA) and the implementation of standardized communication protocols like those defined by the Berlin Group or STET.
+reference: "Walker, T., Nikbakht, E., & Kooli, M. (Eds.). (2023). The Fintech Disruption: How Financial Innovation Is Transforming the Banking Industry. Palgrave Macmillan."
+doi: https://doi.org/10.1007/978-3-031-23069-1
+---
+
+### The Fintech Disruption / B2B Ledger Domain Foundations
+
+**Findings:**
+- **Stakeholders**: The ecosystem is primarily categorized into Account Servicing Payment Service Providers (ASPSPs), which are traditional banks holding customer accounts, and Third-Party Providers (TPPs). TPP sub-types include Payment Initiation Service Providers (PISPs) who trigger transactions, Account Information Service Providers (AISPs) who aggregate financial data, and Card Issuer Service Providers (CISPs) who verify fund availability. Other key actors include BigTechs (Google, Amazon, Meta) moving into financial services and "enablers" who provide the underlying API infrastructure for embedded finance.
+- **As-Is Logic**: Traditional systems operate under a "universal banking" or "pipeline" model where a single legal entity controls the entire value chain from production to distribution. These legacy systems rely on "sticky" account relationships and information asymmetry to maintain customer inertia. In this manual/traditional logic, banks act as the exclusive gatekeepers of customer data and the sole arbiters of creditworthiness based on internally held historical records.
+- **Pain Points**: Major risks include "disintermediation," where banks lose direct customer proximity to third-party interfaces. Operational risks involve the "attack surface" expansion caused by opening APIs, leading to potential cyber-attacks and identity theft. Regulatory and social risks include "stacking" in Buy Now Pay Later (BNPL) services, where consumers take on excessive debt across multiple providers, and "algorithmic incompleteness," where automated code fails to account for rare but catastrophic financial contingencies.
+- **Principles**: The "non-negotiable" rules are anchored in the Second Payment Services Directive (PSD2), specifically the mandate for "Access to Account" (XS2A) for authorized third parties. Operational foundations include Strong Customer Authentication (SCA) for secure communication and the data protection principles of GDPR, such as data minimization, purpose limitation, and the right to data portability. Technical principles emphasize the use of standardized, open APIs to ensure interoperability between heterogeneous banking systems.
+- **Other Relevant Information**: The source highlights the emergence of "Modular Banking," where traditional products are unbundled into micro-services and re-bundled into contextual solutions. It distinguishes between Banking-as-a-Service (BaaS), which allows TPPs to connect directly to bank systems via APIs to build their own offerings, and Banking-as-a-Platform (BaaP), where the bank provides the marketplace for external services. For neobank ledger developers, the concept of "Triple-entry accounting" is mentioned as a future evolutionary step linked to blockchain and decentralized finance integration.
+```
+
+---
+
+```
+---
+title: "Database Systems for Advanced Applications: DASFAA 2022 International Workshops"
+year: 2022
+main_author: Uday Kiran Rage, Vikram Goyal, and P. Krishna Reddy (Editors)
+main_contribution: This volume provides research on advanced database technologies, emphasizing model-driven engineering for hybrid distributed ledger systems and blockchain solutions for international trade fraud and collaborative security.
+evidence_type: Workshop Proceedings
+key_entities: Chaincode (Smart Contracts), Hyperledger Fabric, Peer Nodes
+technical_constraints: Transaction confirmation latency, network bottlenecks, and the requirement for secure participant identifiability via Certificate Authorities in federated networks.
+reference: "Rage, U. K., Goyal, V., & Reddy, P. K. (Eds.). (2022). Database Systems for Advanced Applications: DASFAA 2022 International Workshops. Springer Nature Switzerland."
+doi: https://doi.org/10.1007/978-3-031-11217-1
+---
+
+### Database Systems for Advanced Applications / DASFAA 2022 Workshops
+
+**Findings:**
+- **Stakeholders**: The ecosystem involves Issuers (companies seeking funding through commercial papers), Traders (financial organizations investing in such certificates), and their Employees who act on behalf of their respective organizations. Technical stakeholders include Peer nodes responsible for executing chaincode and endorsing transactions, Orderer nodes that package transactions into blocks, and Certificate Authorities that manage identities through X.509 certificates. In supply chain applications, stakeholders extend to Customs Authorities, Manufacturers, Suppliers, and Freight Forwarders.
+- **As-Is Logic**: Traditional systems often operate under a hybrid model where administrative attributes or business-heavy data are maintained in an external database rather than on the ledger. Legacy international trade operations depend on Single Window systems and paper-based documentation that frequently encounter synchronization obstacles and provenance gaps, making them susceptible to fraud.
+- **Pain Points**: Distributed financial chains encounter technical risks such as network bottlenecks and high latency in transaction confirmation. Operational risks include the VAT gap and customs duty-related fraud in global supply chains. Additionally, systems face challenges with node unavailability in remote or heterogeneous environments and high transaction costs (Gas fees) on public networks, which may require Layer 2 scaling solutions.
+- **Principles**: Non-negotiable foundations include ledger immutability and the requirement for consensus mechanisms like PBFT or Raft to ensure agreement. Participant identifiability via Membership Service Providers is essential for permissioned environments. Transactions must adhere to a strict three-phase lifecycle—Simulation/Endorsement, Ordering, and Validation/Commitment—to maintain a consistent state across all distributed peers.
+- **Other Relevant Information**: The source highlights Interaction Flow Modeling Language (IFML) as an industry standard for platform-independent specification of interactive ledger applications. It also discusses the integration of Polygon as an Ethereum-compatible solution to address scalability and high fees in collaborative B2B environments.
+```
+
+---
+
+```
+---
+title: "Web3 Applications Security and New Security Landscape: Theories and Practices"
+year: 2024
+main_author: Ken Huang, Carlo Parisi, Lisa JY Tan, Winston Ma, and Zhijun William Zhang (Editors)
+main_contribution: This volume provides a comprehensive multidimensional analysis of security in the Web3 ecosystem, identifying vulnerabilities in DeFi, DAOs, and CBDCs while proposing advanced defense mechanisms like quantum-resistant cryptography and AI-driven threat detection.
+evidence_type: Edited Research Volume
+key_entities: Smart Contracts, Central Bank Digital Currency (CBDC), Decentralized Autonomous Organization (DAO)
+technical_constraints: Microsecond quantum coherence limits for processors, Ethereum's 15 transactions per second throughput bottleneck, and the requirement for 32-bit seeds in pseudo-random number generators.
+reference: "Huang, K., Parisi, C., Tan, L. J., Ma, W., & Zhang, Z. W. (Eds.). (2024). Web3 Applications Security and New Security Landscape: Theories and Practices. Springer Nature Switzerland."
+doi: https://doi.org/10.1007/978-3-031-58002-4
+---
+
+### Web3 Applications Security and New Security Landscape
+
+**Findings:**
+- **Stakeholders**: The ecosystem comprises Central Banks (managing root keys), Commercial Banks (generating certificates for wallets), and Payment Service Providers acting as intermediaries. Technical actors include Smart Contract Auditors, Node Operators/Validators, and Oracles. Governance actors include DAO Participants (token holders), Proposers, and Voters. Security actors include White Hat hackers and specialized firms performing continuous monitoring and forensics.
+- **As-Is Logic**: Traditional systems often operate under a "Universal Banking" or pipeline model where a central entity maintains exclusive control over the data value chain. Traditional key management often relies on centralized servers or repositories for artifacts, creating single points of failure. In the "As-Is" logic of digital currency pilots, trust relationships are typically established using a standard two-tier Public Key Infrastructure (PKI) where the central authority signs certificates for all other network entities.
+- **Pain Points**: Major risks include Smart Contract Vulnerabilities such as reentrancy attacks, integer overflow, and improper access control. Governance risks involve the "tyranny of structurelessness" where a small minority (e.g., 1% of holders) wields 90% of the voting power, and Sybil attacks where anonymous accounts gradually accumulate influence. Operational pain points include Oracle price manipulation, "dusting attacks" used to de-anonymize wallets, and the extreme performance latency of decentralized storage when reconstructing large enterprise datasets.
+- **Principles**: The "non-negotiable" foundations include Immutability (resistance to alteration via cryptographic hashing) and the requirement for Decentralized Consensus (Proof of Work, Proof of Stake). Privacy principles mandate Data Minimization and the use of Privacy-Preserving Computation (ZKP, MPC, and Differential Privacy). Secure operations must adhere to the CryptoCurrency Security Standard (CCSS) for key lifecycle management. In the CBDC context, a two-tier design is a first principle to ensure the central bank does not directly handle user identity data, preserving institutional privacy.
+- **Other Relevant Information**: The source highlights the "Hybrid Architecture" as a pragmatic path for B2B applications, where critical metadata (access logs, control hashes) is stored on-chain while high-volume data remains on legacy infrastructure. It introduces the Software Bill of Materials (SBOM) for Web3 as a critical tool for managing supply chain code risks. Furthermore, the concept of "Crypto-Agility" is presented as a necessary design feature to allow for the future replacement of classical cryptographic algorithms with quantum-resistant ones without a total system overhaul.
+```
+
+---
+
+```
+---
+title: "Anomaly detection in double-entry bookkeeping data by federated learning system with non-model sharing approach"
+year: 2025
+main_author: Sota Mashiko, Yuji Kawamata, Tomoru Nakayama, Tetsuya Sakurai, and Yukihiko Okada
+main_contribution: This study proposes a novel non-model-sharing federated learning framework using Data Collaboration (DC) analysis to detect anomalies in highly confidential journal entry data without requiring devices to connect to external networks.
+evidence_type: Journal Article (Scientific Reports)
+key_entities: Journal Entry, Double-Entry Bookkeeping, Autoencoder
+technical_constraints: Single-round communication requirement, support for air-gapped environment isolation, and dimensionality reduction via PCA or Random Projection.
+reference: "Mashiko, S., Kawamata, Y., Nakayama, T., Sakurai, T., & Okada, Y. (2025). Anomaly detection in double-entry bookkeeping data by federated learning system with non-model sharing approach. Scientific Reports, 15, 42208."
+doi: https://doi.org/10.1038/s41598-025-26120-y
+---
+
+### Anomaly detection in double-entry bookkeeping data / Scientific Reports
+
+**Findings:**
+- **Stakeholders**: The primary actors include **Auditors** (audit firms) who possess industry-specific expertise, **Clients** (organizations such as the eight clinics in the study) who hold the raw, confidential journal entry data, and a central **Analyst (Server)** responsible for constructing the aggregated anomaly detection model. The ecosystem also involves **Data Owners** who must balance the need for high-quality auditing with the strict requirement for business-confidentiality.
+- **As-Is Logic**: Traditional auditing relies heavily on **manual procedures**, which are increasingly impractical due to the massive volume of modern financial records. Current digital solutions use **Computer-Assisted Audit Techniques (CAAT)** for "Journal Entry Testing," but these typically rely on **static rules** that generate high false-positive rates. In terms of data management, sensitive financial systems are often kept in **air-gapped environments** isolated from the internet to prevent unauthorized access, making real-time cloud-based reconciliation technically challenging.
+- **Pain Points**: A critical pain point is the **Confidentiality Barrier**, where firms are unwilling to share raw ledger data, leading to "data silos" that prevent the development of accurate cross-organizational detection models. Technical risks include **Communication Overhead** and the necessity of **Persistent Connectivity** in standard federated learning models. From a data perspective, **Non-i.i.d. (non-independent and identically distributed) conditions**—where account types and transaction scales differ wildly between organizations—cause performance degradation in automated systems. The source also distinguishes between **Global Anomalies** (easy-to-detect unintentional errors) and **Local Anomalies** (intentional, hard-to-detect fraud involving complex attribute combinations).
+- **Principles**: The "non-negotiable" rules mentioned are the fundamental laws of **Double-entry bookkeeping**, where every transaction must have corresponding debit and credit entries. Operational principles include **Data Minimization** and **Privacy-Preserving Analysis**, ensuring that raw data is never exposed to external parties. In the context of the proposed Ledger API logic, a key principle is **Single-round communication**, which allows for collaborative intelligence without maintaining a continuous, vulnerable network connection.
+- **Other Relevant Information**: The research highlights **Data Collaboration (DC) Analysis** as a superior alternative to standard Federated Learning for B2B ledgers because it exchanges **dimension-reduced intermediate representations** rather than model parameters. This approach is highly effective for ledger data because it allows organizations to use independent dimensionality reduction functions (like PCA or RP), making it mathematically infeasible for the central analyst to reconstruct the original raw journal entries. The study also confirms that **Autoencoders** are the most effective unsupervised learning architecture for calculating "reconstruction errors" to flag suspicious ledger activity.
+```
+
+---
+
+```
+---
+title: "Blockchain and electronic commerce: Transforming networks, platforms, and value creation"
+year: 2025
+main_author: "Maria Madlberger, Run Niu, and Ying Fan"
+main_contribution: "This article establishes a conceptual framework for blockchain as a specific instantiation of Distributed Ledger Technology (DLT) that reconfigures e-commerce into platform ecosystems through decentralization and automated trust."
+evidence_type: "Preface / Research Collection"
+key_entities: "Platform Ecosystems", "Distributed Ledger Technology (DLT)", "Smart Contracts"
+technical_constraints: "Scalability in high-frequency environments", "High energy and computational costs for consensus", "Smart contract security vulnerabilities"
+reference: "Madlberger, M., Niu, R., & Fan, Y. (2025). Blockchain and electronic commerce: Transforming networks, platforms, and value creation. Electronic Markets, 35, 109."
+doi: https://doi.org/10.1007/s12525-025-00851-2
+---
+
+### Blockchain and electronic commerce / Transforming networks, platforms, and value creation
+
+**Findings:**
+- **Stakeholders**: The ecosystem consists of **Platform Owners** who serve a multitude of online merchants and service providers, and **Service Providers** who handle adjacent activities like payment and delivery tracking. Technical actors include **Network Participants (Nodes)** responsible for validating transactions through consensus and **Smart Contract Developers** who embed automated code into the ledger,. The landscape also includes specialized **DeFi Archetypes** such as one-stop-shops, lenders, and yield optimizers, alongside **Consortium Members** who engage in collaborative blockchain initiatives,.
+- **As-Is Logic**: Traditional systems rely on **centralized databases** where a single point of control manages the data, often leading to institutional bias or risks of data manipulation. Legacy inter-organizational frameworks are dominated by **Electronic Data Interchange (EDI)** systems, which have been in place since the 1980s and suffer from technology lock-in and a lack of real-time decentralized coordination. Furthermore, many current financial services—despite using new technology—retain **centralized structures** and high information asymmetry between buyers and sellers,.
+- **Pain Points**: A primary challenge is **Scalability**, particularly in high-frequency e-commerce environments where transaction speed and responsiveness are critical. **Economic Barriers** include the substantial investment required for infrastructure and the high costs of maintaining consensus mechanisms which can outweigh efficiency gains. **Regulatory Ambiguity** and a lack of standardization across platforms hinder transnational interoperability. Additionally, **Security Tensions** exist between transparency and the protection of confidential organizational data, coupled with vulnerabilities in smart contracts that expose systems to exploitation.
+- **Principles**: The "non-negotiable" rules of the ledger are defined by **Decentralization**, **Immutability**, **Transparency**, and **Automation**,. Foundational logic dictates that **Distributed Ledger Technology (DLT)** is the overarching category, with blockchain being a specific instantiation using cryptographically linked blocks,. A layered architecture is essential, comprising the **Data, Consensus, Contract, and Application layers**, where the value of the ledger arises from aligning these technical features with business governance.
+- **Other Relevant Information**: The research highlights that DLT should not necessarily replace legacy systems like EDI but can be **integrated complementarily** to bridge gaps in information sharing. Collaborative **Blockchain Announcements** from partnerships or consortia are found to add more market value for firms than solo initiatives. For niche markets like used cars, "Certified Data Chats" are proposed as a design artifact to leverage ledger-verified data to reduce information asymmetry during negotiations.
+```
+
+---
+
+```
+---
+title: "Designing the future of bond markets: Reducing transaction costs through tokenization"
+year: 2025
+main_author: David Cisar, Benjamin Schellinger, Jens‑Christian Stoetzer, Nils Urbach, Florian Lennart Weiß, Vincent Gramlich, and Tobias Guggenberger
+main_contribution: This study applies a design science research paradigm to develop a blockchain-based bond prototype, demonstrating how tokenization can significantly reduce transaction costs by automating the lifecycle and bypassing traditional intermediaries.
+evidence_type: Journal Article (Research Paper)
+key_entities: Crypto Securities Registry (CSR), Security Token Offering (STO) Platform, Smart Contracts
+technical_constraints: Ethereum protocol's 24 KB maximum contract size limit, requirement for whitelisting (KYC), and the necessity of off-chain interest calculations for gas efficiency.
+reference: "Cisar, D., Schellinger, B., Stoetzer, J.-C., Urbach, N., Weiß, F. L., Gramlich, V., & Guggenberger, T. (2025). Designing the future of bond markets: Reducing transaction costs through tokenization. Electronic Markets, 35, 9."
+doi: https://doi.org/10.1007/s12525-025-00753-3
+---
+
+### Designing the future of bond markets / Electronic Markets (2025)
+
+**Findings:**
+- **Stakeholders**: The tokenized ecosystem is centered on the Security Token Offering platform, which acts as a primary orchestrator for the Issuer. Key actors include the Regulator (e.g., BaFin) who oversees legal compliance, the Licensed Registrar who maintains the digital register, and KYC Service Providers. In the traditional "As-Is" context, stakeholders include clearinghouses, settlement agencies, custodians, investment banks, and Central Securities Depositories (CSDs) that act as centralized bottlenecks.
+- **As-Is Logic**: Traditional bond markets rely on highly complex, centralized infrastructures to establish trust. The manual lifecycle involves physical paper-based certificates or "global notes" that require administrative management and safe custody. Settlement logic is typically standardized to a T+2 cycle (two business days after trade initiation), involving numerous transfers across technically separate entities and payment systems for wholesale interbank transfers.
+- **Pain Points**: Financial chains suffer from high Transaction Costs (TAC) driven by asset specificity and behavioral uncertainties. Major operational risks include settlement latency, information asymmetries regarding credit history, and human error in manual reconciliation. Economic barriers, such as high minimum denominations (e.g., 1000 euros), exclude retail investors. Technical risks include Ethereum-specific scalability issues where high transaction volumes can lead to prohibitive gas costs.
+- **Principles**: The "non-negotiable" foundations for the ledger include Immutability and tamper-resistance ensured through cryptographic hashing. Regulatory compliance is a first principle, specifically adhering to the Electronic Securities Act (eWpG) and the Markets in Crypto Assets Regulation (MiCAR). Practical ledger rules include a modular design to circumvent contract size limits, the use of whitelisting for KYC/AML, and the restriction of "forced transfer" functions exclusively to regulators for judicial enforcement.
+- **Other Relevant Information**: The research advocates for the ERC-1155 multi-token standard over ERC-20 to allow the management of multiple bond types within a single contract, which optimizes storage and reduces deployment costs. A critical design decision was moving interest calculations off-chain to maintain system resilience and cost-efficiency when handling large numbers of investors. The study also introduces the concept of "on-chain payout mechanisms" to enhance investor confidence by removing the timing of interest payments from the issuer’s manual control.
+```
+
+---
+
+```
+---
+title: "Distributed ledger technology"
+year: 2025
+main_author: Rainer Alt and Max Gräser
+main_contribution: This article establishes a business-oriented foundation for DLT by situating it within the historical evolution of ledgers and providing a multi-dimensional framework to assess its value in interorganizational relationships.
+evidence_type: Journal Article (Fundamental)
+key_entities: Network Node, Smart Contract, Consensus Algorithm
+technical_constraints: Scalability bottlenecks in permissionless protocols, energy consumption limits of Proof-of-Work, and the requirement for cross-ledger interoperability (CLI) for integrated transaction scenarios.
+reference: "Alt, R., & Gräser, M. (2025). Distributed ledger technology. Electronic Markets, 35, 53. https://doi.org/10.1007/s12525-025-00784-w"
+doi: https://doi.org/10.1007/s12525-025-00784-w
+---
+
+### Distributed ledger technology / Electronic Markets Fundamentals
+
+**Findings:**
+- **Stakeholders**: The ecosystem consists of network nodes which technologically represent participating organizations or parties. Specialized technical actors include miners (in PoW) and validators (in PoS) who authorize transactions. Business actors include platform providers, intermediaries, and service providers (such as crypto exchanges or AI-assisted auditing firms). Regulators represent a critical environmental factor, managing legal certainty through frameworks like MiCA and data protection guidelines.
+- **As-Is Logic**: Traditional systems utilize centralized databases, specifically Enterprise Resource Planning (ERP) systems, which are centralized for each organization. In a typical supply chain (sequential model), data is transferred manually or via paper-based interfaces from one company's ledger to another, leading to a lack of data transparency and missing transfers across the chain. While EDI and portals improved these links, they remain constrained by high setup efforts or lower levels of automation compared to decentralized topologies.
+- **Pain Points**: Distributed chains face operational risks such as the "single point of failure" inherent in centralized platform hubs and the "bullwhip effect" caused by a lack of real-time data sharing. Technical challenges include high transaction confirmation times (latency) when demand grows and a lack of standardization at the business logic level. Regulatory and privacy risks involve the tension between ledger transparency and the protection of sensitive business information (e.g., cost structures), which may require zero-knowledge proofs to mitigate.
+- **Principles**: Ledgers are fundamentally defined as systems that keep records of transactions and calculate debits and credits to determine account balances. The non-negotiable rules for a DLT include an append-only transaction record (immutability), decentralized consensus (governed agreement among participants), and synchronous data replication across multiple distant nodes. The source also identifies a four-layer architecture—Data, Consensus, Contract, and Application—as a structural principle.
+- **Other Relevant Information**: DLT is categorized into four generations, progressing from simple payments to the convergence with AI and quantum computing. The source discusses the "triple-entry accounting" concept as a potential advancement for financial auditing. It also distinguishes between linear blockchains and Directed Acyclic Graphs (DAG), noting that DAGs often offer superior scalability for high-volume B2B environments. Finally, it notes that DLT is not a "silver bullet" and is most effective when the underlying business setting already possesses a minimum degree of distribution.
+```
+
+---
+
+```
+---
+title: "How Can Digital Platforms Resolve Market Failures to Foster a Circular Economy?"
+year: 2025
+main_author: Ässia Boukhatmi and Wim Van Opstal
+main_contribution: This research explores the dual role of B2B SaaS platforms as institutional infrastructures that mitigate traditional market failures like asymmetric information and externalities while introducing new "platform failures" such as user lock-in and market concentration.
+evidence_type: Journal Article (Business Strategy and the Environment)
+key_entities: Software-as-a-Service (SaaS) Platform, Digital Product Passport (DPP), Identity Wallet
+technical_constraints: Requirement for machine-readable data standards (GS1, barcodes), interoperability as mandated by the Ecodesign for Sustainable Products Regulation (ESPR), and the use of APIs for ERP integration.
+reference: "Boukhatmi, Ä., & Van Opstal, W. (2025). How Can Digital Platforms Resolve Market Failures to Foster a Circular Economy? Business Strategy and the Environment, 34(1)."
+doi: https://doi.org/10.1002/bse.70190
+---
+
+### How Can Digital Platforms Resolve Market Failures / Circular B2B Foundations
+
+**Findings:**
+- **Stakeholders**: The ecosystem consists of Platform Owners (creators and orchestrators), Platform Users (technical experts and sustainability managers within businesses), and Policy Experts/Regulators (e.g., European Commission). Within the technical architecture, actors are further defined as Data Owners who control proprietary information, Complementors who build services atop the platform, and Agents (such as recyclers or service providers) who are monitored by Principals to ensure accountability.
+- **As-Is Logic**: Traditional B2B systems are plagued by "market failures" where high screening and signaling costs prevent efficient coordination. Legacy logic relies on "pipeline" models with high information asymmetry, where buyers and sellers lack clarity on product quality, price, or provenance. Manual procedures for compliance and reporting lead to "incomplete markets" where no stable equilibrium emerges due to the absence of reliable standards or credible third-party intermediaries.
+- **Pain Points**: A primary risk in distributed chains is "Moral Hazard," where participants provide low-quality or "effort-minimized" data because the effort of accurate entry is invisible to others. Specific "Platform Failures" include User Lock-in (high switching costs due to proprietary data silos), Market Power (first-mover dominance blocking innovative challengers), and Accountability Gaps where automated systems lack robust third-party validation. Technical "Entropy" is observed in the underprovision of high-quality data and the potential for "Goal Displacement," where platforms prioritize minimal regulatory compliance over systemic value.
+- **Principles**: The "non-negotiable" technical rules include Interoperability (adherence to machine-readable standards like GS1 and unique identifiers to prevent vendor lock-in) and Modularity (allowing users to integrate specific components rather than monolithic systems). Operational first principles mandate Data Protection and Accountability through the use of Identity Wallets and digital signatures for peer-to-peer verification. Additionally, Role-Based Access Control (RBAC) is required to manage data visibility and prevent unauthorized access or conflicts of interest.
+- **Other Relevant Information**: The study highlights that SaaS platforms act as "trust machines" by standardizing reporting formats to enhance data consistency. It introduces a game-theoretic perspective for B2B ledgers, suggesting that while private ownership may accelerate innovation, "Sectoral Industry Cooperatives" are often the optimal "middle ground" for balancing innovation incentives with user-oriented focus and limited rent extraction. For ledger design, the use of Distributed Data Spaces is recommended to ensure control stays with data owners rather than centralizing power in a single ledger entity.
+```
+
+---
+
+```
+---
+title: "Navigating the challenges of FinTech startups in the B2C market"
+year: 2025
+main_author: "Hajar Fatorachian, Bex O’Higgins, Amaya Maldonado, Chloe Lyons, Helena Willis, Lydia Abbott, and Molly Brooks"
+main_contribution: "This research identifies the primary regulatory, financial, and market-entry barriers for B2C Fintech startups, proposing a strategic framework that emphasizes escrow-based trust, value-added services, and a transition toward B2B models for scalability."
+evidence_type: "Journal Article (Mixed-Methods Study)"
+key_entities: "Escrow Service, Value-Added Services (VAS), Financial Conduct Authority (FCA)"
+technical_constraints: "Compliance with GDPR and CCPA for data handling, secure encryption for payment processing, and adherence to the Proceeds of Crime Act 2002 (POCA) for AML monitoring."
+reference: "Fatorachian, H., O’Higgins, B., Maldonado, A., Lyons, C., Willis, H., Abbott, L., & Brooks, M. (2025). Navigating the challenges of FinTech startups in the B2C market. Cogent Business & Management, 12(1), 2446696."
+doi: https://doi.org/10.1080/23311975.2024.2446696
+---
+
+### Navigating the challenges of FinTech startups / B2C to B2B Transition
+
+**Findings:**
+- **Stakeholders**: The ecosystem includes Regulators (Financial Conduct Authority and Prudential Regulation Authority), Fintech Startups (innovators and disruptors), and Target Consumers (B2C). Specialized actors include Tradespeople (the service-provider side of the B2B2C link), Strategy Consultants (representing regional hubs like Fintech North/West), and Investors such as Venture Capitalists. The study also highlights the role of Mentors and support organizations that assist female-led startups in overcoming funding disparities.
+- **As-Is Logic**: Traditional banking processes are defined as slow, manual, and costly, often requiring multiple intermediaries that increase administrative burdens. In the "As-Is" manual environment of home services, discovery relies heavily on word-of-mouth (34%) or basic search engines. Payment logic is frequently unstandardized, involving direct negotiations on terms that often lead to disputes, uncertainty about fund security, and "negotiation friction" regarding when and how a tradesperson is paid.
+- **Pain Points**: A critical barrier is the high cost and complexity of regulatory compliance, specifically the prohibitive expense of obtaining FCA approval for new entrants. Market-wide, 35% of startups fail due to a lack of genuine market need, while others struggle with "trust deficits" in digital payment reliability. Technical risks involve high-frequency cyber-attacks (over 1,800 recorded in 2022) and data protection liabilities. Additionally, female entrepreneurs face systemic bias, with VCs being four times more likely to fund all-male leadership teams.
+- **Principles**: The non-negotiable foundations of the ledger include transparency (all transactions must be recorded for accountability) and the requirement for mutual approval (both parties must agree before funds are released). Legal first principles include strict adherence to GDPR and CCPA for data privacy, as well as Anti-Money Laundering (AML) laws like the Proceeds of Crime Act 2002. For the ledger logic, the escrow model is treated as a fundamental principle to build trust between anonymous or low-trust parties.
+- **Other Relevant Information**: The source recommends implementing "Value-Added Services" (VAS), such as integrated bookkeeping and tax management tools, to incentivize users who might otherwise be deterred by escrow-related payment delays. It advocates for a transition from B2C to B2B models, noting that B2B offers higher transaction volumes, longer customer lifetime value, and faster scalability through organizational partnerships. The paper also notes that regional Fintech hubs are essential for startups to access resources and help navigate "difficult market entry" caused by established incumbents.
+```
+
+---
+
+```
+---
+title: "The Role of Banks’ Business Models in their FinTech Acquisitions"
+year: 2025
+main_author: Faisal Abdulmohsen Alfhaili, Mohamed Bakoush, and Simon Wolfe
+main_contribution: This study investigates how a bank's underlying business model—categorized as diversified, wholesale, traditional, or investment—determines its propensity to acquire specific types of FinTech firms and the strategic motivations behind these transactions.
+evidence_type: Journal Article
+key_entities: Diversified Banks, PayTech, Strategic Motivation
+technical_constraints: Adherence to FFIEC financial reporting standards and the navigation of regulatory ambiguity regarding innovative financial products.
+reference: "Alfhaili, F. A., Bakoush, M., & Wolfe, S. (2025). The Role of Banks’ Business Models in their FinTech Acquisitions. Journal of Financial Services Research. https://doi.org/10.1007/s10693-024-00442-w"
+doi: https://doi.org/10.1007/s10693-024-00442-w
+---
+
+### The Role of Banks’ Business Models in their FinTech Acquisitions
+
+**Findings:**
+- **Stakeholders**: The primary actors are categorized by banking business models: Diversified Banks (balanced assets/income), Wholesale Banks (interbank market focus), Traditional Banks (consumer deposit/loan focus), and Investment Banks (trading/investment focus). Target stakeholders include five types of FinTech firms: Payment and Settlements, Data Analytics, Lending, Financial Services Software, and Investment Services. Consumers, particularly Millennials, are identified as a critical stakeholder group due to their tech-fluency and preference for non-traditional financial services.
+- **As-Is Logic**: Traditional systems are built upon the foundations of FinTech 1.0 and 2.0, which established double-entry bookkeeping, ATMs, and the first iterations of internet banking. Legacy operations are often hindered by "past practices" and internal organizational resistance to change, leading many older banks to acquire innovation rather than build it. The manual or "conventional" logic is centered on generating profit through core deposits and stable, non-complex consumer lending.
+- **Pain Points**: A major risk is "Regulatory Ambiguity," where a lack of clear guidelines for innovative products makes traditional banks hesitant to adopt or acquire new technologies. Operational risks include the "Agency Model" adopted by many lending FinTechs, which may promote transaction volume over stability because the firm does not assume the risk of the loans it facilitates. Other identified pain points include the high valuation and bankruptcy risk of FinTech startups and a general "trust deficit" in traditional institutions following the 2008 global financial crisis.
+- **Principles**: The "non-negotiable" foundations include the rule of Double-entry bookkeeping, which is cited as the groundwork for all future digital financial transactions. Strategic principles mandate that Diversified Banks maintain a balanced asset/income structure to provide the "risk-taking flexibility" necessary for innovation. Operational first principles also highlight the importance of "Capitalization Ratios" as a buffer against potential losses in the rapidly evolving and often risky FinTech environment.
+- **Other Relevant Information**: The source classifies the strategic motivations for entering the FinTech space into four categories: introducing new products, enhancing internal capabilities, pursuing business scalability, and entering new markets. It notes that while "Diversified Banks" are the most active acquirers across most categories, "Investment Banks" show a specific, selective interest in PayTech and investment services that align with their core expertise.
+```
+
+---
+
+```
+---
+title: "Trusting the trustless blockchain for its adoption in accounting: theorizing the mediating role of technology-organization-environment framework"
+year: 2025
+main_author: Sujata Seshadrinathan and Shalini Chandra
+main_contribution: This study establishes a trust-centric model using the Technology-Organization-Environment (TOE) framework to explain how trust in blockchain technology facilitates its adoption in the accounting industry by mediating technological, organizational, and environmental factors.
+evidence_type: Journal Article (Financial Innovation)
+key_entities: TOE Framework, Triple-entry Accounting, Consensus Mechanisms
+technical_constraints: Requirement for immutable timestamped data, distributed consensus across multiple independent computers, and the need to meet stringent regulatory compliance and audit trail standards.
+reference: "Seshadrinathan, S., & Chandra, S. (2025). Trusting the trustless blockchain for its adoption in accounting: theorizing the mediating role of technology-organization-environment framework. Financial Innovation, 11(44)."
+doi: https://doi.org/10.1186/s40854-024-00685-5
+---
+
+### Trusting the trustless blockchain for its adoption in accounting / Financial Innovation (2025)
+
+**Findings:**
+- **Stakeholders**: The ecosystem includes Professional Accounting Bodies (AICPA, ICAI, ACCA, CAANZ) providing knowledge resources, and the Big Four firms (Deloitte, EY, KPMG, PwC) who lead domain experimentation and standard-setting. Primary organizational actors are Top Management (decision-makers and budget allocators), Accounting Professionals/Practitioners, and Trading Partners (customers, suppliers, and vendors). Regulators and Centralized Institutions (banks and government agencies) currently act as the traditional "enforcers of trust."
+- **As-Is Logic**: Traditional accounting relies on manual, labor-intensive processes characterized by the methodical duplication of effort. In the current "As-Is" environment, each organization maintains its own separate database, recording transactions only from its specific point of reference. This siloed approach necessitates elaborate, time-consuming reconciliations to address time lags, double entries, and data inconsistencies. Existing digital systems often merely replace analog tools with digital counterparts rather than achieving true process automation.
+- **Pain Points**: Significant barriers include Regulatory Ambiguity and the high burden of compliance documentation. Psychological and operational risks involve a fear of change, a perceived loss of control over organizational accounts, and a substantial knowledge gap regarding decentralized logic. Technical entropy is found in the "uncertainty of outcomes," where the novelty of blockchain causes apprehension among practitioners. Additionally, internal resistance from complacent staff and the high stakes of reconfiguring core accounting controls present major hurdles to organizational transition.
+- **Principles**: The "non-negotiable" rules of the ledger include Immutability (tamper-proof, timestamped audit trails) and Decentralization (removal of central governing intermediaries). Foundational principles include the shift from trusting human intermediaries to trusting the technology itself via Consensus Mechanisms. The source highlights the evolution of the standard Double-entry bookkeeping system into Triple-entry accounting, where transactions are verified and recorded on a shared, integrated, and trustless virtual ledger.
+- **Other Relevant Information**: Blockchain is projected to transform the financial sector significantly, with the market for these solutions expected to reach 19 billion USD by 2024. The research emphasizes that trust is the primary mediator; higher trust in the technology directly enhances a firm's perception of "Relative Advantage" and reduces "Uncertainty." For B2B ledger design, the source notes that while blockchain facilitates disintermediation, successful adoption is highly dependent on Top Management Support and the specific Competitive Pressure within the firm's operating industry.
+```
+
+---
+
+```
+---
+title: "Understanding and improving the language of business: How accounting and corporate reporting research can better serve business and society"
+year: 2023
+main_author: "Rolf Uwe Fülbier and Thorsten Sellhorn"
+main_contribution: "This paper redefines financial accounting as the 'language of business' and argues for a transition from purely positive research to problem-driven design science to address 'wicked' societal challenges like sustainability and digital transformation."
+evidence_type: "Journal Article (Original Paper)"
+key_entities: "Financial Accounting, Impact Reporting, Double Materiality"
+technical_constraints: "Requirements for XBRL/ESEF standardization, adherence to IFRS and ESRS disclosure frameworks, and the necessity of real-time closing entries for continuous accounting."
+reference: "Fülbier, R. U., & Sellhorn, T. (2023). Understanding and improving the language of business: How accounting and corporate reporting research can better serve business and society. Journal of Business Economics, 93(6-7), 1089–1124."
+doi: https://doi.org/10.1007/s11573-023-01158-4
+---
+
+### Understanding and improving the language of business / Domain Foundations
+
+**Findings:**
+- **Stakeholders**: The ecosystem is comprised of Senders (corporate managers) and Receivers (external stakeholders). Historically, the primary receivers were Capital Providers (investors and creditors), but the landscape has expanded to include a broader range of Stakeholders such as Employees (skilled labor), Customers, and Suppliers who demand information on supply chain compliance and social standards. Additional actors include Regulators (the IFRS Foundation and European Commission), Professional Accounting Bodies (AICPA, etc.), Auditors, and the Interested Public who are affected by corporate externalities.
+- **As-Is Logic**: Traditional systems treat financial accounting as a quantitative information system focused primarily on a firm’s past transactions and events, expressed in monetary units. This "As-Is" logic typically adopts a Financial (Exposure) Materiality perspective—an "outside-in" view focusing only on events that materially affect enterprise value. Legacy reporting is characterized as mostly backward-looking, relying on primary financial statements and notes that are supplemented by qualitative management commentaries. In some regions like Germany, this logic has historically served legal and debt-contracting purposes rather than equity market efficiency.
+- **Pain Points**: A central failure in current systems is Information Asymmetry between insiders and outsiders, which leads to conflicts of interest. The sources identify "Wicked Problems" such as environmental and social degradation, which traditional accounting fails to capture, resulting in Market Failures where corporate costs do not reflect externalities. Technical pain points include Information Overload, where the volume of data increases costs for both preparers and users, and Mapping Uncertainty, where it is unclear how complex transactions should be recorded. Furthermore, a Research-Practice Gap exists, where detached academic inquiry fails to solve the immediate operational problems faced by practitioners.
+- **Principles**: The "non-negotiable" foundations of the ledger include the centuries-old technique of Double-entry bookkeeping. The "Language of Business" is governed by maxims of cooperation: Accuracy (truth), Completeness (quantity), Relevance (relation), and Clarity (manner). A modern first principle is Double Materiality, which requires reporting on both Financial Materiality (impact of the world on the firm) and Impact Materiality (impact of the firm on the world). Operational principles also mandate the use of standardized frameworks like IFRS and the emerging European Sustainability Reporting Standards (ESRS).
+- **Other Relevant Information**: The research highlights the potential for Targeted Transparency Regulation to "nudge" corporate behavior toward specific policy goals, such as sustainability. It envisions a transition toward Real-Time Accounting and "Push-of-a-Button" reporting, which would require continuous data collection, closing entries, and auditing. The concept of Impact Accounting is introduced as a way to monetize environmental externalities directly within financial reports. Additionally, the source notes that digitalization is creating "Agile" organizational forms like platform business models and "Liquid Organizations," which challenge traditional definitions of the accounting entity and liability.
+```
+
+---
+
+```markdown
+---
+title: "Chain or DAG? Underlying data structures, architectures, topologies and consensus in distributed ledger technology: A review, taxonomy and research issues"
+year: 2022
+main_author: Huan Yu Wu, Xin Yang, Chentao Yue, Hye-Young Paik, and Salil S. Kanhere
+main_contribution: This paper establishes a comprehensive taxonomy of Distributed Ledger Technology (DLT) structures, distinguishing between chain-based and Directed Acyclic Graph (DAG) architectures to analyze how specific topological designs solve scalability and storage bottlenecks.
+evidence_type: Literature Review / Taxonomy Paper
+key_entities: Block-based DAG (BlockDAG), Transaction-based DAG (TDAG), Parallel Chain-based DAG
+technical_constraints: 50% computation power threshold for Nakamoto consensus security, 33% fault-tolerance limit for BFT-based protocols, and linear storage growth (cubical dilatation) in standard DLT.
+reference: "Wu, H. Y., Yang, X., Yue, C., Paik, H. Y., & Kanhere, S. S. (2022). Chain or DAG? Underlying data structures, architectures, topologies and consensus in distributed ledger technology: A review, taxonomy and research issues. Journal of Systems Architecture, 131, 102720."
+doi: https://doi.org/10.1016/j.sysarc.2022.102720
+---
+
+### Chain or DAG? / DLT Taxonomy and Architecture Review
+
+**Findings:**
+- **Stakeholders**: The ecosystem involves diverse actors beyond standard miners, including Leader Miners (Bitcoin-NG), Supervisors (weak nodes in Jointgraph used to collect votes), and Orderer nodes (responsible for packaging transactions). It also distinguishes between Full Nodes, which maintain the complete ledger history, and Light Nodes (typically IoT sensors) that contribute to stability by validating transactions without full storage requirements.
+- **As-Is Logic**: Traditional financial logic is centered on central institutions like banks acting as the sole trusted authorities. Legacy data structures in non-financial contexts (like IoT or IoV) are described as "pipeline" models where searching for updated information requires traversing the entire linear chain, leading to extreme inefficiency in high-frequency update environments or with unstable network memberships.
+- **Pain Points**: A major technical risk is "cubical dilatation," where storage grows linearly without bound, eventually discouraging participation. Operational risks include high latency in transaction confirmation and the "waste" of computation power on orphan blocks. Security risks identified include 51% attacks, Sybil attacks, and the Parasite Chain attack, which is a unique risk to DAG structures where an attacker secretly builds a private sub-graph to replace the honest one.
+- **Principles**: The "non-negotiable" rules for a ledger include an append-only transaction record, immutability via cryptographic hash-linking, and decentralized consensus. For graph-based ledgers (DAG), the foundational principles are that the graph must be unidirectional (one-way edges) and acyclic (no loops). The source also identifies the "First Principle" of data integrity as the requirement that any temporal state of the ledger must be restorable by applying transactions from the genesis block.
+- **Other Relevant Information**: The research highlights "Redactable Blockchains" as a necessary evolution for GDPR compliance, using a two-link structure (old and new links) to allow controlled modification without losing traceability. It also introduces the "Two-dimension chain" architecture—consisting of a horizontal main chain for initial data and vertical chains for updates—as a specific solution for B2B applications requiring fast data retrieval and version control.
+```
+
+---
+
+```markdown
+---
+title: "Blockchain-based auditing with data self-repair: From centralized system to distributed storage"
+year: 2023
+main_author: ZiRui Li, Yanping Li, Laifeng Lu, and Yong Ding
+main_contribution: This paper proposes BVA and E-BVA, decentralized auditing schemes that utilize vector commitment and smart contracts to perform data integrity verification and enable server-led self-repair, eliminating the need for risky third-party auditors or proxies.
+evidence_type: Journal Article (Journal of Systems Architecture)
+key_entities: Vector Commitment, Regenerating Code, Smart Contract (SC)
+technical_constraints: Use of asymmetric bilinear pairing for security, fixed parameter s for maximum block count in BVA, and regenerating code parameters (n, α, k, d, β) to balance fault tolerance and repair bandwidth.
+reference: "Li, Z., Li, Y., Lu, L., & Ding, Y. (2023). Blockchain-based auditing with data self-repair: From centralized system to distributed storage. Journal of Systems Architecture, 137, 102854."
+doi: https://doi.org/10.1016/j.sysarc.2023.102854
+---
+
+### Blockchain-based auditing with data self-repair / Journal of Systems Architecture
+
+**Findings:**
+- **Stakeholders**: The ecosystem consists of Data Owners (DOs) who outsource massive datasets due to limited local resources, Cloud Storage Servers (CSSs) that provide powerful computing/storage, and a System Manager (SM) who initializes the environment and then goes offline. The blockchain acts as a decentralized ledger where Smart Contracts (SCs) serve as autonomous, transparent auditors. This model explicitly seeks to replace the traditional Third-Party Auditor (TPA) and the Repair Proxy, both of which are viewed as security and performance liabilities.
+- **As-Is Logic**: Traditional auditing logic often relies on a centralized TPA to manage verification on behalf of the DO. Legacy dispute resolution requires an "arbitration process" after corruption is detected to determine if a CSS was negligent or if the DO maliciously uploaded incorrect data to frame the server. Standard repair logic typically requires the DO or a third-party proxy to retrieve, rebuild, and re-upload data, which causes heavy computational burdens and potential privacy leakage to the repairing entity.
+- **Pain Points**: Distributed chains face performance bottlenecks and "single point of failure" risks when using centralized TPAs. Untrusted CSSs may launch forge, replace, or replay attacks to pass auditing without actually possessing intact data, or they may delete "cold data" (infrequently accessed) to save space for profit. "Pollution attacks" occur during the repair phase if a healthy node provides corrupted segments to the recovering server. Additionally, DOs may act maliciously by outsourcing incorrect files to claim financial compensation from CSSs.
+- **Principles**: Non-negotiable rules include Decentralization (removing central authorities), Immutability (non-tamperability of auditing logs), and Transparency. A core principle for ledger integrity is "Verifiability at Upload," where the CSS confirms the data matches the published authenticator immediately upon receipt to prevent later disputes. The architecture utilizes Vector Commitment to allow verifiable opening of data at specific positions and Regenerating Code to optimize repair bandwidth while ensuring fault tolerance.
+- **Other Relevant Information**: The E-BVA scheme introduces "Data Self-Repair," allowing a corrupted CSS to regenerate its own data using healthy segments from peers and new coefficients from the smart contract, ensuring the DO never has to intervene. The source distinguishes between "Exact Regeneration" (identical data) and "Functional Regeneration" (data that preserves recoverability but may differ from the original), opting for the latter to improve flexibility. Furthermore, the use of aggregated authenticators via vector commitment reduces communication costs significantly compared to traditional block-by-block signature schemes.
+```

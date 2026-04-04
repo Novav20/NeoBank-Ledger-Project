@@ -1,0 +1,885 @@
+```
+---
+title: "Scaling Distributed Ledgers and Privacy-Preserving Applications"
+year: 2021
+main_author: "Alberto Sonnino"
+main_contribution: "Design of a multi-layered distributed ledger framework including Chainspace (sharded smart contracts), Byzcuit (secure cross-shard consensus), and FastPay (high-throughput low-latency settlement)."
+evidence_type: "PhD Dissertation"
+technical_constraints: "FastPay peak throughput of 160,000 TPS with sub-100ms intra-continental confirmation latency; Byzcuit throughput of ~1,550 TPS with <1s latency."
+reference: "Sonnino, A. (2021). Scaling Distributed Ledgers and Privacy-Preserving Applications. University College London."
+doi: "N/A (PhD Dissertation)"
+---
+
+### Scaling Distributed Ledgers and Privacy-Preserving Applications
+
+**Findings:**
+- **Availability & Fault Tolerance**: The system utilizes **sharding** to handle subsets of transactions, relying on intra-shard **Byzantine Fault Tolerance (BFT)** quorums where $n = 3f + 1$. For cross-shard operations, **Byzcuit** employs a **Transaction Manager (TM)** to coordinate communication, with a fallback mode ensuring liveness as long as at least one honest entity (e.g., an honest node or client) can take over the TM role. **FastPay** maintains availability by forgoing full consensus in favor of **Byzantine Consistent Broadcast**, allowing it to tolerate up to $f$ faulty authorities without performance degradation.
+- **Performance Benchmarks**: **FastPay** demonstrated a peak throughput of **160,000 TPS** on 48 physical cores and sustained **80,000 TPS** with 20 authorities. It achieved intra-continental confirmation latency of **less than 100ms** (UK latency ~50ms) and inter-continental latency (US to Europe) of ~200ms. **Byzcuit** throughput scaled linearly to **~1,550 TPS** with 10 shards, maintaining client-perceived latency of **<1 second**. **Coconut** cryptographic primitives (verification) execute in ~10ms.
+- **Safety & Soundness**: State coherence in **Chainspace** is managed through a **Hash-DAG structure**, where objects are immutable and identifiers are cryptographically derived from their creation history, preventing re-creation of inactive objects. To prevent **double-spending** in sharded environments, **Byzcuit** introduces **session identifiers** (transaction sequence numbers) and **"dummy objects"**. Dummy objects force output shards to participate in the first phase of the protocol, ensuring they witness the full transaction context and preventing replay attacks that exploit lack of context. **FastPay** ensures safety via "deliver once" semantics and commutative payment updates.
+- **Compliance & Accountability**: The thesis details an **auditing framework** where shards periodically publish **signed hash chains of checkpoints** (Merkle trees) containing evidence of all committed or aborted transactions. It supports **partial audits** (proving specific transaction outcomes) and **full audits** (re-executing all transactions to verify state consistency), enabling the detection and tracing of malicious shards. **Coconut** provides a threshold issuance scheme for **selective disclosure credentials**, allowing for privacy-preserving identities and automated attribute verification. **ISO 20022** is cited as a standard for real-time domestic payments in the context of high-performance financial infrastructure.
+- **Other Relevant NFR/Compliance Details**: **FastPay** is designed as a **Real-Time Gross Settlement (RTGS)** system that eliminates credit and counter-party risks of net settlement by settling pre-funded retail payments in real-time.
+```
+
+---
+
+```
+---
+title: "A Byzantine Fault-Tolerant Consensus Library for Hyperledger Fabric"
+year: 2021
+main_author: "Artem Barger, Yacov Manevich, Hagar Meir, Yoav Tock"
+main_contribution: "Integration of a Go-based Byzantine Fault-Tolerant (BFT) consensus library into Hyperledger Fabric to provide end-to-end BFT ordering service capabilities."
+evidence_type: "Research Article"
+technical_constraints: "Throughput of ~2,500 TPS in LAN and ~1,000-1,200 TPS in WAN; Average WAN latency of 133ms (ranging 20ms–250ms)."
+reference: "Barger, A., Manevich, Y., Meir, H., & Tock, Y. (2021). A Byzantine Fault-Tolerant Consensus Library for Hyperledger Fabric. 2021 IEEE International Conference on Blockchain."
+doi: "978-0-7381-1420-0/21/$31.00 ©2021 IEEE"
+---
+
+### A Byzantine Fault-Tolerant Consensus Library for Hyperledger Fabric
+
+**Findings:**
+- **Availability & Fault Tolerance**: The system utilizes a **BFT-SMART protocol** that requires a quorum of $Q = 2F + 1$ out of $N = 3F + 1$ nodes to maintain availability. For node failures, it employs a **view change sub-protocol** involving VIEW-CHANGE, VIEW-DATA, and NEW-VIEW messages to elect a new leader. A **sync component** allows nodes to pull missing blocks from others when they fall behind. Horizontal scalability is achieved through **channels**, where each channel operates as an independent cluster, permitting linear scaling as more channels are added.
+- **Performance Benchmarks**: In a LAN setup with a cluster of 7 nodes ($F=2$) and 1,000 tx/block, the system achieved **~2,500 TPS**. In a global WAN setup, throughput dropped to **~1,200 TPS**. **WAN latency** was recorded with an average of 133ms, a minimum of 20ms (Milan to London), and a maximum of 250ms (Tokyo to London).
+- **Safety & Soundness**: State coherence is maintained by requiring **$2F+1$ commit signatures** for any block to be considered final and delivered to the ledger. To prevent leader-driven data loss or corruption, **followers revalidate every transaction** in a block proposal against Fabric's application semantics during the consensus phase. For network partitions, safety is guaranteed as long as no more than $F$ nodes are faulty.
+- **Compliance & Accountability**: The system integrates with Fabric's **Membership Service Provider (MSP)** to define identities, organizations, and certificate authorities, ensuring all cluster signatures are compliant and verifiable. Accountability is enforced by including **$2F+1$ signatures in block metadata**, allowing external observers (or peers) to independently audit and verify that the BFT protocol was followed. Censorship protection is provided by requiring clients to submit transactions to all orderers and enabling peers to monitor **Header-Metadata streams** from multiple nodes to detect and bypass censoring orderers. [ISO 20022 was not mentioned in the source].
+- **Other Relevant NFR/Compliance Details**: The library provides a pluggable **Write-Ahead Log (WAL)** that maintains only the latest state, as the blockchain itself stores the full transaction history.
+```
+
+---
+
+```
+---
+title: "Handbook of Blockchain, Digital Finance, and Inclusion, Volume 2: ChinaTech, Mobile Security, and Distributed Ledger"
+year: 2017
+main_author: "David LEE Kuo Chuen, Robert H. DENG (Eds.)"
+main_contribution: "Comprehensive multi-disciplinary framework for distributed ledger technology, covering security in mobile payments (Ch 6), technical taxonomies of consensus (Ch 7), financial regulatory landscapes (Ch 9, 12), and operational risks of open-source infrastructure (Ch 11)."
+evidence_type: "Edited Research Handbook"
+technical_constraints: "Bitcoin latency of ~60 mins with 7 TPS throughput; 2-second transaction proposal windows for Ripple RPCA; 1ms timestamp synchronization requirement for event auditing under MiFID II."
+reference: "Lee, D. K. C., & Deng, R. H. (Eds.). (2017). Handbook of blockchain, digital finance, and inclusion: ChinaTech, mobile security, and distributed ledger (Vol. 2). Academic Press."
+doi: "10.1016/B978-0-12-812282-2.00013-9"
+---
+
+### Handbook of Blockchain, Digital Finance, and Inclusion, Volume 2
+
+**Findings:**
+- **Availability & Fault Tolerance**: The source details various **Byzantine Fault Tolerance (BFT)** mechanisms to maintain availability. **State Machine Replication** (e.g., PBFT) is used in permissioned environments, requiring $n \ge 3f + 1$ nodes to tolerate $f$ failures (33% resiliency). For permissionless systems, **Proof-of-Work (PoW)** employs a longest-chain rule to resolve temporary forks. **Tendermint** utilizes a **Round-Robin leader election** over every round to enhance security compared to PBFT's "sticky-leader" approach, while requiring a 2/3 majority of voting power to commit blocks. **Ripple (RPCA)** requires validators to submit candidate sets within a 2-second window, extending to 20 seconds if no submission is received. Distributed networks are cited for their inherent resilience as end points route communication around damaged nodes.
+- **Performance Benchmarks**: **Bitcoin** is cited at a bottleneck of **7 TPS** and **60-minute latency**. Conversely, **PBFT** implementations on commodity hardware can achieve throughput in the order of **tens of thousands of TPS**, limited primarily by network latency. The **Chain** protocol is noted for a **1-second consensus algorithm**. **Global credit card networks** (e.g., VISA) are provided as a benchmark at **2,000 TPS average** with a **56,000 TPS peak**.
+- **Safety & Soundness**: State coherence is maintained through **determinism** in smart contract execution, ensuring all nodes converge on the same result. **Double-spending** is prevented via cryptographic proof of ownership (public/private keys) and decentralized consensus protocols. To prevent data loss in network partitions, BFT systems guarantee **safety** (nothing bad happens) and **liveness** (good things eventually happen) as long as node failure thresholds are not breached. For mobile payments, **Token Service Providers (TSPs)** utilize **domain restriction controls** (e.g., cryptograms, POS entry modes) to limit the impact of compromised payment tokens.
+- **Compliance & Accountability**: The source identifies multiple machine-readable standards, including **ISO 20022** (financial messaging), **ISO 8583** (card-based messaging), **ISO 18014**, and **X9.95** (trusted timestamping). **MiFID II** introduces stringent accountability requirements, including **Legal Entity Identifiers (LEI)** and **Unique Transaction Identifiers (UTI)** for all market participants. Accountability is further automated via **Ricardian Contracts**, which link machine-executable smart contracts to human-enforceable legal text. The source proposes **Centralized vs. Decentralized Audit Chains** using private blockchains to provide regulators with immutable, on-demand access to trade events.
+- **Other Relevant NFR/Compliance Details**: **Chapter 11** warns of "grassroots open-source operational risk," where a lack of formal governance or dedicated funding can lead to unpatched vulnerabilities (e.g., Heartbleed, Dirty Cow) or community paralysis during critical software updates (e.g., the Bitcoin block-size debate).
+```
+
+---
+
+```
+---
+title: "A Performance Analysis of BFT Consensus for Blockchains"
+year: 2018
+main_author: "J.D. Chan, Y.C. Tay, and Brian R.Z. Yen"
+main_contribution: "Development of an analytical performance model using bottleneck and barrier analysis to optimize BFT consensus latency (HotStuff vs. IBFT) and determine optimal initial timer values ($τ_0$)."
+evidence_type: "Research Article"
+technical_constraints: "HotStuff scales linearly ($O(n)$) while IBFT scales quadratically ($O(n^2)$) regarding communication workload; performance is highly sensitive to the ratio of switch processing rate to validator processing rate ($r_s/r_v$)."
+reference: "Chan, J. D., Tay, Y. C., & Yen, B. R. Z. (2018). A Performance Analysis of BFT Consensus for Blockchains. ACM."
+doi: "https://arxiv.org/abs/2411.07622"
+---
+
+### A Performance Analysis of BFT Consensus for Blockchains
+
+**Findings:**
+- **Availability & Fault Tolerance**: The system maintains availability using **partial synchrony** assumptions and a **timer-based progress mechanism**. When a timer expires, it triggers an **exponential backoff** (doubling $τ_0$) and initiates a **full round change** or view change to elect a new leader. In **Istanbul BFT (IBFT)**, leadership is rotated, whereas in **HotStuff**, leaders are chosen randomly. The study specifically focuses on **crash fault resilience**, requiring a quorum of $2f + 1$ votes out of $n \ge 3f + 1$ total validators to proceed.
+- **Performance Benchmarks**: The source cites several industry benchmarks: **Bitcoin** at 7 TPS with 60-minute latency, **VISA** at an average of 2,000 TPS (56,000 TPS peak), and the **Chain protocol** with 1-second consensus. In experimental simulations, **PBFT** implementations on commodity hardware reached **tens of thousands of TPS**. The researchers identified a "crossover point" where IBFT is faster than HotStuff for small numbers of validators ($n$), but HotStuff becomes superior as the network scales because IBFT's message complexity is **quadratic ($O(n^2)$)** while HotStuff's is **linear ($O(n)$)**.
+- **Safety & Soundness**: State coherence is maintained by ensuring all validators add blocks to their local copy of the blockchain only after a **quorum of $2f + 1$ valid votes** is gathered. Safety (ensuring all copies are the same) is guaranteed as long as the number of faulty nodes does not exceed the bound $f$. The paper introduces a **barrier analysis** to model the exact moments nodes change phases, preventing data loss during network congestion by identifying whether the **validator (computation)** or the **switch (communication)** is the performance bottleneck.
+- **Compliance & Accountability**: [Information not found regarding specific machine-readable standards like ISO 20022 or automated auditing protocols]. The source focuses on the **mathematical modeling of consensus latency** and **network topology impact** (Dragonfly vs. Folded-Clos) rather than regulatory compliance frameworks.
+- **Other Relevant NFR/Compliance Details**: The research provides a specific formula for setting the **initial timer value ($τ_0$)** to minimize consensus time, recommending an allowance of **three standard deviations** above the expected consensus time to accommodate variance in message processing. It also demonstrates that competing network traffic can be effectively modeled by proportionally **reducing the switch processing rate ($r_s$)**.
+```
+
+---
+
+```
+---
+title: "A PoW-less Bitcoin with Certified Byzantine Consensus"
+year: 2022
+main_author: "Marco Benedetti, Francesco De Sclavis, Marco Favorito, Giuseppe Galano, Sara Giammusso, Antonio Muci, Matteo Nardelli"
+main_contribution: "Development of FBFT, a protocol combining a modified PBFT consensus with FROST threshold signatures to create a permissioned, high-availability 'Bitcoin-like' ledger for CBDCs."
+evidence_type: "Technical Report"
+technical_constraints: "Target block time of 60 seconds; Block size capacity of ~1.8MB; Tested with up to 22 nodes across 8 AWS regions."
+reference: "Benedetti, M., et al. (2022). A PoW-less Bitcoin with Certified Byzantine Consensus: An Unorthodox Foundation for a Central Bank Digital Currency (CBDC)?. Technical Report CFC.CRYPTO.CS/2022/1. Bank of Italy."
+doi: "N/A (Technical Report)"
+---
+
+### A PoW-less Bitcoin with Certified Byzantine Consensus
+
+**Findings:**
+- **Availability & Fault Tolerance**: The system ensures availability through **Practical Byzantine Fault Tolerance (PBFT)**, which tolerates $F_B$ Byzantine and $F_C$ crash failures with $N = 3F_B + 2F_C + 1$ nodes. To address the issue of unresponsive or malicious nodes during the signing phase, it introduces **FBFT (5-Phase Frosted-BFT)**, which wraps **ROAST (Robust Asynchronous Schnorr Threshold signatures)** to guarantee liveness even if some signers fail to respond. If the primary node fails, a **view-change protocol** with exponential timeout backoffs (starting at 30s) elects a new leader to resume block production.
+- **Performance Benchmarks**: In a geographically distributed setup (8 AWS regions) with 22 nodes and no transaction load, the **average consensus latency was 1.7 seconds**. Under **100% transactional load** (1.8MB blocks), latency increased linearly to approximately **13 seconds** for 22 nodes. **Throughput** measured in blocks per second scales inversely with the node count, ranging from ~5 blocks/s (1 node) to ~0.5 blocks/s (22 nodes) in empty load conditions.
+- **Safety & Soundness**: State coherence is maintained via **deterministic finality**, where the probability of a chain fork is 0. This is achieved through PBFT safety invariants ensuring no two correct replicas commit different blocks for the same height. To prevent forks triggered by different signer quorums for the same block, the system **excludes the block solution (signatures) from the Merkle root** and coinbase transaction hash. **Double-spending** is prevented by the consensus agreement and the underlying Bitcoin UTXO validation rules.
+- **Compliance & Accountability**: The report discusses the potential for the system to serve as a foundation for **Central Bank Digital Currencies (CBDCs)** and compares the convergence of DLT stacks to the historical adoption of **TCP/IP** as an open standard. Accountability is enforced by the **block solution**, which serves as a **quorum certificate** (a single 67-byte Schnorr signature verifiable by all participants). The primary node can identify and **exclude malicious signers** that provide invalid signature shares. **Confidentiality (R5)** is prioritized; the use of FROST ensures that the specific set of active signers remains opaque to external participants, protecting the mining network from targeted attacks. [ISO 20022 was not explicitly mentioned in this source].
+- **Other Relevant NFR/Compliance Details**: The system includes a **Calmness (R4)** requirement, where block production is upper-bounded to prevent Byzantine miners from overwhelming participant resources with high-rate block generation. It also significantly limits **operational risk** by reusing ~98% of the battle-tested Bitcoin Core codebase.
+```
+
+---
+
+```
+---
+title: "A dynamic state sharding blockchain architecture for scalable and secure crowdsourcing systems"
+year: 2024
+main_author: "Zihang Zhen, Xiaoding Wang, Hui Lin, Sahil Garg, Prabhat Kumar, M. Shamim Hossain"
+main_contribution: "Development of DSSBD, a dynamic state sharding architecture using deep reinforcement learning (Double DQN) to optimize shard count, block interval, and block size while maintaining security through graph-based reconfiguration."
+evidence_type: "Research Article"
+technical_constraints: "Maximum of 32 shards; 40MB max block size; 12s max block interval; average confirmation latency of 63.72s."
+reference: "Zhen, Z., et al. (2024). A dynamic state sharding blockchain architecture for scalable and secure crowdsourcing systems. Journal of Network and Computer Applications, 222, 103785."
+doi: "10.1016/j.jnca.2023.103785"
+---
+
+### A dynamic state sharding blockchain architecture for scalable and secure crowdsourcing systems
+
+**Findings:**
+- **Availability & Fault Tolerance**: The architecture addresses the reduced fault tolerance of sharded systems (where resiliency drops to $1/n$ of the network) by utilizing **Relay-Nodes (R-Nodes)** and **Shard-Nodes (S-Nodes)**. R-Nodes store state information for multiple shards to facilitate cross-shard consensus, effectively acting as high-availability anchors. Availability during node failures is managed through a **node reconfiguration phase** at the end of every epoch, where active nodes are re-sharded to prevent malicious clusters from controlling a single shard. The system also employs **merged mining** to allow nodes to verify multiple shards simultaneously, increasing the number of malicious nodes the system can tolerate.
+- **Performance Benchmarks**: In simulations using the XBlock-ETH dataset, the DSSBD architecture achieved a throughput of **128.92 TPS**, outperforming baselines like Monoxide (~61-85 TPS) and Brockerchain (~102-126 TPS). The **average transaction confirmation latency** was recorded at **63.72 seconds**, which is significantly lower than Monoxide's ~77-124 seconds. The system handles a transaction arrival rate of 2,000 TPS in its simulation environment.
+- **Safety & Soundness**: State coherence is maintained using a **Modified State Tree** (Merkle Patricia Tree) that adds a $K_{max}$-bit field to leaf nodes, allowing $O(1)$ complexity for identifying an account's shard. To prevent **double-spending**, the system uses a **nonce counting mechanism** for every account; for cross-shard transactions, it requires the confirmed commit of a "pre-cross-shard transaction" before a "post-cross-shard transaction" can be generated. **Transaction atomicity** is ensured via **Hash Transaction Time Locks (Hlock)**; if a relay fails, the target shard generates a failure proof ($tx_{fail}$), triggering a rollback that returns locked tokens to the sender.
+- **Compliance & Accountability**: The framework automates accountability through **smart contracts** that manage task release, evaluation, and payment in a transparent business process. **Accountability** for relaying transactions is enforced by requiring R-Nodes to **pledge equity (stake)**; malicious behavior results in the loss of this mortgage. While specific regulatory standards like ISO 20022 are not explicitly detailed, the system records all reconfiguration decisions in a specialized **S-Shard chain** (using S-Blocks) to provide a verifiable audit trail of the network's state transitions.
+- **Other Relevant NFR/Compliance Details**: The system uses the **METIS graph partitioning algorithm** to minimize cross-shard overhead by grouping frequently interacting accounts into the same shard based on transaction flow snapshots. The **Double DQN (Deep Reinforcement Learning)** agent dynamically balances the "blockchain trilemma" by adjusting operational parameters based on real-time network transmission rates and node computing power.
+```
+
+---
+
+```
+---
+title: "An in-depth investigation of the performance characteristics of Hyperledger Fabric"
+year: 2022
+main_author: "Tobias Guggenberger, Johannes Sedlmeir, Gilbert Fridgen, André Luckow"
+main_contribution: "Comprehensive performance analysis of Fabric v2.0 using the DLPS framework, identifying key bottlenecks in database choice (CouchDB vs. LevelDB), transaction visibility (private vs. public), and network scale."
+evidence_type: "Research Article"
+technical_constraints: "Optimal block timeout of ~0.5s; throughput bottleneck for payloads >100 kB; performance degradation in networks exceeding 'a large number' of organizations (>100 cited as problematic)."
+reference: "Guggenberger, T., Sedlmeir, J., Fridgen, G., & Luckow, A. (2022). An in-depth investigation of the performance characteristics of Hyperledger Fabric. Computers & Industrial Engineering, 173, 108716."
+doi: "10.1016/j.cie.2022.108716"
+---
+
+### An in-depth investigation of the performance characteristics of Hyperledger Fabric
+
+**Findings:**
+- **Availability & Fault Tolerance**: The system utilizes the **RAFT consensus protocol**, which is crash fault-tolerant and requires a leader to distribute blocks. In the event of a **leading orderer crash**, the system successfully resumes normal operations in approximately **5 seconds** after selecting a new leader. The crash of a non-leading orderer has negligible impact. For peers, availability is maintained through organizational redundancy; if a single peer crashes, the network continues to function, though throughput may drop by the proportion of transactions that specifically required that peer for endorsement.
+- **Performance Benchmarks**: Fabric can achieve a sustained throughput of **>1,000 TPS** for public transactions when using LevelDB. Latency generally ranges from **a few hundred milliseconds to 3 seconds** depending on the configuration. In an intercontinental setup, average latency was recorded at **1.2s for public** and **>1.7s for private** transactions. **CPU-heavy workloads** (e.g., matrix multiplication) in Fabric perform as efficiently as native centralized node.js applications once the initial networking overhead is surpassed.
+- **Safety & Soundness**: State coherence is enforced by the **execute–order–validate paradigm**, which separates transaction simulation from final commitment. Safety and **double-spending prevention** occur during the **validation phase**, where every peer checks that transactions meet endorsement requirements and that their **read-write sets** remain consistent with the current ledger state before updating the world state. The system uses an **append-only blockchain** structure to ensure an immutable record of all transactions, including invalid ones.
+- **Compliance & Accountability**: The framework facilitates **accountability** because all participants in the private permissioned network are known and actions can be traced back to responsible parties. All transactions and communications are secured using **digital certificates** managed by Certificate Authorities, defining organizational identities and permissions. While the source notes that DLT can help consolidate **audit data** in an "unimpeachable distributed database," specific machine-readable standards like ISO 20022 were not explicitly detailed in this performance-focused study.
+- **Other Relevant NFR/Compliance Details**: **Private Data Collections** allow organizations to share confidential data bilaterally (sharing only hashes on the main ledger), but this feature reduces throughput by **2x to 3x** compared to public transactions. The choice of **LevelDB** over CouchDB can improve write throughput by a factor of three.
+```
+
+---
+
+```
+---
+title: "An overview of blockchain smart contract execution mechanism"
+year: 2024
+main_author: "Yang Liu, Jinlong He, Xiangyang Li, Jingwen Chen, Xinlei Liu, Song Peng, Haohao Cao, Yaoqi Wang"
+main_contribution: "Comprehensive review of smart contract execution patterns, architecture-based concurrent optimizations, and their application in transitioning Industry 4.0 from a digital to a trusted industry."
+evidence_type: "Review Article"
+technical_constraints: "Ethereum 1.0 (~15 TPS); IOTA (1,500 TPS); Conflux (6,400 TPS); Meepo (>140,000 cross-shard TPS); Fabric transaction abortion rate up to 40% under high contention."
+reference: "Liu, Y., He, J., Li, X., Chen, J., Liu, X., Peng, S., Cao, H., & Wang, Y. (2024). An overview of blockchain smart contract execution mechanism. Journal of Industrial Information Integration, 41, 100674."
+doi: "10.1016/j.jii.2024.100674"
+---
+
+### An overview of blockchain smart contract execution mechanism
+
+**Findings:**
+- **Availability & Fault Tolerance**: Systems utilize distributed consensus algorithms like **Practical Byzantine Fault Tolerance (PBFT)** to tolerate $f$ failures given $n \ge 3f + 1$ nodes. For crash fault tolerance, **RAFT** is employed, allowing systems like Hyperledger Fabric to resume operations within approximately 5 seconds after a leader failure. High availability in sharded systems is maintained through **dynamic reconfiguration** via smart contracts that adjust shard sizes and counts during runtime without hard forks. Leaderless/asynchronous availability is proposed via **Directed Acyclic Graph (DAG)** structures (e.g., IOTA's Tangle and Hashgraph's **Asynchronous BFT**), which allow concurrent processing and verification as the network scales.
+- **Performance Benchmarks**: The source identifies significant performance disparities between platforms: **Bitcoin** (~7 TPS), **Ethereum 1.0** (~15 TPS), and **IOTA** (~1,500 TPS with 1–5 minute confirmation times). High-volume scenarios are addressed by **Meepo** (sharded consortium) reaching **>140,000 cross-shard TPS** and **Fisco Bcos** achieving up to **20,000 TPS**. **Conflux** is cited at **6,400 TPS** with confirmation in 4.5–7.4 minutes. Additionally, a dynamic sharding approach reached **~14,000 TPS** with only 8 shards.
+- **Safety & Soundness**: State coherence is enforced through **determinism** in smart contract execution to ensure all nodes reach the same result. **Double-spending** is prevented via sender signatures and uniqueness consensus mechanisms (e.g., Corda's UTXO model). To handle network partitions or concurrent execution conflicts, the review suggests **Optimistic Concurrency Control (OCC)**, **Multi-Version Concurrency Control (MVCC)**, and **Two-Phase Locking (2PL)**. **Atomicity** in cross-group/shard transactions is maintained using the **Two-Phase Commit (2PC)** protocol.
+- **Compliance & Accountability**: The source focuses on **non-repudiation** and the use of **digital certificates** from Certificate Authorities to define organizational identities and permissions. Accountability is automated through **Smart Contracts** serving as alternatives to or supplements for legal contracts. In B2B scenarios, **blockchain electronic seals** are used for legal validity, reducing signing cycles by **90%** compared to paper processes. For international trade, the source highlights the **TEA issues** (Title, Existence, and Attornment), which are resolved through the integration of digital bills of lading and warehouse receipts on-chain.
+- **Other Relevant NFR/Compliance Details**: **Privacy** is managed through decoupled architectures like Fabric's **channels** or Corda's point-to-point encrypted communication, which ensure transaction data is only shared among participants. **Sidechains** (e.g., Rootstock) allow for high-performance execution of smart contracts while tethered to the security of the main chain.
+```
+
+---
+
+```
+---
+title: "Analyzing potential collaboration methods for digital twin teams developed on heterogeneous blockchains without a central authority"
+year: 2025
+main_author: "Saeed Banaeian Far, Seyed Mojtaba Hosseini Bamakan"
+main_contribution: "Proposed a modular Layer 3 (L3) interoperability framework—incorporating cross-chain, para-chain, side-chain, and super-chain mechanisms—to enable decentralized Digital Twin (DT) collaboration."
+evidence_type: "Review Article"
+technical_constraints: "L3 ZK Rollup latency of 120ms; 62% reduction in latency compared to L1-to-L1 protocols; 4–6× improvement in transaction costs."
+reference: "Far, S. B., & Bamakan, S. M. H. (2025). Analyzing potential collaboration methods for digital twin teams developed on heterogeneous blockchains without a central authority. Advanced Engineering Informatics, 68, 103616."
+doi: "10.1016/j.aei.2025.103616"
+---
+
+### Analyzing potential collaboration methods for digital twin teams developed on heterogeneous blockchains without a central authority
+
+**Findings:**
+- **Availability & Fault Tolerance**: The framework ensures availability through **Relay Chains** that provide shared security to connected para-chains, and **Fishermen** nodes that monitor the network to prevent the propagation of invalid blocks. For sharded architectures (Super-chains), a **Beacon Chain** or coordinator is responsible for synchronizing state transitions across shards. To mitigate data loss during shard outages, the use of **erasure coding** is proposed to enable data reconstruction. Additionally, **Watchtowers** are employed to monitor cross-chain activities and detect anomalies.
+- **Performance Benchmarks**: Quantitative analysis indicates that **L3 ZK Rollups** achieve the lowest transaction finality time at **120ms**, followed by **Para-chains** at **300ms** and **Cross-chain bridges** at **650ms**. The source cites the **Meepo** protocol as capable of exceeding **140,000 cross-shard TPS**. Implementation of L3 configurations resulted in a **62% reduction in latency** and a **4–6× improvement in transaction costs** over standard L1-to-L1 protocols.
+- **Safety & Soundness**: Double-spending is prevented via **Hash Time-Locked Contracts (HTLCs)** and atomic swaps, ensuring that cross-chain transfers are finalized only upon valid secret revelation. State coherence is maintained through **Merkle proofs**, allowing efficient $O(\log n)$ verification of transaction inclusion. The system also utilizes **Atomic Cross-Shard Transactions** to maintain consistency across a sharded network. **Zero-Knowledge Proofs (ZKPs)**, specifically zk-SNARKs, are highlighted for validating data transfers and ownership while maintaining confidentiality.
+- **Compliance & Accountability**: Accountability is enforced through **Staking mechanisms** where validators pledge equity to incentivize honest behavior, alongside the use of **Distributed Auditing Protocols** for on-chain verification of off-chain storage. The framework supports **Compliance Modules** integrated directly into smart contracts to enforce regulatory requirements (RC). Reputation and non-repudiation are addressed via an **unlinkable reputation transfer framework** utilizing NFTs. [Specific machine-readable standards like ISO 20022 were not explicitly detailed in the provided excerpts].
+- **Other Relevant NFR/Compliance Details**: The framework prioritizes **Chain Sovereignty**, allowing heterogeneous blockchains to maintain their individual consensus rules while interacting through modular L3 bridges. It also introduces **Dynamic Non-Fungible Tokens (dNFTs)** to represent evolving digital twins, allowing metadata to update in real-time based on physical world triggers.
+```
+
+---
+
+```
+---
+title: "Blockchain Epidemic Consensus for Large-Scale Networks"
+year: 2025
+main_author: "Siamak Abdi, Giuseppe Di Fatta, Atta Badii, Giancarlo Fortino"
+main_contribution: "Blockchain Epidemic Consensus Protocol (BECP), a leaderless, fully decentralized consensus protocol that uses epidemic communication and local processing to achieve scalable agreement without sampling overhead."
+evidence_type: "Research Article"
+technical_constraints: "Average consensus latency of ~10s; sustained throughput of ~0.096 blocks/s up to 10,000 nodes; block generation interval of 10s."
+reference: "Abdi, S., Di Fatta, G., Badii, A., & Fortino, G. (2025). Blockchain Epidemic Consensus for Large-Scale Networks. IEEE."
+doi: "N/A (Included in source text)"
+---
+
+### Blockchain Epidemic Consensus for Large-Scale Networks
+
+**Findings:**
+- **Availability & Fault Tolerance**: BECP maintains availability through a **fully decentralized, leaderless architecture** that eliminates the single point of failure inherent in coordinator-based protocols like PBFT or Raft. It utilizes a **System Size Estimation Protocol (SSEP)** and a **Node Cache Protocol (NCP)** to allow nodes to interact with randomly selected neighbors without requiring complete network knowledge. The protocol is specifically designed to be **resilient to message delays**, maintaining stable throughput even under heavy-tailed Pareto-distributed network latency.
+- **Performance Benchmarks**: In simulations of up to 10,000 nodes, BECP achieved a **constant throughput of approximately 0.096 blocks per second**. The **average consensus latency remained stable at ~10 seconds** across all network sizes, outperforming the Snow family of protocols (Avalanche/Snowman) in large-scale settings. It demonstrates **logarithmic communication overhead** because each node communicates with only one peer per cycle rather than sampling a large subset, making it significantly more efficient than Snow-based approaches as the network scales.
+- **Safety & Soundness**: State coherence is maintained by the **Phase Transition Protocol (PTP)**, which manages the propagation, agreement, and confirmation of blocks based on estimators compared against the estimated system size. To prevent **double-spending** and ensure a steady sequence of references, nodes utilize a **preferred block variable ($B_{pref}$)**; nodes generate new blocks referencing $B_{pref}$ regardless of whether the previous block is confirmed yet. **Fork resolution** is handled by an automated procedure (Algorithm 2) that invalidates and discards candidate blocks and their descendants once a new preferred block is identified.
+- **Compliance & Accountability**: The source focuses on **decentralized trust** and resistance to collusion without central authorities. Accountability is inherent in the **probabilistic convergence** of the epidemic model, where nodes locally compute consensus state based on verifiable peer interactions. While it references the transition of Industry 4.0 to a "trusted industry," specific machine-readable regulatory standards like **ISO 20022 were not mentioned** in this research.
+- **Other Relevant NFR/Compliance Details**: The protocol avoids the "nothing-at-stake" issues of PoS and the high energy consumption of PoW by using **light-weight local computations**. Future extensions are proposed to include explicit **node failure detection** and recovery processes to further enhance system resilience.
+```
+
+---
+
+```
+---
+title: "Cerberus: Minimalistic Multi-shard Byzantine-resilient Transaction Processing"
+year: 2020
+main_author: "Jelle Hellings, Daniel P. Hughes, Joshua Primero, Mohammad Sadoghi"
+main_contribution: "The design of a family of multi-shard transaction processing protocols (Core, Optimistic, and Pessimistic Cerberus) that enable linear scalability and serializable execution in sharded DLT networks."
+evidence_type: "Research Article / Whitepaper"
+technical_constraints: "Requires $n > 3f$ replicas per shard; modeling assumes 100 Mbit/s bandwidth per replica; supports scaling to $2^{14}$ shards with throughput exceeding $10^6$ TPS."
+reference: "Hellings, J., Hughes, D. P., Primero, J., & Sadoghi, M. (2020). Cerberus: Minimalistic Multi-shard Byzantine-resilient Transaction Processing. arXiv:2003.03033."
+doi: "https://doi.org/10.48550/arXiv.2003.03033"
+---
+
+### Cerberus: Minimalistic Multi-shard Byzantine-resilient Transaction Processing
+
+**Findings:**
+- **Availability & Fault Tolerance**: Cerberus maintains availability through a sharded BFT design where each shard operates as an independent fault-tolerant system requiring $n > 3f$ replicas. It proposes three mechanisms: **Core-Cerberus** (minimalist for UTXO), **Optimistic-Cerberus** (optimized for rare failures), and **Pessimistic-Cerberus** (robust under attack). To prevent deadlocks, it uses **internal propagation**, where shards learn of transactions through cross-shard exchange messages. **Optimistic-Cerberus** features a "View-Change Global Short-Cut Recovery" path, allowing replicas to request missing commit certificates from other shards to resume progress without a full local state recovery if a quorum has already been reached elsewhere.
+- **Performance Benchmarks**: The source provides quantitative modeling for a system with 7 replicas per shard and 100Mbit/s bandwidth. It demonstrates that throughput scales linearly with the number of shards, reaching levels of **$10^5$ to $10^7$ TPS** as the shard count increases from $2^0$ to $2^{14}$. **Optimistic-Cerberus** reduces minimum latency to **3 consecutive communication phases**, compared to 4 for Core and 7 for Pessimistic Cerberus.
+- **Safety & Soundness**: State coherence is maintained through an **object-dataset model** where objects are immutable and can only be constructed and destructed once, precluding recreation. To prevent **double-spending**, the system employs a **"first-pledge rule"**, ensuring a shard only pledges an object to the first transaction proposed after its construction. The protocol guarantees **serializable transaction execution** for all committed transactions, which is proven via a directed acyclic graph (DAG) of object relationships. Cross-shard consistency (Requirement R4) ensures that if any affected shard commits or aborts, all other shards eventually reach the same decision.
+- **Compliance & Accountability**: The source highlights DLT's potential to eliminate **$71 billion in annual transactional friction** within the financial and banking sectors. Accountability is enforced through **authenticated communication** utilizing digital signatures, MACs, or threshold signatures to identify and isolate Byzantine replicas. For transaction validity (Requirement R1), the system requires cryptographic expressions of support from object owners. In **Core-Cerberus**, a reputation-incentive mechanism exists where objects involved in malicious/concurrent transactions are permanently "locked out," incentivizing well-behaved client conduct. [ISO 20022 was not mentioned in this source].
+- **Other Relevant NFR/Compliance Details**: Cerberus supports **out-of-order processing** within shards, allowing primaries to propose future rounds while previous ones are pending, provided the transactions do not affect the same shared objects.
+```
+
+---
+
+```
+---
+title: "Chainspace: A Sharded Smart Contracts Platform"
+year: 2018
+main_author: "Mustafa Al-Bassam, Alberto Sonnino, Shehar Bano, Dave Hrycyszyn, George Danezis"
+main_contribution: "The design and implementation of S-BAC, a novel distributed atomic commit protocol that enables linear scalability through state sharding while maintaining Byzantine Fault Tolerance."
+evidence_type: "Research Article"
+technical_constraints: "Linear throughput scaling (~22 TPS per additional shard); 350 TPS peak on 15 shards; client-perceived latency of 69ms–210ms; requires 3f+1 nodes per shard."
+reference: "Al-Bassam, M., Sonnino, A., Bano, S., Hrycyszyn, D., & Danezis, G. (2018). Chainspace: A Sharded Smart Contracts Platform. Proceedings of the Network and Distributed System Security Symposium (NDSS)."
+doi: "10.14722/ndss.2018.23126"
+---
+
+### Chainspace: A Sharded Smart Contracts Platform
+
+**Findings:**
+- **Availability & Fault Tolerance**: Chainspace maintains availability through **sharding** and **Byzantine Fault Tolerance (BFT)**, requiring a shard size of at least $3f + 1$ nodes to tolerate $f$ faulty members. It utilizes **S-BAC (Sharded Byzantine Atomic Commit)**, which composes BFT agreement (using the BFT-SMART library) with a distributed atomic commit protocol (2PC) to coordinate across shards. For node failure, it features a mechanism to recover from a malicious **BFT-Initiator** (leader); if an initiator suppresses transactions, other nodes in the shard can time out and assume the role, which is idempotent.
+- **Performance Benchmarks**: On a testbed of 60 cores (15 shards), Chainspace achieved **350 TPS**. Throughput scales linearly with the number of shards, increasing by an average of **22 TPS for every shard added** (assuming 4 nodes per shard). **Client-perceived latency** was recorded at approximately **69ms** under moderate loads (20–60 TPS), rising to **210ms** as the system approached capacity. The source uses **Visa** (2,000 average / 56,000 peak TPS) as a primary benchmark for financial high-volume scenarios.
+- **Safety & Soundness**: State coherence is enforced through a **Hash-DAG structure** where objects are immutable and identified by cryptographic hashes of the transactions that created them. **Double-spending** is prevented by the **S-BAC protocol**, which uses a **locking mechanism** during the "prepare" phase to ensure a shard only commits one transaction per active input object. Once committed, objects are marked **inactive**, and the system axiomatically ensures that no sequence of valid transactions can re-create an object with the same identifier.
+- **Compliance & Accountability**: The platform provides **high auditability** through **signed hash chains of checkpoints** (Merkle trees) published by each shard. It supports **partial audits** (proving the fate of a specific transaction in $O(s + \log N)$ time) and **full audits** (re-executing the entire history to detect Byzantine behavior). Malicious shards are identified when their signed records are found to be "incompatible" with statements sent to other shards. Privacy-friendly compliance is achieved through **Zero-Knowledge Proofs (SNARKs)**, allowing checkers to verify transaction invariants without revealing secret data. [ISO 20022 was not explicitly mentioned].
+- **Other Relevant NFR/Compliance Details**: Chainspace implements **CSCoin** as a system smart contract to manage accounting and prevent DoS attacks through transaction processing fees. The architecture supports **smart contract composition**, allowing higher-level contracts to rely on the validated traces of sub-calls.
+```
+
+---
+
+```
+---
+title: "Cob: a consensus layer enabling sustainable sharding-based consensus protocols"
+year: 2021
+main_author: "Andrea Flamini, Riccardo Longo, Alessio Meneghetti"
+main_contribution: "Development of Cob, a leaderless BFT consensus protocol that utilizes a 'Synchronization Chain' to coordinate sharded architectures and automate epoch reconfigurations."
+evidence_type: "Research Article"
+technical_constraints: "Tolerates < 1/3 malicious or faulty nodes; requires same-speed clocks with an upper-bound (λ) on message propagation; scales to millions of nodes."
+reference: "Flamini, A., Longo, R., & Meneghetti, A. (2021). Cob: a consensus layer enabling sustainable sharding-based consensus protocols. University of Trento."
+doi: "N/A (Preprint/Technical Paper)"
+---
+
+### Cob: a consensus layer enabling sustainable sharding-based consensus protocols
+
+**Findings:**
+- **Availability & Fault Tolerance**: Cob is a **leaderless consensus protocol**, ensuring no single node can censor transactions or become a single point of failure. It operates on an **Asynchronous Gossiping Network (AG)** model, which assumes that honest nodes are connected and a message from an honest node reaches all others within an upper-bound time $\lambda$. The protocol maintains availability by tolerating a malicious/faulty node ratio of **less than 1/3**. It employs a **sortition mechanism** to select "players" for specific steps, preventing network overload while allowing the system to scale to millions of participants. If the network cannot reach agreement on a specific component, it converges on a default value ($\perp$), allowing the rest of the list to proceed without interruption.
+- **Performance Benchmarks**: The source evaluates performance by comparing the **broadcast data weight** of Cob against Algorand. For a configuration with 50 shards during epoch reconfiguration, Cob requires approximately **200 MB** of broadcast data, while Algorand requires ~5,000 MB [Fig 1]. During regular time-slots with 50 shards, Cob's broadcast weight is ~35 MB compared to Algorand's ~400 MB [Fig 2]. The protocol aims to bridge the performance gap between decentralized ledgers and centralized counterparts like **Visa** by reducing computational and communication intensity through **time-slot fragmentation**.
+- **Safety & Soundness**: Cob is a **strong consistency protocol**, meaning that once a block is generated and certified, all non-faulty nodes share the same view, eliminating forks. State coherence across shards is managed by the **Synchronization Chain**, which hash-links blocks created during specific time-slots and acts as a "freeze frame" of the network status. To prevent double-spending and maintain inter-shard consistency, the system uses **deterministic rules** for transaction validation and epoch parameters, ensuring all nodes converge on the same ledger state.
+- **Compliance & Accountability**: The **Synchronization Chain** serves as a "trusted third party" that dictates the start/end of time-slots and verifies the timing and legitimacy of block creation. Accountability is enforced by the **leaderless architecture**, which prevents a primary node from performing censorship attacks or including invalid information. The protocol also automates **epoch reconfiguration**, allowing the network to update its configuration (shard count, time-slot duration) based on observed network evolution in a transparent and verifiable manner. [ISO 20022 and specific machine-readable standards were not mentioned].
+- **Other Relevant NFR/Compliance Details**: The protocol prioritizes **sustainability** by dividing time into preassigned slots, which reduces the constant computational burden typical of Proof-of-Work systems. It uses a **Multidimensional Binary Byzantine Agreement (MBBA)** to allow nodes to reach consensus on multiple decisions simultaneously.
+```
+
+---
+
+```
+---
+title: "Concordit: A credit-based incentive mechanism for permissioned redactable blockchain"
+year: 2024
+main_author: "Liushun Zhao, Deke Guo, Lailong Luo, Yulong Shen, Bangbang Ren, Shi Zhu, Fangliao Yang"
+main_contribution: "Proposed 'Concordit,' the first deployable credit-based incentive mechanism for redactable blockchains, combining hardware-based initial credit and game theory-based dynamic credit to improve task completion rates and ensure participant accountability."
+evidence_type: "Research Article"
+technical_constraints: "Expected verification delay of 0.2s; expected modification delay of 0.5s; maximum tolerable transaction-to-ledger delay of 10s."
+reference: "Zhao, L., Guo, D., Luo, L., Shen, Y., Ren, B., Zhu, S., & Yang, F. (2024). Concordit: A credit-based incentive mechanism for permissioned redactable blockchain. Computer Networks, 255, 110848."
+doi: "10.1016/j.comnet.2024.110848"
+---
+
+### Concordit: A credit-based incentive mechanism for permissioned redactable blockchain
+
+**Findings:**
+- **Availability & Fault Tolerance**: The system operates on a **Byzantine Consensus algorithm** requiring a two-thirds honest majority to reach agreement. Availability is maintained through a **credit-based selection mechanism** (using the TOPSIS order algorithm) that prioritizes high-credibility nodes for the redaction consensus and excludes "Elimination Nodes" whose credit falls below a minimum system threshold ($Thold_{sy}^{min}$). To handle failures in redactable operations, if a modifier fails to complete a task or behaves maliciously, the system identifies the failure and **re-initiates a new redaction task** in the subsequent slot.
+- **Performance Benchmarks**: In performance evaluations conducted on a benchmark redactable blockchain, the introduction of Concordit caused the **redaction task completion rate to converge to 100%** after approximately 20 rounds of consensus. The mechanism was tested with an **expected verification delay of 0.2s**, an **expected modification delay of 0.5s**, and a **maximum tolerable delay ($τ_{Max}$) of 10s** for transactions to be finalized on the chain.
+- **Safety & Soundness**: State coherence and historical data integrity are managed through **chameleon hash functions** (and variants like PCH or RPCH), which allow for fine-grained redaction of illegal data (e.g., malware or private information) while maintaining the chain's structural validity. To prevent **double-spending** and ensure **atomicity**, the system utilizes a result-based identification method where inconsistent results lead to task rejection and subsequent rollback/re-execution. Safety is further reinforced by **Orderers** who sort verified transactions and package them into blocks for immutable storage on the permissioned ledger.
+- **Compliance & Accountability**: Accountability is enforced through a **device-binding mechanism** that maps a node's **Unique Device Identification (UDI)** to a Globally Unique Identifier (GUID), significantly increasing the cost of **Sybil attacks**. The framework provides an automated auditing trail by storing the **latest credit values ($CL_v$)** and historical counts of awards and punishments immutably on the blockchain. This **reputation-based scheme** ensures that only nodes in "Normal" status (high credit) can assume the role of **modifiers**, who possess the trapdoor keys necessary for data modification. [ISO 20022 was not explicitly mentioned in the source].
+- **Other Relevant NFR/Compliance Details**: The system uses a **logarithmic function** to calculate initial credit values to prevent **consensus monopolies** by nodes with high-end hardware, ensuring a more equitable distribution of participation privileges.
+```
+
+---
+
+```
+---
+title: "Daml: A Smart Contract Language for Securely Automating Real-World Multi-Party Business Workflows"
+year: 2021
+main_author: "Alexander Bernauer, Sofia Faro, Rémy Hämmerle, Martin Huschenbett, Moritz Kiefer, Andreas Lochbihler, Jussi Mäki, Francesco Mazzoli, Simon Meier, Neil Mitchell, Ratko G. Veprek"
+main_contribution: "Development of Daml, a functional smart contract language featuring a hierarchical transaction tree model and a 'signatory-observer' authorization framework to map legal workflows to distributed ledgers."
+evidence_type: "Research Article"
+technical_constraints: "Supports USD 100b+ in daily transaction volumes across financial services and supply chain sectors; deterministic execution by construction to prevent out-of-sync replicas."
+reference: "Bernauer, A., et al. (2021). Daml: A Smart Contract Language for Securely Automating Real-World Multi-Party Business Workflows. Digital Asset Switzerland."
+doi: "N/A (Open Source Technical Paper)"
+---
+
+### Daml: A Smart Contract Language for Securely Automating Real-World Multi-Party Business Workflows
+
+**Findings:**
+- **Availability & Fault Tolerance**: Daml achieves availability by being ledger-agnostic, running on **centralized databases** (Postgres, Oracle), **Byzantine Fault Tolerant (BFT) deployments** (VMware Blockchain via SBFT, Hyperledger Fabric, Hyperledger Besu via IBFT), or as a **second layer** via an atomic commit protocol. In the second-layer model, availability and data integrity are maintained locally on participant nodes, using the underlying blockchain only for ordering and coordinating commits. The system supports **delegation of authority**, allowing entities to execute sub-workflows that others have pre-authorized, which prevents "stuck" contracts by ensuring signatories can always jointly archive obsolete instances.
+- **Performance Benchmarks**: While specific TPS or millisecond latency metrics are not provided for the language itself, the source notes that Daml-based systems currently process **USD 100b+ in daily transaction volumes** in the financial services, healthcare, and supply chain sectors. It highlights that **strict call-by-value evaluation** is used (unlike Haskell’s laziness) to simplify implementation and handle the frequent synchronization required in DLT settings.
+- **Safety & Soundness**: State coherence is maintained through a **modified UTXO model** where contracts are immutable; updates involve the atomic archival of old instances and creation of new ones within a **Transaction Tree**. The system prevents **double-spending** by requiring the Daml ledger to validate that all updates conform to semantics and are linked to cryptographic evidence for **non-repudiation**. To ensure safety during concurrent access, the use of **nonconsuming choices** reduces contention in the UTXO-like model, allowing multiple actors to interact with a contract without archiving it.
+- **Compliance & Accountability**: Accountability is hard-coded via **Signatories** (parties whose authority is required for state changes) and **Observers** (parties guaranteed to see changes). The framework supports **manual intervention** to rectify unforeseen real-world events through explicit `Archive` choices, aligning the ledger with legal remedies. All code is organized into packages identified by **cryptographic hashes (content-based addressing)**, ensuring that any participant can independently verify the shared logic. Confidentiality is maintained by partitioning data by ownership; observers only see the specific transaction subtrees they are authorized to access. [ISO 20022 was not mentioned].
+- **Other Relevant NFR/Compliance Details**: The language uses a **CEK machine** for runtime execution and is **Turing complete**; however, it suggests a **gas-like cost model** for resource management to prevent DoS attacks through infinite loops.
+```
+
+---
+
+```
+---
+title: "Design and implementation of a decentralized trustless data standardization framework for blockchain interoperability using smart contracts"
+year: 2025
+main_author: "Abdulrahman Alzahrani, Amin Noaman, Ahmed A.A. Gad-Elrab, Fathy Eassa, Maher Khemakhem, Faisal Albalwy, Hosam Aljihani"
+main_contribution: "The Data Standardization Module (DSM), a decentralized framework for cross-chain interoperability that uses CBOR encoding to reduce data size by 60% while maintaining secure, trustless communication between Ethereum and Hyperledger Fabric."
+evidence_type: "Research Article"
+technical_constraints: "Average throughput of 250 TPS; 5ms optimized latency; 60% data size reduction (Compression Ratio of 2.5); Ethereum latency of 120ms vs. Hyperledger Fabric latency of 80ms."
+reference: "Alzahrani, A., et al. (2025). Design and implementation of a decentralized trustless data standardization framework for blockchain interoperability using smart contracts. Alexandria Engineering Journal, 129, 168–191."
+doi: "10.1016/j.aej.2025.06.011"
+---
+
+### Design and implementation of a decentralized trustless data standardization framework for blockchain interoperability using smart contracts
+
+**Findings:**
+- **Availability & Fault Tolerance**: The system ensures high availability through a **decentralized schema registry** stored across multiple blockchain nodes, eliminating single points of failure. It incorporates an **automated failover mechanism** where, if a transaction validation node fails, another node automatically assumes the validation responsibility. Fault tolerance is further enhanced by **redundant schema storage**, allowing the system to recover mapping rules even if individual nodes are compromised.
+- **Performance Benchmarks**: The DSM framework achieves an average throughput of **250 TPS** for cross-chain transactions and **220 TPS** for high-frequency data flows. **Latency** is recorded at **5ms** when optimized with CBOR, compared to 20ms for Polkadot and 18ms for Cosmos. Utilizing **CBOR encoding** results in a **60% reduction in data size** and a compression ratio (CR) of 2.5, significantly outperforming JSON-based methods.
+- **Safety & Soundness**: State coherence and data integrity are maintained through **end-to-end AES-256 encryption** and **SHA-256 hashing**, which generates a unique digital fingerprint for every transaction to detect unauthorized alterations. To prevent **double-spending** during cross-platform exchanges, the **Bridge Layer** utilizes smart contracts to enforce cross-chain validation and consistency. **Merkle proofs** are employed to verify the inclusion and integrity of transactions without revealing sensitive information.
+- **Compliance & Accountability**: The framework automates accountability by using **smart contracts** to log security events, access control policies, and metadata, creating a permanent and immutable audit trail. Identity is verified through **ECDSA digital signatures**, ensuring only legitimate participants can authorize transactions. The **Bridge Layer** explicitly manages **compliance** by ensuring all data transfers adhere to pre-defined governance rules and regulatory policies. [ISO 20022 was not explicitly mentioned in the source].
+- **Other Relevant NFR/Compliance Details**: The system employs a **two-tier security approach** where low-sensitivity data is fragmented and scrambled to reduce computational load, while high-sensitivity data undergoes full encryption. Integration with **big data platforms (Spark, Hadoop)** allows for scalable processing and real-time monitoring of large-scale blockchain histories.
+```
+
+---
+
+```
+---
+title: "Fantom: A scalable framework for asynchronous distributed systems"
+year: 2018
+main_author: "Sang-Min Choi, Jiho Park, Quan Nguyen, Andre Cronje"
+main_contribution: "Development of the Lachesis Protocol, an asynchronous, leaderless BFT consensus framework utilizing a Directed Acyclic Graph (DAG) called the OPERA chain to achieve near-linear scalability."
+evidence_type: "Research Article / Preprint"
+technical_constraints: "Tolerates up to one-third compromised nodes (n ≥ 3f + 1); throughput increases near-linearly with network size."
+reference: "Choi, S. M., Park, J., Nguyen, Q., & Cronje, A. (2018). Fantom: A scalable framework for asynchronous distributed systems. FANTOM Foundation."
+doi: "N/A (Preprint)"
+---
+
+### Fantom: A scalable framework for asynchronous distributed systems
+
+**Findings:**
+- **Availability & Fault Tolerance**: The system utilizes the **Lachesis Protocol**, a leaderless, asynchronous DAG-based framework that eliminates the single point of failure found in coordinator-based systems. To maintain availability, it supports **dynamic participation**, allowing nodes to join or leave the network without a fixed membership requirement. System progress is maintained through **asynchronous event transmission** and a **broadcast-based gossip protocol**, where nodes randomly select $k$ peers for synchronization based on a **cost function** designed to prevent "lazy nodes" (nodes that contribute fewer blocks) from slowing the network. If consensus on a time candidate is not reached, a **Reselection process** and a **minimal selection frame** are used to ensure the system reaches Byzantine agreement.
+- **Performance Benchmarks**: The source indicates that the protocol achieves **near-linear throughput increases** as more nodes enter the network because it leverages asynchronous processing rather than synchronous voting blocks. While specific TPS or millisecond latency figures are not provided in this specific paper, it emphasizes "faster consensus" through optimizations like an **n-row flag table** for root selection and the use of **domination relationships** in graph theory to identify consensus events without full broadcast voting.
+- **Safety & Soundness**: State coherence is maintained through **Lamport timestamps**, which define a strict topological ordering of event blocks without relying on physical clocks. **Double-spending** is prevented via **fork detection**; the protocol proves that an honest node cannot accept a fork, and since honest nodes constitute more than 2/3 of the network, a forked block cannot reach the "root" status required for finality. Safety (the absence of forks) and liveness are guaranteed as long as more than **two-thirds of the participant nodes are reliable**.
+- **Compliance & Accountability**: The system provides an automated audit trail through the **Main-chain**, a core subgraph of the OPERA chain that stores "shortcuts" between **Atropos blocks** (blocks with finalized consensus time). This Main-chain allows nodes to quickly access transaction history and identify **unknown participants or attackers**. Accountability is further enforced by requiring every event block to contain a **digital signature** and hash references to $k$ previous blocks, ensuring non-repudiation. The protocol is formalized using **Concurrent Common Knowledge (CCK)** semantics to define agreement in the presence of faulty or malicious processes. [ISO 20022 was not mentioned].
+- **Other Relevant NFR/Compliance Details**: The framework uses a **pruning mechanism** to remove unnecessary historical data from node structures once a block is nominated as an Atropos, ensuring efficient data management as the ledger grows.
+```
+
+---
+
+```
+---
+title: "Formally Verifying the Safety of Pipelined Moonshot Consensus Protocol"
+year: 2024
+main_author: "M. Praveen, Raghavendra Ramesh, Isaac Doidge"
+main_contribution: "Formal verification of the Pipelined Moonshot BFT SMR protocol using IVy, proving it is fork-free and safe against double-spending in partially synchronous networks."
+evidence_type: "Research Article / Conference Paper"
+technical_constraints: "Optimized for wide-area networks (WAN); aims for block throughput of one block per network hop and finalization latency of 3 network hops; tolerates < 1/3 Byzantine nodes."
+reference: "Praveen, M., Ramesh, R., & Doidge, I. (2024). Formally Verifying the Safety of Pipelined Moonshot Consensus Protocol. 5th International Workshop on Formal Methods for Blockchains (FMBC 2024)."
+doi: "10.4230/OASIcs.FMBC.2024.3"
+---
+
+### Formally Verifying the Safety of Pipelined Moonshot Consensus Protocol
+
+**Findings:**
+- **Availability & Fault Tolerance**: Pipelined Moonshot is a **rotating leader-based BFT SMR protocol**,. It maintains availability through a **view-based progress mechanism** using two types of certificates: **Quorum Certificates (QC)** for successful block proposals and **Timeout Certificates (TC)** when a leader fails. A TC, comprised of $2f + 1$ timeout messages, ensures the network advances to the next designated leader ($L_{v+1}$) and view, preventing the system from halting during node failures,. To maximize throughput, it employs **optimistic proposals**, allowing a leader to propose a new block as soon as it votes for the previous one, rather than waiting for a full certificate.
+- **Performance Benchmarks**: The protocol is optimized for **high block throughput**, cited as achieving **one block per network hop**. It targets the "lowest block finalization latency" of **3 network hops** in the normal path. The source frames the need for this performance by citing approximately **USD 55 billion total value locked (TVL)** on DeFi applications as of early 2024,.
+- **Safety & Soundness**: State coherence is maintained by ensuring that for any two honest validators, one committed chain must be a **prefix** of the other, effectively preventing forks,. **Double-spending** is prevented through this formal safety guarantee,. The protocol utilizes a **locking mechanism** where validators lock the QC with the highest view they have observed ($lock_i$) and only vote for proposals that extend their locked state or provide a higher-ranked certificate,,. A **Direct Commit** occurs when a validator receives two adjacent QCs ($C_{v-1}$ and $C_v$) for a block and its immediate successor,.
+- **Compliance & Accountability**: [Specific machine-readable standards like ISO 20022 are not mentioned]. The protocol provides accountability through **digital signatures**, assuming Byzantine nodes cannot break cryptographic primitives or forge signatures of honest participants. The formal model includes a **Quorum Verification module** that uses "monitors" to act as a global record of all messages, ensuring the integrity of certificates by verifying that all honest members of a quorum actually sent the required prepare or timeout messages.
+- **Other Relevant NFR/Compliance Details**: The safety of the protocol was verified using the **IVy tool** and the **Z3 SMT solver**,. The verification process involved defining **190 inductive invariants** and **23 monitors** to prove the protocol is safety-error-free,.
+```
+
+---
+
+```
+---
+title: "HETEROGENEOUS MULTI-SOURCE DATA INTEGRATION BASED ON THE MECHANISMS OF DATA FACTORIZATION AND MARKETIZATION"
+year: 2025
+main_author: "Weiguo Zhong, Junzhe Wang, Yiqiang Yang"
+main_contribution: "Development of a six-stage, governance-aware integration pipeline that produces 'contractible data assets' by emitting machine-readable assurance artifacts (lineage, versioned schemas, quality scorecards, and purpose logs) at the release level."
+evidence_type: "Research Article"
+technical_constraints: "Average processing latency of 12.9s per 1000 records; sustained performance up to 2× input rate; 52 GB peak RAM usage per million records."
+reference: "Zhong, W., Wang, J., & Yang, Y. (2025). HETEROGENEOUS MULTI-SOURCE DATA INTEGRATION BASED ON THE MECHANISMS OF DATA FACTORIZATION AND MARKETIZATION. Journal of Digital Economy."
+doi: "https://doi.org/10.1016/j.jdec.2025.11.002"
+---
+
+### HETEROGENEOUS MULTI-SOURCE DATA INTEGRATION BASED ON THE MECHANISMS OF DATA FACTORIZATION AND MARKETIZATION
+
+**Findings:**
+- **Availability & Fault Tolerance**: The framework maintains availability through an **automated failover mechanism** where, if a validation node fails, another node assumes the responsibility. It utilizes **idempotent connectors** with **exactly-once semantics** and backoff/retry policies to handle API instability. A **three-tier storage structure** (raw, processing, and analytic) is employed using HDFS/HBase and PostgreSQL, ensuring that audit and **rollback are always feasible**. For streaming data, the system relies on **message queues** and **Change Data Capture (CDC)** to preserve data types and reduce drift.
+- **Performance Benchmarks**: In a four-node cluster environment, the pipeline achieved an average **latency of 12.9 seconds per 1000 records**. Resource efficiency metrics include **57 CPU-hours** and **52 GB peak RAM** usage per million records. **Throughput** was stress-tested up to 4× input rates, with the system remaining within latency targets at **2× the standard load**. The model achieved a **93.6% accuracy rate** and an **89.8% duplicate-detection rate**.
+- **Safety & Soundness**: State coherence is enforced via a **release-centric view**, where each release is a bounded, reproducible object with **versioned schemas**. Safety is verified through **release-level checks** including schema conformance, **functional dependency (FD) pass rates** (e.g., firm ID ↔ registration date), and **timestamp monotonicity** (e.g., checkout ≤ return). To prevent data loss or corruption, **SHA-256 hashing** is used to generate unique digital fingerprints for audit logs and lineage records.
+- **Compliance & Accountability**: The system generates **portable evidence bundles** (dataset manifests) containing lineage hashes, quality scorecards, and **graded-authorization** metadata to support pricing and liability. Accountability is automated via **purpose logs** that record the legal basis for every query. While **ISO 20022** is not the primary focus, the system enforces **ISO-formatted timestamps** and integrates with **graded authorization tiers** (from minimal use to redistribution) to ensure authorization conformity. Accountability is further supported by **lineage completeness**, providing a third-party verifiable trace of source IDs and processing steps.
+- **Other Relevant NFR/Compliance Details**: The pipeline utilizes **causal feature screening** (Granger-causal relevance) and **dimension reduction** (PCA/Lasso) to ensure features are both compact and explainable. **PII masking** and geo-temporal jitter are automatically applied based on sensitivity flags in a Source Registry.
+```
+
+---
+
+```
+---
+title: "Implicit Consensus: Blockchain with Unbounded Throughput"
+year: 2018
+main_author: "Zhijie Ren, Kelong Cong, Johan Pouwelse, Zekeriya Erkin"
+main_contribution: "A novel 'implicit consensus' model where global consensus is reached only on hashes of Check Points (CPs), while individual transactions are validated locally via 'spontaneous sharding' and a self-interest-driven proof collection mechanism."
+evidence_type: "Research Article"
+technical_constraints: "BFT tolerance of f ≤ ⌊(N-1)/3⌋; consensus message complexity of O(N); throughput scales up to O(CN) in optimal paired-node scenarios."
+reference: "Ren, Z., Cong, K., Pouwelse, J., & Erkin, Z. (2018). Implicit Consensus: Blockchain with Unbounded Throughput. Delft University of Technology."
+doi: "N/A (Included in source text)"
+---
+
+### Implicit Consensus: Blockchain with Unbounded Throughput
+
+**Findings:**
+- **Availability & Fault Tolerance**: The system maintains availability by decoupling transaction processing from global consensus. It utilizes an existing BFT scheme (e.g., PBFT) to reach agreement on **Check Points (CPs)**, which "seal" the state of individual blockchains,. To ensure liveness without a global termination requirement, it relies on a **self-interest phenomenon**: it is in the interest of the transacting parties (e.g., the issuer) to provide the necessary proofs to other nodes to ensure their transaction is validated,. The system is **censorship-free** because any node that has validated a transaction can independently provide the complete and correct proofs to any other honest node.
+- **Performance Benchmarks**: The source claims **unbounded throughput** because the rate of valid transactions is independent of the global consensus scheme,. In optimal scenarios where nodes are paired and only transact with each other, throughput reaches **$O(CN)$**, where $C$ represents combined communication and computation capacity. In the worst case (all nodes transacting with all others), throughput is **$O(C)$**. Latency remains dependent on the underlying BFT algorithm used for CPs, but communication overhead for consensus is reduced to **$O(N)$**,.
+- **Safety & Soundness**: State coherence is maintained through **Individual Blockchains** for each node, where transactions are only recorded by the related parties,. **Double-spending** is prevented by a local **Validation Scheme** that checks for forks (Definition 10) and ensures transaction sources have not been previously used,. Safety is guaranteed because CPs included in the global consensus make all prior transactions on that chain **tamper-proof**,. Correctness is maintained even in network partitions because honest nodes only validate transactions after collecting **complete and correct proofs** (entire chain segments back to the genesis block or initial balance),.
+- **Compliance & Accountability**: Accountability is enforced through a **Public Key Infrastructure (PKI)** where every transaction must be signed by the sender's private key, ensuring non-repudiation,. The system facilitates automated auditing by keeping a permanent record of **invalid transactions**, which honest nodes can use to identify and take actions against malicious actors. To mitigate spam and DDoS attacks, the authors propose the use of **reputation or blacklist schemes**. [Machine-readable standards like ISO 20022 were not mentioned].
+- **Other Relevant NFR/Compliance Details**: The system introduces **spontaneous sharding**, where rational nodes optimize storage and transmission costs by only validating and recording the specific "proofs" (transaction history and chain segments) relevant to their own transactions,.
+```
+
+---
+
+```
+---
+title: "Investigating Sharding Advancements, Methodologies, and Adoption Potential in Hedera"
+year: 2024
+main_author: "Ziwei Wang, Cong Wu, Paolo Tasca"
+main_contribution: "Proposed a hybrid sharding solution for Hedera using local and global committees to achieve horizontal scalability while maintaining asynchronous Byzantine Fault Tolerance (ABFT)."
+evidence_type: "Research Article"
+technical_constraints: "Tolerates < 1/3 faulty nodes; throughput $T_{throughput} \propto B$ (bandwidth); storage reduced to $1/s$ (shards) for local committees."
+reference: "Wang, Z., Wu, C., & Tasca, P. (2024). Investigating Sharding Advancements, Methodologies, and Adoption Potential in Hedera. Wuhan University / Exponential Science."
+doi: "N/A (Included in source text)"
+---
+
+### Investigating Sharding Advancements, Methodologies, and Adoption Potential in Hedera
+
+**Findings:**
+- **Availability & Fault Tolerance**: The proposed system maintains availability through a **hybrid sharding architecture** where a **Global Committee** acts as a redundant backup for all **Local Committee** Hashgraphs. In the event of an entire shard failure, the system can **resume work on the failed shard** by reorganizing the committee using these backups. Fault tolerance is rooted in **Asynchronous Byzantine Fault Tolerance (ABFT)**, allowing the network to tolerate up to $f < 1/3$ faulty nodes. **Dynamic reconfiguration** is triggered when the number of exiting nodes in a committee exceeds a specified threshold (e.g., half the number of committees), ensuring the shard remains resilient against join-leave attacks.
+- **Performance Benchmarks**: While specific new metrics for the hybrid model are analyzed via complexity, the source notes that **Ethereum Danksharding** and **Zilliqa** are expected to handle **thousands of TPS**. The proposed sharding reduces communication costs per node from $O((n-1) \cdot E)$ to **$O((n/s - 1) \cdot E)$**, where $s$ is the number of shards, effectively reducing the bandwidth requirement per node to **$B/s$**. Storage requirements for local nodes are similarly reduced to **$1/s$** of the non-sharded size.
+- **Safety & Soundness**: State coherence is maintained by partitioning the DAG into interlinked subgraphs that utilize **checkpoints with signed timestamps or hash pointers** to synchronize with the Global Committee. To prevent **double-spending**, the system relies on the **total ordering of events** provided by the Hashgraph consensus and ABFT invariants. Cross-shard consistency and **atomicity** are ensured through **lightweight two-phase commit (2PC) protocols** and batch processing at the Global Committee level.
+- **Compliance & Accountability**: The source highlights the use of **reputation-based systems** (e.g., RepChain) to assign roles and enhance security. Accountability is facilitated by the **Gossip about Gossip protocol**, which builds a **complete and verifiable history of events** via cryptographic hashes, ensuring nodes can independently reconstruct a chronologically consistent ledger. Security during committee reconfiguration is automated using **Decentralized Randomness Beacons** or **Verifiable Delay Functions (VDFs)** to ensure unpredictable node assignment. [ISO 20022 was not explicitly mentioned].
+- **Other Relevant NFR/Compliance Details**: The framework addresses the **Scalability Trilemma** by combining network, transaction, and state sharding into a "full sharding" solution. It identifies **consensus timestamps** as a randomness seed for committee assignments but warns they must be carefully calibrated to avoid predictability.
+```
+
+---
+
+```
+---
+title: "Lachesis: Scalable Asynchronous BFT on DAG Streams"
+year: 2021
+main_author: "Quan Nguyen, Andre Cronje, Michael Kong, Egor Lysenko, Alex Guzev"
+main_contribution: "The Lachesis protocol, an asynchronous Byzantine Fault Tolerant (aBFT) consensus mechanism using a leaderless Directed Acyclic Graph (OPERA DAG) and Proof-of-Stake to achieve deterministic finality in a permissionless environment."
+evidence_type: "Technical Preprint / Whitepaper"
+technical_constraints: "Target Time to Finality (TTF) of ~1s; peak raw throughput of 11,000 TPS; tolerates < 1/3 Byzantine validating power (n ≥ 3f + 1)."
+reference: "Nguyen, Q., Cronje, A., Kong, M., Lysenko, E., & Guzev, A. (2021). Lachesis: Scalable Asynchronous BFT on DAG Streams. FANTOM Foundation."
+doi: "N/A (Preprint)"
+---
+
+### Lachesis: Scalable Asynchronous BFT on DAG Streams
+
+**Findings:**
+- **Availability & Fault Tolerance**: Lachesis achieves **asynchronous Byzantine Fault Tolerance (aBFT)**, maintaining system availability and progress even under adverse network conditions, provided that less than one-third of the validating power is compromised. The protocol is **leaderless**, eliminating the single point of failure and censorship risks associated with primary-node/coordinator-based systems. It supports **dynamic participation**, allowing nodes to join or leave the network without a fixed membership requirement. To handle persistent node failure, the system identifies and **prunes offline validators** from the active set after a set period, allowing the remaining network to function normally.
+- **Performance Benchmarks**: The protocol aims for a **Time to Finality (TTF) close to 1 second** for transactions. In benchmarking experiments on a 7-node testnet, the system achieved a **peak raw throughput of 11,000 TPS** and maximum **syncing throughput of 4,000–10,000 TPS** on commodity hardware. Under high-latency conditions (300–700ms added to 1/3 of nodes), average TTF increased to **4.64s**, but overall **TPS remained stable** at approximately 50. The RPC API service for the Opera mainnet is cited as handling peaks of **250,000 requests per second** across distributed server hives.
+- **Safety & Soundness**: State coherence is maintained through **deterministic finality**, where all honest nodes eventually converge on a consistent total ordering of event blocks. **Double-spending** is prevented by the aBFT consensus algorithm and the **OPERA DAG structure**, which uses **Lamport timestamps** and "happened-before" relations to define a logical ordering independent of physical clocks. The system employs a **forklessCause** relation to ensure that honest nodes do not observe or propagate conflicting events from the same creator. Malicious actors who attempt to split the DAG have their **stakes burnt**, as honest validators (forming a 2/3 majority) will detect and reject the fork.
+- **Compliance & Accountability**: Accountability is enforced through a **Proof-of-Stake (PoS)** model where a validator's stake is **voided and burnt** if they are found to be dishonest. The network supports automated auditing via **Observer (Monitor) nodes**, which perform **post-validation** of the ledger without participating in the consensus process. A reputation-based metric called **Saga points** is used to reward nodes for successful validation achievements, providing a verifiable performance history for every validator. All event blocks must include an **ECDSA digital signature** to ensure non-repudiation. [Machine-readable standards like ISO 20022 were not mentioned].
+- **Other Relevant NFR/Compliance Details**: The protocol optimizes storage and processing via **checkpoints (epochs)**, which allow for the pruning of local history and faster consensus computation. To mitigate **Denial of Service (DoS)** attacks, the system utilizes a **transaction fee** proportional to the operation's computational cost (gas).
+```
+
+---
+
+```
+---
+title: "MSSP: A Blockchain Sharding Protocol Based on Multi-Shard Storage"
+year: 2025
+main_author: "Jinyi Liu, Junfeng Tian, and Zhaoyu Nian"
+main_contribution: "Multi-shard storage mechanism allowing nodes (m-nodes) to form consensus zones that directly process cross-shard transactions, eliminating the need for complex coordination like 2PC."
+evidence_type: "Research Article"
+technical_constraints: "Tolerates < 1/3 malicious nodes per shard; experiments conducted with 20 Mbps bandwidth cap and < 100 ms assumed network latency; security threshold requires < 14% malicious nodes for failure probability < 2⁻¹⁵."
+reference: "Liu, J., Tian, J., & Nian, Z. (2025). MSSP: A Blockchain Sharding Protocol Based on Multi-Shard Storage. Applied Sciences, 15(6), 3260."
+doi: "10.3390/app15063260"
+---
+
+### MSSP: A Blockchain Sharding Protocol Based on Multi-Shard Storage
+
+**Findings:**
+- **Availability & Fault Tolerance**: The protocol utilizes **multi-shard storage** where **m-nodes** store data from multiple shards to form **consensus zones** capable of direct transaction processing. Availability is maintained via a **P-probability return update completion proof mechanism**, which identifies and **excludes faulty nodes** from subsequent consensus processes if they fail to complete updates promptly across four rounds. The system relies on the **PBFT consensus algorithm**, which ensures liveness and safety as long as malicious nodes do not exceed **one-third** of the total nodes in each shard.
+- **Performance Benchmarks**: In a configuration with 14 shards, MSSP achieved a **maximum throughput of 2654 TPS**, outperforming traditional sharding protocols (such as Monoxide, BrokerChain, and Estuary) by **1.4 to 3.1 times**. **Confirmation latency** was significantly reduced by **40% to 84%** compared to traditional systems because cross-shard transactions are processed in a single round without additional inter-shard communication. Experimental results indicate that optimal throughput is reached when the proportion of m-nodes is between **20% and 25%**.
+- **Safety & Soundness**: State coherence is maintained through a **priority sorting mechanism** that transforms a tree-like blockchain structure into a linear chain, effectively preventing **double-spending attacks** by discarding conflicting blocks based on consensus zone priority. To prevent predictability and manipulation by attackers, the system employs **priority auto-tuning**, which dynamically adjusts the priority of consensus zones after every block submission. **Cross-shard consistency** is ensured by requiring leaders to send update notifications and proofs to all relevant shards simultaneously upon transaction completion.
+- **Compliance & Accountability**: The system features an **automated auditing basis** through a buffer that records whether nodes have completed updates on time in recent rounds, allowing for the detection of abnormal behavior. Accountability is reinforced by a **multi-shard selection scheme** using SHA-256 and TRUNCATE functions to ensure shard identifiers are unique, unforgeable, and verifiable by other consensus nodes, thereby preventing **computing power aggregation attacks**. [Information not found regarding ISO 20022 or specific machine-readable financial standards].
+- **Other Relevant NFR/Compliance Details**: The protocol adopts a **space-for-time strategy**, where increased storage overhead (up to 8.5 times higher than Monoxide at $\omega=0.5$) is traded for a nearly **threefold increase in throughput**.
+```
+
+---
+
+```
+---
+title: "Making Speculative BFT Resilient with Trusted Monotonic Counters"
+year: 2019
+main_author: "Lachlan J. Gunn, Jian Liu, Bruno Vavala, N. Asokan"
+main_contribution: "Development of SACZyzzyva, a speculative BFT protocol that uses a single active trusted monotonic counter to eliminate the performance-degrading non-speculative fallback in the presence of faults."
+evidence_type: "Research Article"
+technical_constraints: "Requires 3f + 1 replicas to tolerate f faults; latency increase of < 40 µs per additional replica; requires at least f + 1 nodes to have hardware-based TEEs (e.g., Intel SGX)."
+reference: "Gunn, L. J., Liu, J., Vavala, B., & Asokan, N. (2019). Making Speculative BFT Resilient with Trusted Monotonic Counters. IEEE."
+doi: "N/A (Included in source text)"
+---
+
+### Making Speculative BFT Resilient with Trusted Monotonic Counters
+
+**Findings:**
+- **Availability & Fault Tolerance**: SACZyzzyva maintains availability using **$3f+1$ replicas** to tolerate $f$ faults, but unlike standard Zyzzyva, it eliminates the need for a **non-speculative fallback** when a single replica is slow or non-responsive. It utilizes a **Single Active Counter (SAC)** construct where only the primary needs an active hardware-based monotonic counter to order requests. If the primary fails or is non-responsive, replicas detect the misbehavior through timeouts and initiate a **view-change protocol**. Liveness is guaranteed in the **weak-synchrony model**, ensuring that even if messages are delayed, the protocol eventually reaches a stable view where requests complete.
+- **Performance Benchmarks**: In low-latency datacenter tests (AWS Frankfurt), SACZyzzyva transaction latencies increased at a marginal rate of **35 µs per additional replica**. In high-latency internet-wide tests (Ohio, Frankfurt, Sydney), the increase was **25 µs per replica**. The protocol significantly reduces internet latency by requiring only **two-thirds ($2f+1$) of replicas to respond** for a request to complete, allowing it to avoid waiting for responses from geographically distant "slow" links.
+- **Safety & Soundness**: State coherence is maintained by the primary binding a **sequential monotonic counter value** to the cryptographic hash of each request, creating an **ordering certificate**. This mechanism prevents **equivocation** (sending different messages to different recipients) because any "hole" in the sequence of counter values is immediately detectable by honest replicas. **Double-spending** is prevented through Theorem 1 (Safety), which proves that histories of completed requests can never diverge across clients, even if individual replica states vary during speculative execution.
+- **Compliance & Accountability**: The protocol relies on **Remote Attestation** from Trusted Execution Environments (TEEs) like **Intel SGX or ARM TrustZone** to prove the existence and integrity of the trusted counter to external participants. Accountability is enforced via **digital signatures** and the counter’s **transferable authentication**; since counter increments are signed, a primary cannot deny the specific order it assigned to a transaction. While the source does not explicitly mention **ISO 20022**, it notes that the protocol provides the "strong consistency" and "finality" required for distributed ledgers and cryptocurrencies.
+- **Other Relevant NFR/Compliance Details**: The authors provide an **impossibility result**, proving that it is impossible to exceed the $3f+1$ replica requirement for $f$ faults unless more than two-thirds of the network participants possess a trusted hardware component. This defines the **optimal fault tolerance** for heterogeneous networks where only some nodes have high-security hardware.
+```
+
+---
+
+```
+---
+title: "Optimal shard number determination algorithm based on security and performance in sharded blockchain"
+year: 2026
+main_author: "Shangping Wang, Haotong Cao, Ruoxin Yan"
+main_contribution: "The SPSN (Security-and-Performance-Based Optimal Shard Number) algorithm, a pre-sharding quantitative method to determine the shard count that minimizes consensus runtime while keeping system failure probability below a defined safety threshold."
+evidence_type: "Research Article"
+technical_constraints: "Minimum of 100 nodes per shard; Ethereum-style 12s slots; system failure probability (Pf) must be ≤ security limit (η)."
+reference: "Wang, S., Cao, H., & Yan, R. (2026). Optimal shard number determination algorithm based on security and performance in sharded blockchain. Computer Standards & Interfaces, 97, 104128."
+doi: "10.1016/j.csi.2026.104128"
+---
+
+### Optimal shard number determination algorithm based on security and performance in sharded blockchain
+
+**Findings:**
+- **Availability & Fault Tolerance**: To maintain availability during failures, the framework utilizes **shard reconfiguration** and **state synchronization** via "state blocks" to periodically update node statuses. It addresses "single shard takeover" and "1/3 attacks" by enforcing a consensus security threshold ($a$) for each shard; for BFT-type consensus, a shard is considered secure if at least $2/3$ of nodes are honest, while Raft requires a $1/2$ majority. The **SPSN algorithm** ensures availability by only selecting shard counts where the global **system failure probability** ($P_f$)—calculated via binomial approximation of hypergeometric distributions—is below a predefined threshold ($\eta$).
+- **Performance Benchmarks**: Performance is optimized by minimizing the **system consensus theoretical runtime** ($T(k)$), which includes both intra-shard and cross-shard overhead. In a 1,000-node system using PBFT and the Atomix protocol, the **optimal shard count was identified as $k=7$**. For a 10,000-node system under the same protocols, the optimal count rose to **$k=9$**. In scenarios using Raft and Two-Phase Commit (2PC), optimal counts were higher: **$k=15$** for 1,000 nodes and **$k=16$** for 10,000 nodes. The system adopts an Ethereum-like **12-second slot duration** for block generation.
+- **Safety & Soundness**: State coherence across the network is maintained using **state blocks** to synchronize the status of different shards at every epoch. **Double-spending** and data loss during cross-shard operations are prevented through atomic protocols: the **Atomix protocol** uses a "lock-then-unlock" process coordinated by the client, while the **Two-Phase Commit (2PC)** protocol ensures that transactions across all relevant shards either all commit or all roll back. For intra-shard safety, the system relies on the **deterministic ordering** provided by PBFT or the log-based consensus of Raft.
+- **Compliance & Accountability**: The source highlights **reputation-based sharding** (e.g., RepChain) to identify and evaluate node behavior, associating voting shares with established reputation scores. **Automated auditing** is supported through fault detection architectures, including **parity-check based detection** for cryptographic operations to identify abnormal nodes. To ensure the integrity of consensus data (e.g., block headers and transaction lists), the use of **CRC and Hamming codes** is proposed. Every transaction and consensus message requires **ECDSA digital signatures** and verification to ensure non-repudiation. [ISO 20022 was not explicitly mentioned].
+- **Other Relevant NFR/Compliance Details**: The research identifies **cross-shard transaction proportions** as a primary performance bottleneck; reducing these through "intelligent sharding" based on account correlation is cited as a key future requirement for large-scale B2B applications like the IoT and metaverse. The model also explores **post-quantum encryption** requirements, citing hardware acceleration for SIKE and SIDH as necessary for resisting emerging composite threats.
+```
+
+---
+
+```
+---
+title: "OverShard: Scaling blockchain by full sharding with overlapping network and virtual accounts"
+year: 2023
+main_author: "Bin Yu, He Zhao, Tong Zhou, Nianzu Sheng, Xiaofeng Li, Jinlin Xu"
+main_contribution: "Proposed a full sharding architecture combining an overlapping network model and virtual accounts to eliminate cross-shard transaction coordination and achieve nearly linear scalability."
+evidence_type: "Research Article"
+technical_constraints: "Minimum 100 nodes per shard; 12s block interval; maximum throughput scaling equal to the number of shards (Nshard)."
+reference: "Yu, B., Zhao, H., Zhou, T., Sheng, N., Li, X., & Xu, J. (2023). OverShard: Scaling blockchain by full sharding with overlapping network and virtual accounts. Journal of Network and Computer Applications, 220, 103748."
+doi: "10.1016/j.jnca.2023.103748"
+---
+
+### OverShard: Scaling blockchain by full sharding with overlapping network and virtual accounts
+
+**Findings:**
+- **Availability & Fault Tolerance**: The system maintains availability through an **overlapping network model** where each node joins multiple shards, ensuring several times more nodes per shard compared to traditional architectures. This redundancy allows any node to obtain block, transaction, and state data for any shard from **neighbor nodes within a single shard** (intra-shard communication) instead of relying on complex inter-shard synchronization. To handle long-term corruption or node failure, nodes are **randomly and periodically reallocated** to different shards at the start of each new epoch after solving a PoW puzzle.
+- **Performance Benchmarks**: In a prototype of 1,200 nodes and 128 shards, the framework achieved a **throughput of nearly 2,344 TPS**, representing a **128× increase** (scaling linearly with the number of shards) over a non-sharded system. **Confirmation latency** is maintained at **one block interval (~12s)**, as the architecture eliminates the need for multiple consensus rounds common in cross-shard protocols. For 128 shards, the average number of nodes per shard remains above 100, which is higher than traditional sharding but reduces per-node storage to roughly **10-15%** of the total ledger.
+- **Safety & Soundness**: State coherence is enforced via a **virtual accounts model** where master accounts in one shard have attached virtual accounts in all other shards to facilitate internal shard processing. To prevent **double-spending**, the system utilizes an improved **simultaneous PoW mining** protocol; each new block includes the parent hashes of blocks from other shards, allowing transactions to be confirmed by multiple shards at once. Verifiers prevent fraud by checking a sender's **total balance across all virtual accounts** rather than just the local shard balance.
+- **Compliance & Accountability**: Accountability is managed by assigning every transaction to a specific shard based on the **sender's account address** (for transfers) or the **smart contract address**, ensuring a deterministic and auditable validation path. The system supports decentralized **malicious node detection**; if a node sends incorrect data, neighbor nodes verify it against the Merkle root and **delete/isolate the offending node** from the P2P network. While the source focuses on PoW, it notes that the architecture can support **reputation-based witness schemes** such as RepChain. [ISO 20022 is not mentioned].
+- **Other Relevant NFR/Compliance Details**: The framework uses **CBOR encoding** for changed-state data to keep cross-shard broadcast overhead negligible (approx. 48 bytes per record). It also introduces a **state merging** mechanism for "cold accounts" to delete inactive virtual account data and reduce per-node storage overhead.
+```
+
+---
+
+```
+---
+title: "Process-Commutative Distributed Objects: From Cryptocurrencies to Byzantine-Fault-Tolerant CRDTs"
+year: 2024
+main_author: "Davide Frey, Lucie Guillou, Michel Raynal, François Taïani"
+main_contribution: "Process-Commutative Objects (PCOs), a novel class of distributed objects that prevent double-spending without total ordering by utilizing Mazurkiewicz traces and FIFO reliable broadcast."
+evidence_type: "Research Article"
+technical_constraints: "Tolerates t < n/3 Byzantine processes (BAMP model) or t < n crash failures (CAMP model); requires FIFO reliable broadcast."
+reference: "Frey, D., Guillou, L., Raynal, M., & Taïani, F. (2024). Process-Commutative Distributed Objects: From Cryptocurrencies to Byzantine-Fault-Tolerant CRDTs. Univ Rennes, Inria, CNRS, IRISA, France."
+doi: "N/A (Included in source text)"
+---
+
+### Process-Commutative Distributed Objects: From Cryptocurrencies to Byzantine-Fault-Tolerant CRDTs
+
+**Findings:**
+- **Availability & Fault Tolerance**: The system maintains availability by substituting costly Byzantine Agreement with a **FIFO reliable broadcast abstraction**. In the crash failure model ($CAMP_{n,t}$), it can tolerate an arbitrary number of failures up to $t < n$, as reliable broadcast is computationally weaker than atomic registers and does not require a majority. In the Byzantine model ($BAMP_{n,t}$), it tolerates up to $t < n/3$ malicious participants. The protocol is fully asynchronous and does not rely on leader nodes or partial synchrony assumptions like Global Stabilization Time (GST) to ensure progress.
+- **Performance Benchmarks**: The authors state that trustless money transfer applications can be implemented "much more efficiently" using their FIFO-based approach compared to traditional implementations based on BFT total-order mechanisms (e.g., Proof-of-Work or Proof-of-Stake). It notes that total ordering is "generally very costly" and requires strong assumptions that impede scalability. While specific TPS/ms numbers for PCOs are not provided in the text, it refers to high-performance systems like **FastPay** as relevant benchmarks for BFT settlement.
+- **Safety & Soundness**: State coherence is maintained through **Strong Eventual Consistency (SEC)** and **Pipeline Consistency (PC)**. Unlike standard BFT CRDTs, which can only remediate duplicitous actions after the fact, PCOs **prevent double-spending** by enforcing **Update Legality**. The system uses **Mazurkiewicz traces** to define a legal language $L$ of operations; an update is only processed if the resulting trace is legal, ensuring that a user cannot, for instance, transfer the same funds twice as the second operation would violate the non-negative balance invariant.
+- **Compliance & Accountability**: Accountability is rooted in **authenticated bi-directional channels**, which ensure that the origin of every message is known and cannot be compromised. The framework supports **automated auditing and traceability**, identifying these as central requirements for B2B applications in supply-chain and health care. For complex workflows like work-stealing, accountability is managed by requiring correct processes to verify task results via **application-specific predicates** or by accepting a result only after it has been returned by $t+1$ processes. [ISO 20022 was not explicitly mentioned].
+- **Other Relevant NFR/Compliance Details**: PCOs are "local-first" data structures that handle conflicts between operations issued by the same participant without requiring a global total order. The generic algorithm can be converted to a **state automaton** to make practical implementation more efficient.
+```
+
+---
+
+```
+---
+title: "Proteus: Append-Only Ledgers for (Mostly) Trusted Execution Environments"
+year: 2025
+main_author: "Shubham Mishra, João Gonçalves, Chawinphat Tankuranand, Neil Giridharan, Natacha Crooks, Heidi Howard, Chris Jensen"
+main_contribution: "The Proteus consensus protocol, which embeds a BFT auditing protocol inside a CFT protocol to provide integrity guarantees against TEE platform compromises without adding message overhead."
+evidence_type: "Research Article"
+technical_constraints: "Requires $N \ge 2(c + f_{live}) + f_{safe} + 1$ nodes; peak throughput of 345,000 txn/s; audit latency 15% lower than state-of-the-art BFT (Autobahn)."
+reference: "Mishra, S., et al. (2025). Proteus: Append-Only Ledgers for (Mostly) Trusted Execution Environments. UC Berkeley / Azure Research."
+doi: "N/A (Provided as Source Text)"
+---
+
+### Proteus: Append-Only Ledgers for (Mostly) Trusted Execution Environments
+
+**Findings:**
+- **Availability & Fault Tolerance**: Proteus utilizes **Platform-Fault-Tolerance (PFT)**, a failure model that distinguishes between independent node crashes and correlated platform-wide TEE compromises. To maintain availability during crashes, it replicates data across **2f + 1** TEE-augmented replicas using a CFT protocol. System liveness is maintained through a **timer-based leader election** process and a novel fourth step in the view-change called **View Stabilization**. This stabilization ensures that new leaders extend a branch containing all previously committed transactions, even if they haven't been audited yet.
+- **Performance Benchmarks**: Proteus achieves a peak throughput of **345,000 txn/s** and is primarily bandwidth-bottlenecked at the leader. The framework provides **2.6× lower commit latency** than standard BFT protocols by placing "cautious trust" in TEEs. Quantitative evaluations show that **audit latency is 15% lower** than Autobahn (a state-of-the-art BFT protocol), while incurring only an **11% throughput loss**. Running inside Intel TDX or AMD SEV-SNP environments results in an **11–15% reduction in throughput** compared to non-TEE setups.
+- **Safety & Soundness**: State coherence is maintained through **hash-chaining**, where each batch is cryptographically linked to all predecessors. The system provides two notions of finality: **Committed Transactions** (durable if TEEs are secure) and **Audited Transactions** (safe up to $\pi_{safe}$ platform compromises). To prevent **double-spending and forking** during TEE compromises, Proteus embeds a BFT protocol that detects **equivocation** and triggers a reconciliation process where replicas roll back conflicting batches to follow the audited branch.
+- **Compliance & Accountability**: The system features **asynchronous background auditing** to reconcile the distributed log against Byzantine attacks without burdening clients. Accountability is enforced through **Receipts**—cryptographic evidence of committing or auditing transactions that clients can use for non-repudiation. It specifically supports a **Code Transparency Service (CTS)**, which maintains a ledger of signed claims for software supply chain provenance and performs independent validation of claims across all replicas. [ISO 20022 was not explicitly mentioned].
+- **Other Relevant NFR/Compliance Details**: Proteus utilizes **pipelining** to share messages between the CFT and BFT phases, ensuring the auditing process never trails the commit index by more than a constant bound. It also supports a **Fast Audit Path** that allows transactions to be audited in a single round-trip if $N$ signed votes are received from distinct replicas.
+```
+
+---
+
+```
+---
+title: "SPON: Enabling Resilient Inter-Ledgers Payments with an Intrusion-Tolerant Overlay"
+year: 2021
+main_author: "Lucian Trestioreanu, Cristina Nita-Rotaru, Aanchal Malhotra, Radu State"
+main_contribution: "Secure Payments with Overlay Networks (SPON), an intrusion-tolerant overlay that combines the Interledger protocol (ILP) with the Spines network to protect inter-ledger communication against BGP hijacking, network partitions, and malicious relay nodes."
+evidence_type: "Research Article"
+technical_constraints: "Approximately 5% processing overhead at 0% link loss; tested with 15Mbps link capacity; handles up to 10% packet loss with improved performance over baseline systems."
+reference: "Trestioreanu, L., Nita-Rotaru, C., Malhotra, A., & State, R. (2021). SPON: Enabling Resilient Inter-Ledgers Payments with an Intrusion-Tolerant Overlay. IEEE."
+doi: "N/A (Included in source text)"
+---
+
+### SPON: Enabling Resilient Inter-Ledgers Payments with an Intrusion-Tolerant Overlay
+
+**Findings:**
+- **Availability & Fault Tolerance**: SPON maintains availability through an **intrusion-tolerant overlay of relay nodes** (Spines) that leverages redundancy in the underlying IP network (multi-homing across multiple ISPs). It ensures service progress during network meltdowns by utilizing **multiple disjoint paths and flooding** to route around path outages, node crashes, and network partitions. The architecture specifically addresses **BGP hijacking attacks** by deploying overlay nodes in Internet Exchange Points (IXPs) to maintain connectivity even when primary routes between Autonomous Systems (AS) are compromised.
+- **Performance Benchmarks**: In global topology tests, SPON demonstrated a **10% latency gain at 2% packet loss** and a **33% gain at 5% loss** compared to baseline ILP systems. While it incurs a minor processing overhead (under 5% or ~2s) in ideal conditions with 0% loss, it significantly improves stability as network degradation increases. **Throughput** fairness was validated at link capacities of **15 Mbps**, where the system successfully prevented malicious flows from saturating the channel.
+- **Safety & Soundness**: The system focuses on **inter-ledger transport safety**, assuming that intra-ledger protocols handle double-spending. To prevent data loss in unreliable network segments, SPON offers a **Reliable Messaging (REL)** service that provides end-to-end reliability guarantees. It maintains state coherence by using the **STREAM protocol** to break large payments into smaller, verifiable packets, ensuring that receipts travel back along the same path to confirm success to all parties. The protocol is resilient to **Byzantine behavior** (arbitrary dropping/delaying) from relay nodes, assuming at least one non-adversarial path exists between sender and receiver.
+- **Compliance & Accountability**: The framework utilizes a **Public Key Infrastructure (PKI)** for authenticated communication between relay nodes and the central administrator. It enforces accountability and **denial-of-service resilience** through round-robin buffer management, ensuring that all payment streams receive a fair share of network bandwidth regardless of malicious client activity. While it adheres to the **Interledger Protocol (ILP) standard**, specific machine-readable financial standards like **ISO 20022 were not mentioned**. The design allows for **partial deployment** where bridge connectors coordinate between ledgers that have not yet joined the overlay.
+- **Other Relevant NFR/Compliance Details**: SPON allows for **per-packet service selection**, enabling connectors to prioritize "fulfillment" packets over "prepare" packets to mitigate financial risk during the ILP exchange process.
+```
+
+---
+
+```
+---
+title: "Scalable Performance Evaluation of Byzantine Fault-Tolerant Systems Using Network Simulation"
+year: 2023
+main_author: "Christian Berger, Sadok Ben Toumia, Hans P. Reiser"
+main_contribution: "A simulation architecture utilizing the Phantom simulator to plug-and-play unmodified BFT protocol implementations (PBFT, HotStuff, Kauri) for large-scale performance forecasting in realistic WAN environments."
+evidence_type: "Research Article"
+technical_constraints: "Evaluated up to n=400 replicas; simulated 512 replicas require ~64 GiB RAM; supports heterogeneous WAN latencies and 25-10,000 Mbit/s bandwidth."
+reference: "Berger, C., Toumia, S. B., & Reiser, H. P. (2023). Scalable Performance Evaluation of Byzantine Fault-Tolerant Systems Using Network Simulation."
+doi: "N/A (Included in source text)"
+---
+
+### Scalable Performance Evaluation of Byzantine Fault-Tolerant Systems Using Network Simulation
+
+**Findings:**
+- **Availability & Fault Tolerance**: System functionality is maintained as long as faulty replicas do not exceed a threshold $t$ (where $t = \lfloor(n-1)/3\rfloor$ for PBFT). For leader failures, the protocols employ a **view change phase** to synchronize replicas and install a new leader to ensure liveness. **Kauri** introduces specific mechanisms for tree-based topologies, including a **reconfiguration scheme** to find a correct set of internal nodes if they fail, and a **timeout for aggregation** to mitigate leaf node failures. The simulation framework also supports **fault induction**, allowing users to test resilience against crash faults, packet loss, and Denial-of-Service (DoS) attacks.
+- **Performance Benchmarks**: In a global WAN setup (400 replicas, 25 Mbit/s bandwidth, 100ms latency), **Kauri** achieved a throughput of **4,584 op/s**, while **HotStuff-BLS** reached **252.67 op/s**. In high-speed data center environments (10 Gbit/s), **HotStuff** throughput peaked at **200,000 op/s** for small groups ($n=4$), falling significantly as the system scaled. **BFT-SMaRt** reached approximately **8,557 op/s** at $n=128$ in similar LAN conditions. For **PBFT-opt** (optimized with request hashing), throughput was recorded at **466 op/s** with a latency of **3.7 s** at $n=64$ in a 25 Mbit/s WAN.
+- **Safety & Soundness**: State coherence is enforced through **State Machine Replication (SMR)**, where replicas order operations and provide matching responses; clients require at least **$t+1$ matching responses** to assert correctness. To prevent forks and double-spending, protocols utilize **Quorum Certificates (QC)**—aggregations of matching votes that guarantee no two different blocks can be committed for the same instance. The simulation backend ensures **deterministic execution** using pseudo-random generators to validate that protocol histories do not diverge under identical seeds.
+- **Compliance & Accountability**: The source evaluates **HotStuff-BLS**, which uses **threshold signatures** to compress $n-t$ signatures into a single $O(1)$ size certificate, facilitating more efficient automated auditing and verification at scale. To reflect realistic financial scenarios, benchmarks used **500-byte payloads**, modeled after the average size of a Bitcoin transaction. While specific B2B standards like ISO 20022 are not mentioned, the framework tracks **CPU utilization and memory consumption** per replica (e.g., 52-64 GB for 512 replicas) to provide operational accountability for infrastructure planning.
+- **Other Relevant NFR/Compliance Details**: The study found that at a certain scale (typically $n \ge 32$), the **underlying network becomes the dominant bottleneck** for BFT performance, rather than CPU-intensive tasks like signature verification.
+```
+
+---
+
+```
+---
+title: "Scalable blockchains — A systematic review"
+year: 2022
+main_author: "Muhammad Hassan Nasir, Junaid Arshad, Muhammad Mubashir Khan, Mahawish Fatima, Khaled Salah, Raja Jayaraman"
+main_contribution: "A systematic review defining scalability as a composite of horizontal (node/client) and vertical (throughput/latency/storage) dimensions while categorizing on-chain and off-chain enhancement mechanisms."
+evidence_type: "Systematic Review"
+technical_constraints: "Bitcoin (7 TPS/10min BGR); Ethereum (20 TPS/12s BGR); Hyperledger Fabric optimized (2,250 TPS/30ms latency); RapidChain (7,380 TPS/8.7s latency)."
+reference: "Nasir, M. H., Arshad, J., Khan, M. M., Fatima, M., Salah, K., & Jayaraman, R. (2022). Scalable blockchains — A systematic review. Future Generation Computer Systems, 126, 136–162."
+doi: "10.1016/j.future.2021.07.035"
+---
+
+### Scalable blockchains — A systematic review
+
+**Findings:**
+- **Availability & Fault Tolerance**: The source identifies **sharding** as a primary mechanism for maintaining availability, though it notes the "shard takeover problem" where an adversary can compromise a single shard more easily than the whole network,. For **BFT-based systems**, availability is maintained through a **view change phase** to install a new leader upon failure. To ensure liveness in sharded architectures, protocols like **RapidChain** utilize a message complexity of $O(n)$ to coordinate across the network,. Additionally, **fork monitoring committees** are proposed as an external oversight mechanism to handle mining assignments and monitor for chain divergence.
+- **Performance Benchmarks**: The review cites wide-ranging metrics across platforms: **Bitcoin** (7 TPS), **Ethereum** (20 TPS), **Bitcoin Cash** (60 TPS), and **Visa** (2,000–24,000 TPS),. Specialized protocols show significantly higher results: **OmniLedger** (4,000 TPS at 63s latency), **RapidChain** (7,380 TPS at 8.7s latency), **FastBFT** (100,000 TPS), and **Teechain** (1 million TPS),,,. For permissioned ledgers, optimized **Hyperledger Fabric** configurations achieved **2,250 TPS with 30ms latency**.
+- **Safety & Soundness**: State coherence is enforced via a **chained block structure** where each block is cryptographically linked to its parent. **Double-spending** is prevented by consensus layers using probabilistic (longest chain rule) or deterministic (ordering nodes) approaches,. In sharded systems, safety is maintained through **two-phase or three-phase commit protocols** to ensure atomicity across shards,. To prevent data loss in resource-constrained environments (IoT), the source discusses **cloud-based state chains** that aggregate data blocks from individual local chains,.
+- **Compliance & Accountability**: Accountability is managed through **digital signatures** using asymmetric cryptography (e.g., ECDSA or BLS) to ensure non-repudiation and integrity,,. The source mentions **reputation-based witness schemes** (e.g., RepChain) and **Saga points** to evaluate node behavior,. Automated auditing is facilitated by **independent auditors** in "satellite chain" architectures and **observer nodes** that post-validate the ledger without participating in consensus,. [ISO 20022 was not explicitly mentioned].
+- **Other Relevant NFR/Compliance Details**: The paper emphasizes the **DSS Trilemma**—the inherent trade-off between **Decentralization, Security, and Scalability**—noting that increasing one often compromises the others,. It also highlights **storage scalability** as a critical NFR, noting that Bitcoin's ledger has exceeded **280 GB**, which poses a barrier to entry for resource-constrained participants.
+```
+
+---
+
+```
+---
+title: "Self-stabilizing Byzantine-tolerant Recycling"
+year: 2023
+main_author: "Chryssis Georgiou, Michel Raynal, Elad M. Schiller"
+main_contribution: "A self-stabilizing Byzantine-tolerant (SSBFT) mechanism for recycling asynchronous consensus objects, enabling the infinite reuse of a constant number of objects while recovering from arbitrary transient faults."
+evidence_type: "Research Article"
+technical_constraints: "Tolerates < 1/3 Byzantine processes; stabilization within expected O(κ) synchronous rounds, where κ is O(t)."
+reference: "Georgiou, C., Raynal, M., & Schiller, E. M. (2023). Self-stabilizing Byzantine-tolerant Recycling. University of Cyprus / IRISA / Chalmers University of Technology."
+doi: "N/A (Technical Report)"
+---
+
+### Self-stabilizing Byzantine-tolerant Recycling
+
+**Findings:**
+- **Availability & Fault Tolerance**: The protocol maintains availability through **self-stabilization**, allowing the system to automatically recover from **arbitrary transient faults** (e.g., corruption of program counters, packet payloads, or sequence numbers) in addition to tolerating up to **$t < n/3$ Byzantine or crash process failures**. It utilizes a **synchronous recycling service** to manage **asynchronous consensus objects**, ensuring that resources used by completed invocations are released and made available for reuse. A key mechanism is the **simultaneous increment-or-get index (SGI-index)**, which ensures all non-faulty nodes agree on which object in a constant-size array is currently active.
+- **Performance Benchmarks**: The system is designed to stabilize within **expected $O(\kappa)$ synchronous rounds**, where $\kappa$ is a predefined constant related to the number of Byzantine processes ($t$) and the log size. While specific TPS for the recycling mechanism itself is not the focus, it is designed to facilitate "communication-intensive" components like consensus objects which may use **$O(n^2)$ messages per invocation**. To optimize performance, a single recycling action can be performed for a **batch of $\delta$ objects**.
+- **Safety & Soundness**: State coherence is maintained by requiring that a consensus object is only recycled after all non-faulty processes have retrieved the decided values, satisfying the **COR-agreement** property where all nodes simultaneously set an object's status to "unused". To prevent data loss or premature reuse (avoiding a "chicken-and-egg" problem), the system ensures that the **$(k+1)$-th invocation** can only start after the **$k$-th instance** has reached agreement on collective delivery. The **wasDelivered()** interface ensures that if one non-faulty node reports a delivery, all others will eventually do so, maintaining global state consistency.
+- **Compliance & Accountability**: The framework enforces accountability by assuming **private channels** between nodes to prevent **spoofing or impersonation attacks**. It uses an **SSBFT multivalued consensus protocol** to decide on a single piece of evidence regarding recyclability from all collected nodes, acting as an automated auditing trigger for the recycling process. The mechanism relies on **random common coins (RCCs)** for unpredictable, randomized recovery strategies to guarantee agreement on the ledger index even after a system-wide state corruption. [ISO 20022 was not mentioned].
+- **Other Relevant NFR/Compliance Details**: The solution employs a **sliding window technique** and a global restart mechanism once a maximum sequence number is reached to maintain memory constraints. It uses **communication piggybacking** to multiplex timed reliable communication (for recycling) and fair communication (for consensus objects).
+```
+
+---
+
+```
+---
+title: "Shard-DAG: A scalable and secure block-DAG sharding scheme for AI-driven 6G networks"
+year: 2025
+main_author: "Yongkai Fan, Wenyuan Zhang, Guodong Wu, Le Zhang, Chengnian Long, Gang Tan, Neal N. Xiong"
+main_contribution: "Hierarchical integration of sharding and block-DAG using a 'black-box' interaction model and transaction sorting mechanism to achieve near-linear scalability and cross-shard security."
+evidence_type: "Research Article"
+technical_constraints: "Evaluated on a 1,200-node network; simulated end-to-end delay of 102 ms; maintains performance with shard sizes of 150-200 nodes."
+reference: "Fan, Y., et al. (2025). Shard-DAG: A scalable and secure block-DAG sharding scheme for AI-driven 6G networks. Digital Communications and Networks, 11, 1738–1750."
+doi: "10.1016/j.dcan.2025.04.005"
+---
+
+### Shard-DAG: A scalable and secure block-DAG sharding scheme for AI-driven 6G networks
+
+**Findings:**
+- **Availability & Fault Tolerance**: Shard-DAG maintains availability through **dynamic sharding**, which allows the system to adjust the number of shards and nodes per shard as needed to mitigate performance bottlenecks. To prevent long-term collusion and single-shard takeover attacks, it employs **periodic and random reconfiguration** of shard memberships. The architecture utilizes a hybrid consensus model: **Proof of Work (PoW)** provides fault tolerance within shards, while **Practical Byzantine Fault Tolerance (PBFT)** (requiring $n \ge 3f + 1$) manages inter-shard consistency. The system's **sorting-based consensus** is designed to offer high fault tolerance against network-level disruptions by allowing nodes to eventually reach global consistency despite temporary divergent local views.
+- **Performance Benchmarks**: In a 1,200-node network with 8 shards, Shard-DAG achieved a **peak throughput improvement of 14.64 times** over traditional blockchains and **2.05 times** over conventional sharded blockchains. Experimental results show that throughput scales near-linearly, reaching approximately **2,800–3,000 TPS** when configured with 32 shards. Simulations used an **average end-to-end delay of 102 ms** to model broadcast latency across different network scales.
+- **Safety & Soundness**: State coherence is enforced through a two-phase **transaction sorting mechanism** (Algorithms 1 and 2) that reintroduces strict linearity to the DAG structure, ensuring a deterministic execution order. **Double-spending** is prevented intra-shard by only accepting the first transaction using a specific digital token as valid. To prevent cross-shard double-spending, the system utilizes a **"black-box" interaction model** where shards verify inputs independently using pre-sorted data, ensuring the atomicity of transactions across different consensus zones.
+- **Compliance & Accountability**: The system provides a foundation for automated auditing by exposing a **sorted transaction view** through its black-box interface, which maintains compatibility with existing search engines and benchmarking tools. While **ISO 20022** is not explicitly mentioned, the architecture facilitates compliance by ensuring that all inter-shard interactions are strictly limited to the minimum necessary data required for validation. Accountability is further supported by the requirement that transactions be referenced in multiple blocks to reach confirmation. The authors also reference **swarm reputation-based frameworks** as a related method for managing malicious node detection.
+- **Other Relevant NFR/Compliance Details**: Shard-DAG achieves a **comprehensive sharding** approach that includes network, transaction, computation, and storage (state) sharding to reduce the broadcast, verification, and storage burden on individual nodes. This reduces per-node storage overhead by a factor proportional to the number of shards (e.g., $1/shardNum$).
+```
+
+---
+
+```
+---
+title: "Simulating BFT Protocol Implementations at Scale"
+year: 2023
+main_author: "Christian Berger, Sadok Ben Toumia, Hans P. Reiser"
+main_contribution: "Delphi-BFT, a simulation toolchain for evaluating unmodified BFT protocol implementations (PBFT, HotStuff, BFT-SMaRt) at scale using the Phantom simulator's hybrid emulation/simulation architecture."
+evidence_type: "Research Article"
+technical_constraints: "Simulated up to 400 replicas; 512 replicas projected to require 64 GB RAM; bandwidth-throttling observed as a dominant performance bottleneck at n ≥ 32 nodes."
+reference: "Berger, C., Toumia, S. B., & Reiser, H. P. (2023). Simulating BFT Protocol Implementations at Scale. University of Passau / Reykjavík University."
+doi: "N/A (Included in source text)"
+---
+
+### Simulating BFT Protocol Implementations at Scale
+
+**Findings:**
+- **Availability & Fault Tolerance**: The system utilizes **Byzantine Fault-Tolerant (BFT) State Machine Replication (SMR)** to maintain availability. Standard protocols like PBFT handle leader failures through a **view change phase** to install a new primary node. For tree-based topologies, the **Kauri** protocol is cited for its **reconfiguration scheme**, which identifies and replaces a correct set of internal nodes if they fail. The simulation toolchain supports **fault induction**, allowing researchers to test availability by dropping messages, crashing nodes, or introducing sophisticated Byzantine attackers.
+- **Performance Benchmarks**: Simulated **HotStuff** achieved a peak throughput of **200,000 tx/s** in a low-latency environment (1ms), falling to **20k tx/s** as bandwidth-throttling occurred for larger groups ($n \ge 32$). In a high-latency setting (10ms links), HotStuff throughput was recorded at **19.2k-15.1k tx/s** with latencies between **80ms and 106ms**. A WAN deployment simulation of **BFT-SMaRt** across four global regions (Oregon, Ireland, São Paulo, Sydney) showed a consensus latency of **249 ms**. **PBFT** (Themis) throughput at $n=128$ reached approximately **9.3k tx/s**, compared to 20k tx/s for HotStuff in the same configuration.
+- **Safety & Soundness**: State coherence is maintained through **State Machine Replication (SMR)**, where all correct nodes execute the same sequence of operations. Safety is guaranteed if a client receives at least **$t+1$ matching responses** from a group of $n=3t+1$ replicas, ensuring the result is correct even if $t$ nodes are malicious. The simulation engine maintains **determinism** across all managed processes using a seeded pseudo-random generator to emulate system-level randomness (e.g., `getrandom`), preventing state divergence during testing.
+- **Compliance & Accountability**: The toolchain includes a **Resource Monitor** to track CPU utilization and memory usage (e.g., 64 GB RAM for 512 replicas), providing a record of operational requirements for large-scale deployments. It facilitates the evaluation of **reputation-based witness schemes** such as RepChain. Accountability is further supported by an **attacker model** that uses the "Twins" methodology to simulate Byzantine attacks like **equivocation** or duplicating cryptographic identities to test system robustness. [ISO 20022 was not explicitly mentioned].
+- **Other Relevant NFR/Compliance Details**: The study confirms that at a certain scale (typically $n \ge 32$), BFT system performance becomes **network-bound** rather than CPU-bound, making bandwidth the critical limiting factor for high-volume ledger scenarios.
+```
+
+---
+
+```
+---
+title: "SoK: Consensus for Fair Message Ordering"
+year: 2024
+main_author: "Zhuolun Li, Evangelos Pournaras"
+main_contribution: "The 'Fair Consensus Factory', a modular framework for transforming BFT consensus protocols to enforce fair message ordering (FIFO, Random, or Blind) to mitigate Maximal Extractable Value (MEV)."
+evidence_type: "Systematic Review / Research Article"
+technical_constraints: "Tolerates up to f Byzantine nodes in n = 3f + 1 systems; Themis/Aequitas require n ≥ 4f for γ=1 fairness; optimized Themis achieves ~40% latency reduction."
+reference: "Li, Z., & Pournaras, E. (2024). SoK: Consensus for Fair Message Ordering. University of Leeds."
+doi: "N/A (Included in source text)"
+---
+
+### SoK: Consensus for Fair Message Ordering
+
+**Findings:**
+- **Availability & Fault Tolerance**: The paper adopts a standard **Byzantine fault-tolerant (BFT)** model where $n = 3f + 1$ nodes maintain system progress despite $f$ arbitrary failures. For permissionless settings, availability is supported via **committee rotation** or network reinitialization, allowing for player replaceability. Liveness during leader failure or equivocation is maintained by **resharing local views and hashes** in subsequent rounds to exclude malicious inputs and restore consistency. To handle the **Condorcet cycle** problem (cyclic ordering preferences), the framework utilizes "batch-unspooling" or "ranked pairs" to ensure the protocol does not halt while attempting to reach agreement on fair order.
+- **Performance Benchmarks**: In a local network evaluation (4 to 20 nodes), the **optimized Themis protocol** achieved a throughput of approximately **750 to 1000 TPS**. The optimized design, which uses a single-stage all-to-all synchronization instead of the traditional two-stage all-to-leader/leader-to-all approach, resulted in a **40% reduction in latency** (dropping from ~600ms to ~400ms for small clusters). The source notes that **permutation-based random ordering** offers the lowest computational complexity ($O(m)$) compared to voting-based FIFO ($O(m^2 \cdot n)$).
+- **Safety & Soundness**: State coherence is maintained through **State Machine Replication (SMR)**, ensuring all honest nodes commit identical sequences of transactions. To prevent **double-spending and MEV attacks** (front-running/back-running), the framework enforces deterministic ordering rules: **FIFO** (via ranked voting or median timestamping), **Random Ordering** (via agreed-upon public randomness), and **Blind Ordering** (using threshold cryptography to hide content until after ordering). Safety is guaranteed by the underlying agreement mechanism (e.g., HotStuff), where clients require a quorum of matching responses to confirm a transaction.
+- **Compliance & Accountability**: The framework facilitates **automated auditing** by requiring the consensus leader to include all ordering metadata in its proposal, allowing followers to **independently re-execute and verify** the ordering results before voting. Accountability is addressed through **digital signatures** to prevent non-repudiation and the use of **hashes of local views** to detect and penalize equivocation. While the source focuses on the **MEV problem** (extracting ~$200 million USD annually from users), it references **reputation-based schemes** (Porf) as a method for ensuring fair participation. [ISO 20022 was not explicitly mentioned].
+- **Other Relevant NFR/Compliance Details**: The authors propose a "Fair Consensus Factory" that treats fairness as a **modular refinement** that can be added to both leader-based and leaderless protocols without modifying their core safety properties. They also suggest a future direction where **message senders flag transactions** as order-sensitive or order-insensitive to reduce system-wide ordering overhead.
+```
+
+---
+
+```
+---
+title: "SoK: Scalability Techniques for BFT Consensus"
+year: 2023
+main_author: "Christian Berger, Signe Schwarz-Rüsch, Arne Vogel, Kai Bleeke, Leander Jehl, Hans P. Reiser, Rüdiger Kapitza"
+main_contribution: "A comprehensive systematization of knowledge (SoK) categorizing BFT scalability techniques into communication topologies, pipelining, cryptographic primitives, independent groups (sharding), and hardware support."
+evidence_type: "Research Article / Review"
+technical_constraints: "Traditional BFT (PBFT) performance drops from 10⁵ to 10³ TPS at several hundred nodes; BFT-SMaRt drops from ~150k to ~25k Ops/s as replicas increase from 4 to 128."
+reference: "Berger, C., et al. (2023). SoK: Scalability Techniques for BFT Consensus. IEEE."
+doi: "978-8-3503-1019-1/23/$31.00 (IEEE)"
+---
+
+### SoK: Scalability Techniques for BFT Consensus
+
+**Findings:**
+- **Availability & Fault Tolerance**: System progress is maintained via a **view change mechanism** that synchronizes replicas and replaces faulty or non-responsive leaders. While **sharding** improves scalability, it introduces the **shard takeover problem**, where an adversary can compromise a single shard more easily than the entire network. To mitigate failures in tree-based topologies, **Kauri** utilizes a **reconfiguration scheme** to find a correct set of internal nodes and a **timeout for aggregation** to handle leaf node failures. **Algorand** employs non-interactive **Verifiable Random Functions (VRFs)** for committee selection to prevent targeted DoS attacks on validators before they can propose blocks.
+- **Performance Benchmarks**: The survey cites a wide range of performance metrics: **PBFT and BFT-SMaRt** achieve the magnitude of **10⁵ TPS** in small systems but drop significantly at scale. Optimized **Hyperledger Fabric** configurations are cited at **2,250 TPS with 30ms latency**. High-performance specialized protocols include **RapidChain (7,380 TPS)**, **FastBFT (100,000 TPS)**, and **Teechain (1 million TPS)**. Performance is often limited by **leader bandwidth** and the computational cost of **signature verification**.
+- **Safety & Soundness**: State coherence is maintained through **State Machine Replication (SMR)**, ensuring **linearizability** where the service behaves like a centralized implementation. Consensus **finality** ensures that once a block is decided, it is never changed. **Double-spending (equivocation)** is prevented using **Quorum Certificates (QC)**, which ensure no two different values can receive a certificate for the same instance. Hardware-assisted protocols like **FastBFT** use **trusted monotonic counters** in TEEs to prevent a leader from sending conflicting messages.
+- **Compliance & Accountability**: Accountability is enforced through **multi-signatures** and **threshold signatures** (e.g., BLS or Schnorr/CoSi), which allow any participant to verify that a quorum of specific replicas indeed signed a message. **Reputation-based schemes** (e.g., **RepChain**) use metrics like past behavior and payment times to identify well-behaved nodes and incentivize correct participation. **Trusted Execution Environments (TEEs)** provide **remote attestation**, allowing users to verify that a node is running genuine, unmodified code. [ISO 20022 was not mentioned].
+- **Other Relevant NFR/Compliance Details**: The review identifies the **DSS Trilemma**—the inherent trade-off between **Decentralization, Security, and Scalability**. It also highlights **storage scalability** as a significant challenge, noting the Bitcoin ledger has exceeded **280 GB**, which limits entry for resource-constrained nodes.
+```
+
+---
+
+```
+---
+title: "YAC: BFT Consensus Algorithm for Blockchain"
+year: 2018
+main_author: "Fedor Muratov, Andrei Lebedev, Nikolai Iushkevich, Bulat Nasrulin, Makoto Takemiya"
+main_contribution: "Yet Another Consensus (YAC), a BFT algorithm for Hyperledger Iroha that uses hash-based leader permutation and a multi-step voting process to achieve deterministic finality while mitigating the 'strong leader' problem."
+evidence_type: "Research Article / Technical Whitepaper"
+technical_constraints: "Tolerates < 1/3 Byzantine nodes; requires tuning of 'vote step delay' (e.g., 20ms for 64 nodes) to maintain consensus stability as network size increases."
+reference: "Muratov, F., et al. (2018). YAC: BFT Consensus Algorithm for Blockchain. Soramitsu / Hyperledger Iroha."
+doi: "N/A"
+---
+
+### YAC: BFT Consensus Algorithm for Blockchain
+
+**Findings:**
+- **Availability & Fault Tolerance**: YAC ensures system progress (liveness) and safety in a decentralized environment with up to $f$ faulty participants out of $n \ge 3f + 1$ total peers,,. It maintains availability through a **vote step mechanism** where votes for a proposal are propagated to peers in a specific order defined by a **permutation function**,. If a peer does not receive a commit message within a set time delay, it automatically propagates its vote to the next peer in the list, preventing a single faulty leader from halting the network,,. To handle lagging nodes, the protocol uses **commit forwarding**, where any peer that has already committed a block directly shares the commit message with peers that are still in the voting phase,.
+- **Performance Benchmarks**: In empirical tests using Hyperledger Iroha on a global VPS network (Tokyo, Singapore, Los Angeles), a 4-node cluster achieved a peak throughput of approximately **13–14 proposals per second** with a 1ms vote delay,. As the network scaled, throughput decreased: 16 nodes reached **3–4 proposals/s**, 28 nodes reached **~2 proposals/s**, and 64 nodes reached **< 1 proposal/s**. The researchers found that "vote step delay" is a critical performance factor; while 1ms was effective for small groups, larger networks (64 nodes) required at least a **20ms delay** to maintain consensus stability and reach a "peak" where throughput does not start to degrade,.
+- **Safety & Soundness**: State coherence is maintained by requiring a **supermajority (> 2/3)** of signatures for a block to be committed,. Since only $f$ nodes can be Byzantine in a $3f+1$ system, it is mathematically impossible for two different block hashes to both receive $2f+1$ votes, thus **preventing forks and double-spending**. A unique **order function** uses the hash of a proposal to determine the peer permutation for each round, ensuring that the target of voting is deterministic but changes every round to resist censorship,. The algorithm also defines **reject messages**—cryptographic proof that a supermajority cannot be reached for any block hash—to identify broken BFT environments,.
+- **Compliance & Accountability**: The protocol is the core consensus engine for **Hyperledger Iroha**, a permissioned blockchain platform,. Accountability is enforced via **digital signatures**; every vote and commit message must be signed by the originating peer to ensure non-repudiation,,. Clients must also sign transactions with their private keys before they are accepted by the **Ordering Service**. While the paper notes that YAC provides "Byzantine fault tolerant consensus for state machine replication," it does not mention specific machine-readable financial standards like **ISO 20022**.
+- **Other Relevant NFR/Compliance Details**: YAC is designed to be **modular**, separating the **Ordering Phase** (where the Ordering Service collects and sequences transactions) from the **Collaboration Phase** (where peers validate and reach agreement on blocks),,.
+```

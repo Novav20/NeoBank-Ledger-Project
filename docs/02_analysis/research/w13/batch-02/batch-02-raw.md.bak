@@ -1,0 +1,611 @@
+```
+---
+title: "A Survey of Blockchain Applications in the FinTech Sector"
+year: 2022
+main_author: "Tara Renduchintala, Haneen Alfauri, Zebo Yang, Roberto Di Pietro, and Raj Jain"
+main_contribution: "Technical systematization and mapping of distributed ledger technologies (DLT) across three primary FinTech segments: Payments, Deposits/Lending, and Investment Management."
+evidence_type: "Review / Survey"
+technical_constraints: "Scalability varies by platform (e.g., 7–10 TPS for Bitcoin vs. 3000 TPS for Ethereum 2.0); latency targets for settlement include ~5 seconds for Stellar and Algorand."
+reference: "Renduchintala, T., Alfauri, H., Yang, Z., Di Pietro, R., & Jain, R. (2022). A Survey of Blockchain Applications in the FinTech Sector. Journal of Open Innovation: Technology, Market, and Complexity, 8(4), 185."
+doi: "https://doi.org/10.3390/joitmc8040185"
+---
+
+### A Survey of Blockchain Applications in the FinTech Sector
+
+**Findings:**
+- **Event Sourcing**: Information not found as a specific technical term. However, the sources describe blockchain as an **append-only, shared, and distributed database** where all transactions are recorded and bundled into blocks. This architecture provides inherent **auditability** because all transactions are distributed across the network, enabling them to be verified and traced, which ensures transparency between nodes.
+- **High-Throughput (DAG/Chain)**: The source identifies the **Block Direct Acyclic Graph (BlockDAG)** pattern used in protocols like SPECTRE. The primary trade-off is that BlockDAG operations **improve transaction throughput and reduce confirmation times** compared to the linear chain model used by Bitcoin. Linear public blockchains often suffer from scalability issues because achieving consensus among a large number of nodes is generally slow.
+- **Consistency (ACID)**: Information not found regarding the "ACID" acronym specifically. Modern distributed ledgers maintain consistency and integrity through **consensus algorithms** (e.g., PoW, PoS, BFT, RAFT) that require nodes to agree on the ledger's content. For high-concurrency environments like Quorum or Hyperledger, mechanisms such as **Quorum slices** or **voting rounds** (in IBFT) are used to ensure that faulty or malicious nodes cannot disrupt the chain's integrity.
+- **Self-Repair/Integrity**: Integrity is maintained through **hash functions and asymmetric-key cryptography**. A blockchain is considered immutable because blocks are connected via hashes; **any tampering with a block invalidates all following blocks**, allowing the network to immediately detect modifications. Practical mechanisms mentioned include **validators** that verify transactions before inclusion, **Merkle trees** for bundling transaction data, and **off-chain storage** (e.g., IPFS or Storj) that uses hashes on the main ledger to verify the integrity of external data.
+- **Other Relevant Implementation Details**: The sources emphasize the use of **smart contracts** to automate the execution of contractual clauses, which reduces the risk of violation and eliminates the need for third-party reconciliation. For B2B payments, **Hyperledger Fabric** is highlighted for its modular "plug-and-play" architecture and support for private "channels" that restrict transaction visibility to specific subsets of nodes.
+```
+
+---
+
+```
+---
+title: "A fair consensus model in blockchain based on computational reputation"
+year: 2022
+main_author: "Ali Mohsenzadeh, Amir Jalaly Bidgoly, and Yaghoub Farjami"
+main_contribution: "Fair Reputation-based Consensus Model (FRCM) utilizing a combination of gossip protocols, customized vector clocks, and a reputation-driven incentive mechanism to ensure equitable transaction selection and high scalability."
+evidence_type: "Research Article"
+technical_constraints: "Consensus latency targets, scalability (network size up to 100+ nodes), and throughput (demonstrated up to 18,136 TPS with 100 trustees and 20,000 transactions)."
+reference: "Mohsenzadeh, A., Bidgoly, A. J., & Farjami, Y. (2022). A fair consensus model in blockchain based on computational reputation. Expert Systems with Applications, 204, 117578."
+doi: "https://doi.org/10.1016/j.eswa.2022.117578"
+---
+
+### A fair consensus model in blockchain based on computational reputation
+
+**Findings:**
+- **Event Sourcing**: While the specific term "Event Sourcing" is not explicitly used, the sources describe a functionally equivalent architecture where the core of the blockchain is a **shared distributed ledger** consisting of blocks where **all transactions are stored and connected** to previous blocks. For financial applications, the source utilizes a **balance model** for record-keeping, which tracks the balance of each account as a **global state** to verify that current transactions meet or exceed the spending amount. The primary advantage for auditability is that the ledger is **immutable**, meaning once transactions are written, they are almost impossible to change and are accessible for viewing by all community members.
+- **High-Throughput (DAG/Chain)**: The paper discusses **Trustchain** as a specific implementation of a **Directed Acyclic Graph (DAG)** structure where each block contains only one transaction to achieve scalable, tamper-proof records. In contrast, the authors' proposed **FRCM** utilizes a **linear chain** model but achieves high throughput (up to **18,136 transactions per second**) by creating a **single immutable global chain of ordered blocks** to prevent forks. A key trade-off identified is that traditional linear models like PBFT suffer from significant throughput drops as nodes increase (dropping from 1500 to 200 TPS in tests), whereas the reputation-based FRCM maintains efficiency by using a **gossip protocol** with a limited spreading factor ($x=4$) to reduce network load compared to standard broadcasting.
+- **Consistency (ACID)**: Consistency is maintained through **consensus algorithms** that ensure all community members agree on the **global situation** and shared data status. To maintain strict consistency in high-concurrency environments, the source implements a **customized vector clock** that combines transaction creation timestamps ($t_c$) with receiving timestamps ($t_r$) to provide an **ordered sequence of transactions** even when timestamps are identical. This mechanism, coupled with the rule that only one block can be published per time period, ensures a single global chain and prevents **forks or double-spending**.
+- **Self-Repair/Integrity**: Integrity is enforced through **cryptographic signing** of transactions and the **balance model**, which evaluates the validity of transaction structures and data. The FRCM identifies and isolates malicious behavior by applying a **reputation model** where honest behavior is rewarded and selfish acts result in **reputation penalties**. To automate auditing of trustee reliability, the system uses a **95% confidence interval** to determine a "minimum transactional experience" ($n_{ci}$), rather than a constant threshold. Additionally, an **incentive mechanism** prevents "rotten transactions" (old, unrecorded events) by applying **weight functions** that reward trustees for selecting them and penalize them for continued exclusion, ensuring long-term ledger health.
+- **Other Relevant Implementation Details**: The FRCM introduces a **Publication Management algorithm** that uses a **customized Round Robin scheduler** to fairly select a block creator when multiple trustees share the highest reputation. It also uses a **confidence interval** to account for the standard deviation ($\delta$) of trustee behavior in previous blocks, ensuring the reputation calculation remains statistically significant.
+```
+
+---
+
+```
+---
+title: "A novel blockchain architecture with mutable block and immutable transactions for enhanced scalability"
+year: 2023
+main_author: "Kottilingam Kottursamy, Banupriya Sadayapillai, Ahmad Ali AlZubi, and Ali Kashif Bashir"
+main_contribution: "Mutable Block with Immutable Transaction (MBIT) architecture utilizing trapdoor cryptographic hash functions to group user-specific transactions into a single block for improved scalability and storage."
+evidence_type: "Research Article"
+technical_constraints: "Confirmation time targets (average ~828 ms); network bandwidth (~124 Mbps); transaction size (~33b bytes); Bitcoin comparison metrics (10 min block intervals)."
+reference: "Kottursamy, K., Sadayapillai, B., AlZubi, A. A., & Bashir, A. K. (2023). A novel blockchain architecture with mutable block and immutable transactions for enhanced scalability. Sustainable Energy Technologies and Assessments, 58, 103320."
+doi: "https://doi.org/10.1016/j.seta.2023.103320"
+---
+
+### A novel blockchain architecture with mutable block and immutable transactions for enhanced scalability
+
+**Findings:**
+- **Event Sourcing**: While not explicitly using the term "Event Sourcing," the source describes a **UTXO-based ledger** where transactions are stored as an append-only sequence of valid events. In the proposed **MBIT model**, financial record-keeping is optimized by grouping **user-specific transactions into a single block**. This allows the system to quantify unspent coins and calculate account balances by simply finding the difference between the sum of **IN transactions** and **OUT transactions** within that specific user's block. For auditability, the system ensures **immutability** because every block contains the hash of the previous block, making any tampering with historical transaction data easily detectable.
+- **High-Throughput (DAG/Chain)**: The source notes that conventional **linear single-chain structures** limit throughput because they cannot create blocks concurrently. It identifies **Directed Acyclic Graphs (DAGs)** (e.g., IOTA, Nano, HashGraph) as a solution for parallel mining and faster consensus. The MBIT model addresses these trade-offs by removing block size limits and inter-block intervals, processing transactions **individually and immediately**. Experimental results show that while Bitcoin requires roughly 60 minutes for six confirmations, MBIT achieves an average **transaction confirmation time of 828 ms** with 32 nodes, maintaining stable performance as the network grows.
+- **Consistency (ACID)**: ACID is not mentioned by name, but the source ensures **consistency** and **persistence** through its consensus and block-validation protocols. It uses **PoET (Proof of Elapsed Time)** via Trusted Execution Environments (TEEs) to select leaders and maintain a **regular global state** without the high energy cost of PoW. Consistency is further maintained by the **trapdoor hash function**, which allows the ledger to be updated (mutated) to include new transactions without changing the overall block hash, ensuring that all nodes agree on the same ledger image.
+- **Self-Repair/Integrity**: Integrity is enforced through **trapdoor (chameleon) hash functions**, which are collision-resistant for any party lacking the trapdoor key. Automated auditing is facilitated by **validators** that perform **double-spend verification** and verify hash collisions before a transaction is appended. A significant integrity mechanism is the use of **user-centric blocks**, which allows a validator to verify a transaction's validity by searching only within a single block rather than traversing the entire network. This also enables near-instant **wallet importing** (0.045s for a 15MB block) by eliminating the need to scan the entire blockchain for address history.
+- **Other Relevant Implementation Details**: The architecture separates the transaction into **IN and OUT components** before appending. It utilizes a **Publication Management** approach where the leader node broadcasts a 'conf' message once 51% of nodes approve a transaction, triggering non-leader nodes to update their local copies.
+```
+
+---
+
+```
+---
+title: "A scalable and efficient patient monitoring framework"
+year: 2026
+main_author: "Aya H. Allam, Ibrahim Gomaa, Hala H. Zayed, and Mohamed Taha"
+main_contribution: "Scalable and Efficient Patient Monitoring Framework (SEPMF) that integrates fog computing, private IPFS, and the IOTA Tangle for decentralized, low-latency, and secure real-time data processing."
+evidence_type: "Research Article"
+technical_constraints: "Throughput stabilizes at 550 Transactions Per Second (TPS); latency targets of 0.002 s to 0.0033 s; CPU usage kept below 50%."
+reference: "Allam, A. H., Gomaa, I., Zayed, H. H., & Taha, M. (2026). A scalable and efficient patient monitoring framework. Applied Soft Computing, 195, 114985."
+doi: "https://doi.org/10.1016/j.asoc.2026.114985"
+---
+
+### A scalable and efficient patient monitoring framework
+
+**Findings:**
+- **Event Sourcing**: While not explicitly termed "Event Sourcing," the source describes a functionally identical model using the **IOTA Tangle**, where every transaction verifies two previous ones to create an **immutable, DAG-based transaction ledger**. This architecture is applied to patient records to ensure **tamper-proof traceability**, significantly strengthening **auditability** by providing a permanent, verifiable log of all health data events.
+- **High-Throughput (DAG/Chain)**: The paper highlights that **linear chains** (traditional blockchain) suffer from limited scalability due to block size constraints and high latency. In contrast, the **Directed Acyclic Graph (DAG)** structure used by IOTA supports **parallel transactions**, allowing the system to scale linearly as more fog nodes are added. Experimental results demonstrate that while linear models struggle with bottlenecks, the DAG-based SEPMF achieves a stable throughput of **550 TPS** with sub-millisecond processing times.
+- **Consistency (ACID)**: ACID is addressed through **distributed redundancy** and **dual-hash verification**. Consistency is maintained across high-concurrency updates by using **TLS-secured MQTT channels** with **nonces and timestamps** to prevent replay attacks or data duplication. The system ensures a consistent global state by requiring transactions to verify previous nodes in the Tangle, which eliminates the need for centralized miners.
+- **Self-Repair/Integrity**: Integrity is enforced through a **dual-hash verification mechanism**: data hashes are stored in the IOTA ledger while the encrypted files reside in IPFS. Upon data retrieval, the system performs an **automated integrity check**; any mismatch between the IPFS and IOTA hashes triggers an **automatic fog alert** for tampering or corruption. Additional integrity is provided by **ECC-based encryption** and **validators (hub aggregators)** that filter null values and verify data structure before it reaches the ledger.
+- **Other Relevant Implementation Details**: The framework features an **AI Layer embedded at the fog level**, which uses a Support Vector Machine (SVM) for real-time disease prediction (e.g., COVID-19 with 99% accuracy) without relying on cloud infrastructure. The communication stack is a hybrid of **MQTT** for real-time streaming and **HTTP/RESTful APIs** for integration with external Hospital Information Systems (HIS).
+```
+
+---
+
+```
+---
+title: "A survey and taxonomy of consensus protocols for blockchains"
+year: 2022
+main_author: "Arshdeep Singh, Gulshan Kumar, Rahul Saha, Mauro Conti, Mamoun Alazab, and Reji Thomas"
+main_contribution: "Comprehensive survey and five-category taxonomy of consensus protocols (Proof-of-X, Paxos, RAFT, PBFT, and DAG) specifically analyzing their suitability for resource-constrained IoT environments."
+evidence_type: "Review / Survey"
+technical_constraints: "Bitcoin block generation ~10 min, confirmation ~60 min; PBFT requires $3f+1$ nodes to tolerate $f$ faults; IoT devices require low-complexity and energy-efficient protocols."
+reference: "Singh, A., Kumar, G., Saha, R., Conti, M., Alazab, M., & Thomas, R. (2022). A survey and taxonomy of consensus protocols for blockchains. Journal of Systems Architecture, 127, 102503."
+doi: "https://doi.org/10.1016/j.sysarc.2022.102503"
+---
+
+### A survey and taxonomy of consensus protocols for blockchains
+
+**Findings:**
+- **Event Sourcing**: While not using the specific term "Event Sourcing," the source defines blockchain as a **tamper-evident digital ledger** where transactions are recorded in blocks. For consistency, some consensus approaches use a **replicated log** to ensure that state machines (nodes) execute the same commands in the exact same order. This architecture supports **auditability** because all transactions are interconnected, allowing them to be verified and tracked at any point in time.
+- **High-Throughput (DAG/Chain)**: The source contrasts traditional **linear chains**, where blocks are added one at a time via previous-block hashes, with **Directed Acyclic Graph (DAG)** structures. Linear chains often face scalability and throughput bottlenecks. In contrast, DAG-based protocols support **parallel transactions**, which can significantly increase throughput and reduce confirmation times. Specifically, protocols like **SPECTRE** utilize a block DAG to provide a consistent set of transactions with high block creation rates.
+- **Consistency & ACID**: ACID is addressed through the concepts of **finality and consensus**. The sources distinguish between **probabilistic finality** (where a block is more likely to be permanent over time) and **absolute finality** (guaranteed by Byzantine-based algorithms like PBFT). Consensus algorithms ensure that all correct nodes reach an agreement on the ledger's state within a certain time, maintaining a **consistent version of the record** across the distributed network.
+- **Self-Repair/Integrity**: Integrity is maintained through **cryptographic hash functions** (e.g., SHA-256) and **asymmetric-key cryptography**. Any modification to a block changes its hash, immediately alerting the network to tampering. **Merkle Trees** are used to bundle transactions; a change in a single transaction will alter the root hash, ensuring the data remains attestable. Digital signatures are employed to verify that users are authentic and possess the private keys for their transactions.
+- **Other Relevant Implementation Details**: The paper identifies a "**security-scalability-decentralization trilemma**" that most consensus protocols struggle to solve. It also notes that for IoT applications, standard protocols like PoW are unsuitable due to high resource consumption, leading to the development of specialized "Proof-of-X" variants and lightweight DAG-based consensus models.
+```
+
+---
+
+```
+---
+title: "A survey of blockchain consensus algorithms performance evaluation criteria"
+year: 2020
+main_author: "Seyed Mojtaba Hosseini Bamakan, Amirhossein Motavali, and Alireza Babaei Bondarti"
+main_contribution: "Development of a comprehensive performance evaluation framework for blockchain consensus algorithms based on four pillars: throughput, profitability, decentralization levels, and security vulnerabilities."
+evidence_type: "Review / Survey"
+technical_constraints: "Bitcoin throughput (~7 TPS); VISA throughput (~20,000 TPS); block size limits (e.g., 1 MB for Bitcoin); latency/block time targets (ranging from near-instant to 60+ minutes for finality)."
+reference: "Bamakan, S. M. H., Motavali, A., & Bondarti, A. B. (2020). A survey of blockchain consensus algorithms performance evaluation criteria. Expert Systems with Applications, 154, 113385."
+doi: "https://doi.org/10.1016/j.eswa.2020.113385"
+---
+
+### A survey of blockchain consensus algorithms performance evaluation criteria
+
+**Findings:**
+- **Event Sourcing**: While the source does not use the specific term "Event Sourcing," it defines blockchain as a **distributed and decentralized database** consisting of a **sequence of blocks** where a list of transactions is accumulated. This architecture creates a **tamper-proof record** of transactional data where, once a block is verified, it is not feasible to modify or delete it. This inherent **immutability and connectivity** through hashes ensure that any illegal change to a block invalidates the entire subsequent chain, providing a robust foundation for **auditability**.
+- **High-Throughput (DAG/Chain)**: The source contrasts traditional **linear chains** (like Bitcoin or Ethereum) with **Directed Acyclic Graphs (DAGs)**. In linear chains, throughput is limited by **block size** and **inter-block time**, with Bitcoin managing only about 7 transactions per second (TPS) compared to traditional networks like VISA at 20,000 TPS. In contrast, DAGs store transactions **topologically in a graph**, allowing for **parallel processing** and the elimination of block times. This makes DAGs highly scalable and efficient, capable of handling over **10,000 TPS** in some implementations like IoT Chain.
+- **Consistency (ACID)**: The sources address consistency through **consensus algorithms** designed to achieve agreement on a **single data value** or state across unreliable nodes. Consistency is maintained by ensuring all nodes agree on a **single shared state**, though the time to reach this state varies. The source distinguishes between **probabilistic finality** (where permanence increases over time) and **absolute finality**, which is often guaranteed by **Byzantine-based algorithms** like PBFT.
+- **Self-Repair/Integrity**: Integrity is maintained through **cryptographic hash functions** and the use of **Merkle trees**, which store transactions in a binary tree format to generate a single **Merkle root**. This reduces computational resource costs while ensuring that any data tampering is immediately detectable. Practical mechanisms for integrity include **block verification time**, where nodes must confirm the correctness of a hash before appending a block, and the requirement of multiple **block confirmations** to mitigate the risk of **double-spending attacks**.
+- **Other Relevant Implementation Details**: The source identifies a **performance evaluation framework** that weights criteria such as **51% attack resistance** (8.03%), **Sybil attack resistance** (7.99%), and **power consumption** (7.52%). It also discusses **ASIC resistance** in certain algorithms (e.g., Scrypt or Ethash) to prevent mining power from becoming centralized. Furthermore, it mentions that for B2B or sensitive applications, **permissioned/private blockchains** using algorithms like **PBFT** are preferred for their control and trust levels.
+```
+
+---
+
+```
+---
+title: "A survey of state-of-the-art sharding blockchains: Models, components, and attack surfaces"
+year: 2023
+main_author: "Yi Li, Jinsong Wang, and Hongwei Zhang"
+main_contribution: "A comprehensive taxonomy and analysis of sharding blockchain models, key components (node allocation, transaction partitioning, cross-shard processing), and a systematic investigation of attack surfaces and countermeasures."
+evidence_type: "Review / Survey"
+technical_constraints: "Scalability trilemma (trade-off between scalability, decentralization, and security); Bitcoin/Ethereum throughput (3–15 TPS) vs. Visa (24,000 TPS); latency influenced by network synchrony models (Synchronous, Partially Synchronous, Asynchronous)."
+reference: "Li, Y., Wang, J., & Zhang, H. (2023). A survey of state-of-the-art sharding blockchains: Models, components, and attack surfaces. Journal of Network and Computer Applications, 217, 103686."
+doi: "https://doi.org/10.1016/j.jnca.2023.103686"
+---
+
+### A survey of state-of-the-art sharding blockchains: Models, components, and attack surfaces
+
+**Findings:**
+- **Event Sourcing**: While the specific term is not the focus, the source defines blockchain as an **append-only, tamper-evident digital ledger** where state changes are driven by an ordered sequence of transactions. For financial applications, it discusses both **UTXO-based and account-based models**. Auditability is highlighted as a core feature, enabled because every node can verify the entire historical sequence of transactions to ensure the current state is valid.
+- **High-Throughput (DAG/Chain)**: The source identifies **Directed Acyclic Graph (DAG)** structures as a primary "layer-1" scaling solution that allows for parallel transaction processing. A key trade-off is that while DAGs significantly improve throughput, they are often criticized for failing to provide **deterministic security** for transactions compared to linear chains. Some sharding protocols, such as **Sharper**, organize transactions within shards as a DAG where each block contains a single transaction to reduce confirmation latency. Others, like **SSChain**, utilize a two-layer structure that forms a DAG between the root chain and shards to balance security and speed.
+- **Consistency (ACID)**: The source maps distributed database consistency to the **CAP theory** and the **Scalability Trilemma**. To maintain ACID-like properties (specifically atomicity and consistency) across shards, protocols like **AHL** and **Brokerchain** implement **Two-Phase Commit (2PC)** and **Two-Phase Locking (2PL)** mechanisms. Intra-shard consistency is often managed via **BFT-type consensus**, which provides **ultimate finality**, ensuring that once a transaction is committed, it cannot be reversed due to a fork.
+- **Self-Repair/Integrity**: Integrity is maintained through **cryptographic hash functions and Merkle trees**, which allow nodes to verify data without storing the entire ledger. A novel mechanism for automated auditing and repair is found in **Cochain**, which uses **"Consensus on Consensus" (CoC)**; here, a supervisor group of shards monitors others, and if a shard becomes malicious or loses liveness, the CoC group **replaces the faulty shard** and takes over its state. Additionally, **validity proofs** (sometimes generated via TEEs like SGX) are used to prove transaction correctness during cross-shard transfers.
+- **Other Relevant Implementation Details**: The survey identifies **"Hot Shards"** as a major performance bottleneck where a single shard becomes overwhelmed by high-frequency account activity, suggesting **load-balancing algorithms** (like Metis) as a technical countermeasure. It also details **distributed random number generation (DRG)** as a critical component for unbiased node allocation to prevent attackers from pre-calculating which shard to target for a takeover.
+```
+
+---
+
+```
+---
+title: "A survey on security challenges and solutions in the IOTA"
+year: 2022
+main_author: "Mauro Conti, Gulshan Kumar, Pranav Nerurkar, Rahul Saha, and Luigi Vigneri"
+main_contribution: "Comprehensive security and architectural analysis of the IOTA Tangle, documenting the transition from a Coordinator-based linear consensus model to a decentralized, reputation-driven Directed Acyclic Graph (DAG) system."
+evidence_type: "Review / Survey"
+technical_constraints: "Throughput targets of 1500+ TPS; confirmation delays reduced from ~60 minutes (Bitcoin) to ~10 seconds (IOTA Chrysalis); node hardware requirements of dual-core CPU, 2 GB RAM, and SSD."
+reference: "Conti, M., Kumar, G., Nerurkar, P., Saha, R., & Vigneri, L. (2022). A survey on security challenges and solutions in the IOTA. Journal of Network and Computer Applications, 203, 103383."
+doi: "https://doi.org/10.1016/j.jnca.2022.103383"
+---
+
+### A survey on security challenges and solutions in the IOTA
+
+**Findings:**
+- **Event Sourcing**: While the specific term is not explicitly used, the source describes the Tangle as a distributed ledger that stores **immutable transactions**, acting as a "single source of truth" for all participating nodes. For financial ledgers, the source details a transition from an **account balance model** to an **Unspent Transaction Output (UTXO) model**. The UTXO model enhances auditability and ledger integrity by allowing for **parallel validation of transactions** and more efficient double-spend detection, as conflicting transactions are easily identified when they reference the same consumed output.
+- **High-Throughput (DAG/Chain)**: The paper contrasts traditional **linear blockchain structures** with the **Directed Acyclic Graph (DAG)** structure of the Tangle. Linear chains are identified as having inherent bottlenecks, including **limited throughput** (e.g., 7 TPS for Bitcoin) and significant **confirmation delays** due to the requirement of appending one block at a time. Conversely, the DAG structure allows for **parallel transaction attachment**, theoretically enabling "infinite transactions" to attach to the ledger simultaneously without the need for blocks or miners. This architectural shift allowed IOTA to increase throughput from 20 TPS to **1500 TPS** during the Chrysalis update.
+- **Consistency & ACID**: Consistency in the original protocol was achieved through a **Coordinator**—a trusted node that issued **milestones** to provide absolute finality. In the decentralized "Coordicide" (IOTA 2.0) version, ACID-like consistency is maintained through a **voting-based consensus mechanism** called **Fast Probabilistic Consensus (FPC)**. FPC ensures that nodes reach a common opinion on conflicting transactions through rounds of random queries, which is designed to be leaderless and robust against high-concurrency adversarial attempts to delay consensus.
+- **Data Self-Repair & Integrity**: Integrity is enforced via **cryptographic hashing** (specifically the Curl and Kerl functions) and **digital signatures** (W-OTS or Ed25519) to ensure that transactions are tamper-proof and authentic. A key mechanism for automated auditing is the **"White flag" approach**, which allows the ledger to self-repair during conflict resolution by sorting transactions and **ignoring (dropping) those that conflict** with historical records without orphaning entire honest branches. The **Mana reputation system** provides another layer of integrity by tracking node behavior to mitigate Sybil attacks and manage network congestion. For long-term data auditability, the system utilizes **permanodes** that store the entire history of the Tangle, allowing common nodes to perform "local snapshots" to save space while still being able to verify historical state when necessary.
+- **Other Relevant Implementation Details**: The shift to the **Ed25519 signature scheme** significantly reduced transaction sizes and communication overhead compared to the original Winternitz One-Time Signature (W-OTS) scheme. Additionally, the source discusses the potential for **data sharding**—partitioning the Tangle into multiple independent graphs—to overcome the physical limitations of a single network and achieve even higher scalability.
+```
+
+---
+
+```
+---
+title: "A taxonomy of blockchain consensus protocols: A survey and classification framework"
+year: 2021
+main_author: "Sarah Bouraga"
+main_contribution: "A comprehensive four-category classification framework (Origin, Design, Performance, Security) for evaluating and comparing 28 state-of-the-art blockchain consensus protocols."
+evidence_type: "Review / Survey"
+technical_constraints: "Bitcoin average block interval (10 min); PBFT requires $3f+1$ nodes to tolerate $f$ faults; throughput targets range from ~7 TPS (Bitcoin) to 1500+ TPS (Robust Round Robin) and 1200 TPS (Panda)."
+reference: "Bouraga, S. (2021). A taxonomy of blockchain consensus protocols: A survey and classification framework. Expert Systems with Applications, 168, 114384."
+doi: "https://doi.org/10.1016/j.eswa.2020.114384"
+---
+
+### A taxonomy of blockchain consensus protocols: A survey and classification framework
+
+**Findings:**
+- **Event Sourcing**: While the specific term is not used, the source defines blockchain as a "**decentralized transparent (public) ledger with transaction records**" and a "**linked list of blocks**". Transactions are stored in a **Merkle tree** within the block header. This append-only structure provides inherent **auditability** through transparency and **immutability**, as every block header contains the hash of the previous block, creating a verifiable chain.
+- **High-Throughput (DAG/Chain)**: The source identifies a "**tight trade-off between performance and security**" in linear chains using Proof-of-Work (PoW). In linear models, increasing throughput by reducing block intervals or increasing block size risks **insufficient propagation**, leading to higher rates of **forks**. In contrast, the survey highlights **BlockDAG** (e.g., Fantômette) and **DAG-based** consensus (e.g., Panda) as solutions for high-performance needs, noting that the Panda protocol performs better than PoW or BFT in terms of **throughput and scalability** for data tokenization.
+- **Consistency (ACID)**: ACID properties are addressed through the concept of **Safety (Consistency)** and **Consensus Finality**. The source distinguishes between **probabilistic finality** (where blocks are prone to revocation with decreasing probability, common in PoW/PoS) and **deterministic (absolute) finality** (where written blocks are never revoked, common in BFT-style protocols). Mechanisms like **Practical Byzantine Fault Tolerance (PBFT)** ensure all correct nodes deliver messages in the **total order** to maintain a consistent state.
+- **Self-Repair/Integrity**: Integrity is maintained through **cryptographic hashes** linking blocks and **Merkle roots** summarizing transaction sets in headers. To automate auditing of node behavior, several protocols implement **punishment mechanisms** (e.g., Fantômette, CloudPoS, ISCP) where malicious nodes lose their stake or face reputation penalties. Other mechanisms include **Validators** who check the validity of proposed blocks before they are added to the chain.
+- **Other Relevant Implementation Details**: The source introduces a **four-category framework** for evaluating new protocols: **Origin** (seminal roots like PoW/PoS), **Design** (leader selection and committee formation), **Performance** (throughput/latency), and **Security** (resistance to Sybil, DoS, 51%, and Eclipse attacks). It also highlights a shift toward **committee-based consensus** to address the poor performance and safety limitations of single-node mining.
+```
+
+---
+
+```
+---
+title: "Advanced DAG-Based Ranking (ADR) Protocol for Blockchain Scalability"
+year: 2023
+main_author: "Tayyaba Noreen, Qiufen Xia, and Muhammad Zeeshan Haider"
+main_contribution: "Advanced DAG-based Ranking (ADR) protocol using a reputation-driven ranking algorithm and a Session Control Protocol (SCP) to improve scalability, throughput, and node reliability in private blockchain environments."
+evidence_type: "Research Article"
+technical_constraints: "Throughput (1250 TPS achieved); latency (approx. 50 sec); scalability tested on EC2 clusters with >100 nodes; liveness requires threshold θ ≤ 1/3."
+reference: "Noreen, T., Xia, Q., & Haider, M. Z. (2023). Advanced DAG-Based Ranking (ADR) Protocol for Blockchain Scalability. Computers, Materials & Continua, 75(2), 2593-2613."
+doi: "10.32604/cmc.2023.036139"
+---
+
+### Advanced DAG-Based Ranking (ADR) Protocol for Blockchain Scalability
+
+**Findings:**
+- **Event Sourcing**: While the specific term is not used, the sources describe a **distributed ledger** where participants share the same history of records. The system utilizes a **block structure** containing a header (prevHash, timestamp, Merkle root, block hash) and a body of transactions. Auditability is enhanced through **asymmetric cryptography** for authentication and the **cryptographic properties** of the ledger, which make ranking evidence secure and reliable.
+- **High-Throughput (DAG/Chain)**: The paper highlights that **linear chains** (e.g., Bitcoin, Ethereum) suffer from low throughput (7–20 TPS) because scalability is limited by the capacity of a single computing node. In contrast, **Directed Acyclic Graphs (DAGs)** allow for simultaneous block generation and **parallel transactions**, which increases throughput and scalability. The ADR protocol implements a **two-dimensional DAG structure** where multiple preceding blocks can reference a single block, removing constraints on confirmation rates and achieving up to **1250 TPS**.
+- **Consistency & ACID**: Consistency is maintained through the consensus algorithm, where every participant stores **ranking evidence** to ensure agreement. To maintain order in high-concurrency updates, transactions within a block are arranged by appearance, and the **order over blocks determines the global transaction order**. The protocol claims to provide **over 99% consistency** by requiring nodes to gather hash values of the current ledger state from at least five nodes to verify the initialization process.
+- **Self-Repair/Integrity**: Integrity is enforced through **SHA-256 hashing and Merkle Trees**, which produce a digital fingerprint of the transaction set. A core automated auditing mechanism is the **nodeRank algorithm**, which evaluates and ranks nodes based on their behavior, separating true nodes from attackers. The **Session Control Protocol (SCP)** acts as a self-repair mechanism by detecting malicious or low-reputation nodes and issuing **"exit tickets"** to remove them from the consensus group. Additionally, a **deposit penalty mechanism** is used to secure node reliability and protect against double-spending attacks.
+- **Other Relevant Implementation Details**: The ADR protocol is designed for **private blockchains** where an access control layer verifies node identities before entry. It introduces a **cost-efficient reward system** where nodes earn ranking points instead of financial coins for confirming blocks, encouraging honest participation without the energy costs of Proof of Work.
+```
+
+---
+
+```
+---
+title: "AionBFT: High-Throughput Asynchronous BFT Consensus with Even Faster Confirmation"
+year: 2026
+main_author: "Xiao Zhang, Yuan Lu, Zhenyan Ji, Jianghao Hu, Shengkai Xu, Wenkang Kong, and Jiqiang Liu"
+main_contribution: "AionBFT, a boundary-centric asynchronous BFT protocol that decouples dissemination from agreement by running consensus on compact boundary vectors and employing a dual-mode consensus to minimize confirmation latency."
+evidence_type: "Research Article"
+technical_constraints: "Tolerates $f = ⌊(n−1)/3⌋$ Byzantine parties; evaluated up to $n=22$; throughput ~60,000+ TPS in good conditions; latency targets <200ms in favorable network settings."
+reference: "Zhang, X., Lu, Y., Ji, Z., Hu, J., Xu, S., Kong, W., & Liu, J. (2026). AionBFT: High-Throughput Asynchronous BFT Consensus with Even Faster Confirmation. Blockchain: Research and Applications, 100467."
+doi: "https://doi.org/10.1016/j.bcra.2026.100467"
+---
+
+### AionBFT: High-Throughput Asynchronous BFT Consensus with Even Faster Confirmation
+
+**Findings:**
+- **Event Sourcing**: While not explicitly using the term "Event Sourcing," the source defines the final output as a **standard single-chain blockchain** induced by decided boundaries. The ledger is an **append-only, tamper-evident digital record** where every block content is assembled from notarized proposals. **Auditability** is fundamentally supported by the use of **notarized proofs** (progress witnesses) that accompany every transaction; no party can obtain a valid output at a position unless at least $f+1$ parties have reached that position, ensuring a verifiable and consistent transaction history.
+- **High-Throughput (DAG/Chain)**: The paper contrasts AionBFT with **Directed Acyclic Graph (DAG)** designs (e.g., Narwhal, Tusk, Bullshark), noting that DAG-based consensus often faces **cubic growth in verification and processing overhead** because each vertex references $O(n)$ prior vertices. AionBFT achieves high throughput by **decoupling transaction dissemination from agreement**, running them as parallel pipelines. Instead of full DAG bookkeeping, it summarizes progress using **compact $n$-dimensional boundary vectors**, which avoids the dominant overhead of DAG-based designs while achieving a throughput of over **60,000 TPS**.
+- **Consistency (ACID)**: Although "ACID" is not used as an acronym, the protocol enforces **Total Order and Agreement** properties to ensure global consistency. To maintain consistency during high-concurrency mode switches (between the fast and asynchronous paths), the source implements a **two-step pace synchronizer**. This mechanism distinguishes published boundaries from provisional ones, ensuring that boundaries already appended to the `edgeChain` are **never revoked or rolled back**, thereby maintaining a consistent prefix across all honest nodes even if the network enters an asynchronous state.
+- **Self-Repair/Integrity**: Integrity is maintained through **ECDSA signatures, SHA-256 hashing, and VWABC notarizability**, which prevents Byzantine parties from fabricating conflicting records. A primary mechanism for automated auditing and repair is the **Data Recovery (DR) interface**; if an honest party lacks the payload referenced by a globally agreed boundary, it uses DR to **fetch missing notarized payloads** from other honest parties. Additionally, the system includes a **state sensor** that uses a Two-Value Byzantine Agreement (TVBA) to globally confirm the farthest safe slot before proceeding, allowing the ledger to self-repair its pace after a network stall.
+- **Other Relevant Implementation Details**: AionBFT utilizes a **dual-mode consensus architecture**: a partially synchronous **fast path** (using t-VWABC) for low latency in stable networks and a robust **asynchronous path** (using MVBA) as a fallback to guarantee liveness under adversarial conditions.
+```
+
+---
+
+```
+---
+title: "Blockchain-enabled renewable energy certificate trading: A secure and privacy-preserving approach"
+year: 2024
+main_author: "Wei-Jen Liu, Wei-Yu Chiu, and Weiqi Hua"
+main_contribution: "A Directed Acyclic Graph (DAG) blockchain platform for Renewable Energy Certificate (REC) trading that utilizes a reputation-based Fast Probabilistic Consensus (FPC) and a privacy-preserving account abstraction schema."
+evidence_type: "Research Article"
+technical_constraints: "Transaction time reduced by 41% and energy consumption by 65% compared to PoS; ledger size scalability up to 10,000 blocks; transaction records pooled until ~1MB before block packaging."
+reference: "Liu, W.-J., Chiu, W.-Y., & Hua, W. (2024). Blockchain-enabled renewable energy certificate trading: A secure and privacy-preserving approach. Energy, 290, 130110."
+doi: "https://doi.org/10.1016/j.energy.2023.130110"
+---
+
+### Blockchain-enabled renewable energy certificate trading: A secure and privacy-preserving approach
+
+**Findings:**
+- **Event Sourcing**: While "Event Sourcing" is not explicitly named, the source describes a system where **transaction records are stored permanently** in a ledger to ensure **traceability and prevent double-accounting**. The blockchain acts as a **tamper-proof mechanism** that records every successful trade, certified by smart contracts. This provides a transparent and accurate tracking mechanism for renewable energy contributions, which is critical for **auditability** and regulatory compliance.
+- **High-Throughput (DAG/Chain)**: The paper argues that **linear blockchains** suffer from scalability bottlenecks and "validator aggregation problems" because they are limited by the time required to create a new block. In contrast, the **Directed Acyclic Graph (DAG)** structure is "not limited by block creation time" and handles **significantly more transactions per second (TPS)**. Experimental results show the proposed DAG-based method is **41% faster** than Proof-of-Stake (PoS) and maintains stable transaction speeds even as the ledger size grows to 10,000 blocks.
+- **Consistency (ACID)**: "ACID" is not mentioned, but consistency is maintained through a **voting-based Fast Probabilistic Consensus (FPC)**. To address high-concurrency and security, the system integrates a **reputation-based weight** into the voting mechanism. This ensures that verifiers must reach a consensus threshold ($\omega$) across multiple voting rounds to validate transactions, preventing conflicting nodes from being recorded on the ledger.
+- **Self-Repair/Integrity**: Integrity is enforced through **SHA-256 encryption, digital signatures, and Decentralized Identifiers (DID)** to verify ownership and prevent tampering. A key self-repair and auditing mechanism is the **reputation decay constant ($\lambda$)**, which automatically penalizes inactive or untrustworthy nodes over time. The platform also uses **neighbor node validation**, where each new block requires two validations from existing nodes to detect data corruption. For privacy, a **privacy-preservation algorithm** generates "proxy" or "empty" accounts for high-volume traders to prevent side-channel attacks and side-step commercial data analysis.
+- **Other Relevant Implementation Details**: The system architecture includes a **Data Layer** (storing encrypted certificate metadata), a **Network Layer** (matching orders), and a **Consensus Layer**. It utilizes **smart meters** to automate the generation of RECs based on actual energy production ($1$ REC = $1$ MWh). The smart contract lifecycle is divided into **pre-bidding, trading, and billing** phases to automate the entire transaction flow without human intervention.
+```
+
+---
+
+```
+---
+title: "Cross-block asynchronous blockchain: a new paradigm for enhanced blockchain performance"
+year: 2025
+main_author: "Chenglin Yu, Ying Yu, Ray Y. Zhong, and Ming Li"
+main_contribution: "Cross-block asynchronous blockchain (CBAB) architecture that adopts structural-level asynchrony to achieve localized consensus, linear scalability, and robust fault tolerance."
+evidence_type: "Research Article"
+technical_constraints: "Throughput (up to 2.8x higher than PoS); Latency (65% lower than PoS); Fault tolerance (up to 50% malicious nodes); Network load (linear relationship with network size)."
+reference: "Yu, C., Yu, Y., Zhong, R. Y., & Li, M. (2025). Cross-block asynchronous blockchain: a new paradigm for enhanced blockchain performance. Advanced Engineering Informatics, 67, 103563."
+doi: "https://doi.org/10.1016/j.aei.2025.103563"
+---
+
+### Cross-block asynchronous blockchain: a new paradigm for enhanced blockchain performance
+
+**Findings:**
+- **Event Sourcing**: While not explicitly using the term "Event Sourcing," the source describes a **decentralized and secure method for recording transactions** that enables traceability and effective information management in financial services. The system's **immutable block structure** ensures transparency and tamper-proof sharing between nodes. Auditability is specifically enhanced through a **cross-block structure** where nodes embed the hash values (prehashes) of neighboring nodes' blocks into their own headers, safeguarding the contents of neighboring ledgers without requiring global synchronization.
+- **High-Throughput (DAG/Chain)**: The paper highlights that traditional linear chains (PoW, PoS) and communication-intensive protocols like PBFT face significant performance bottlenecks and **quadratic communication overhead** in large networks. It proposes the **CBAB architecture** to achieve high throughput and low latency by performing **fully asynchronous localized consensus**. Unlike traditional chains that aggregate full transaction sets, CBAB decomposes consensus into subtasks executed independently between adjacent peers, achieving up to **2.8x higher throughput** than PoS and a **linear relationship** between network load and the number of nodes.
+- **Consistency (ACID)**: The sources address consistency by allowing **temporary inconsistencies among node ledgers**, with the system designed to function in dynamic, loosely synchronized networks. To maintain order during high-concurrency updates, CBAB enforces **strict sequential execution per node** and routes all requests from a specific participant to a designated node. Consistency is maintained by **broadcasting consensus results themselves as transaction data** along recorded historical paths, ensuring that the results remain unaffected by local ledger variations.
+- **Self-Repair/Integrity**: Integrity is maintained through **cryptographic cross-block referencing** where nodes verify the authenticity of neighboring content. A practical mechanism for automated auditing involves nodes **predicting the hash value of a neighbor’s upcoming block body** based on transaction history; a match confirms consensus. For self-repair and stability, the system employs a **node maintenance strategy** that monitors hash mismatches to detect inconsistencies. If a node repeatedly fails verification, it is **pruned and disconnected** from the network, allowing the system to remain robust even if **50% of the nodes** are faulty or malicious.
+- **Other Relevant Implementation Details**: The architecture uses a **historical-path broadcasting method** supported by a "local codebook" for message authentication and encryption, isolating the sharing process from the local database. Complex transactions are handled by **decomposing them into chained subtransactions** (e.g., A → B → C becomes A → B → P0, then P0 → C). The technical implementation was validated using **Python**, **Redis 7.0**, **LevelDB**, and **AES encryption**.
+```
+
+---
+
+```
+---
+title: "DAG-Driven Optimization for heterogeneous federated learning based on fuzzy entropy and benders decomposition"
+year: 2026
+main_author: "Fenhua Bai, Chunlin Zhou, Tao Shen, Kai Zeng, Xiaohui Zhang, and Chengjiang Zhou"
+main_contribution: "An optimization framework for heterogeneous Federated Learning utilizing a Directed Acyclic Graph (DAG) based dual-chain architecture, fuzzy entropy-based aggregation (DFEA), and Generalized Benders Decomposition (GBD) for global resource optimization."
+evidence_type: "Research Article"
+technical_constraints: "Latency thresholds ($\tau_i$) between 0.5–2.0 s; energy budgets ($E_i$) of 0.1–1.0 J; maximum CPU frequencies ($F_{loc}$) of 1.0–3.0 GHz; throughput targets peaking near 1600 TPS."
+reference: "Bai, F., Zhou, C., Shen, T., Zeng, K., Zhang, X., & Zhou, C. (2026). DAG-Driven Optimization for heterogeneous federated learning based on fuzzy entropy and benders decomposition. Expert Systems With Applications, 302, 130570."
+doi: "https://doi.org/10.1016/j.eswa.2025.130570"
+---
+
+### DAG-Driven Optimization for heterogeneous federated learning based on fuzzy entropy and benders decomposition
+
+**Findings:**
+- **Event Sourcing**: Information not found regarding specific application to financial ledgers. However, the system utilizes an architecture where model updates are recorded as **immutable transactions on a distributed ledger**, serving as a "single source of truth". Auditability is intrinsically supported because every transaction is **securely bound to its predecessors**, meaning any historical modification would invalidate subsequent links and be easily detected by the network.
+- **High-Throughput (DAG/Chain)**: The paper identifies that **traditional linear chain structures** suffer from queuing delays and "consensus bottlenecks" because they require sequential processing of updates. In contrast, a **Directed Acyclic Graph (DAG)** structure enables **efficient parallel processing** of concurrent model updates from numerous heterogeneous clients. Experimental results show that the DAG-based architecture consistently achieves **higher throughput (TPS)** and lower latency jitter than traditional single or dual-chain systems, demonstrating superior scalability as the number of clients increases.
+- **Consistency (ACID)**: While the acronym "ACID" is not used, consistency is maintained through **blockchain consensus and smart contracts**, which automate the coordination of model aggregation to resolve discrepancies. To handle high-concurrency updates in heterogeneous environments, the framework employs **Dynamic Fuzzy Entropy-based Aggregation (DFEA)**. This method quantifies client uncertainty to **adaptively weight model contributions**, ensuring that the global model converges consistently even when client states change abruptly.
+- **Self-Repair/Integrity**: Integrity is fundamentally guaranteed by the **tamper-resistant nature of the DAG ledger**. A practical mechanism for automated auditing is the **DFEA algorithm**, which acts as an **adaptive filter** to detect and "attenuate or discard suspicious updates" from poisoning attacks by evaluating behavioral instability via fuzzy entropy. Additionally, the protocol includes **Tips Selection and Tips Validation**, where the system must choose and approve previous unconfirmed transactions before a new global model update can be published.
+- **Other Relevant Implementation Details**: The framework uses **Generalized Benders Decomposition (GBD)** to solve a Mixed Integer Non-Linear Programming (MINLP) problem, identifying optimal strategies for **task offloading and resource allocation** (CPU frequency, transmission power) under strict latency and energy constraints.
+```
+
+---
+
+```
+---
+title: "ECI-SCBC: An Efficient Collaborative Interaction method for Supply Chain Based on Blockchain Consensus Mechanism"
+year: 2025
+main_author: "Jinli Wang, Hang Zhao, Mengzhuang Liu, Zehui Yuan, Libo Feng, Yimin Yu, Hui Li, and Shaowen Yao"
+main_contribution: "RVI-DPoS (Reputation, Voting, and Incentive-integrated Delegated Proof of Stake), an efficient collaborative interaction mechanism that optimizes resource utilization through a dual-reward system and reputation-driven voting weight constraints."
+evidence_type: "Research Article"
+technical_constraints: "Transaction processing capacity (TPS) of 2,637 units per second; block generation time ~1.8 s; network latency 10–50 ms; node participation rate targets ~87%."
+reference: "Wang, J., Zhao, H., Liu, M., Yuan, Z., Feng, L., Yu, Y., Li, H., & Yao, S. (2025). ECI-SCBC: An Efficient Collaborative Interaction method for Supply Chain Based on Blockchain Consensus Mechanism. Computers & Industrial Engineering, 210, 111565."
+doi: "https://doi.org/10.1016/j.cie.2025.111565"
+---
+
+### ECI-SCBC: An Efficient Collaborative Interaction method for Supply Chain Based on Blockchain Consensus Mechanism
+
+**Findings:**
+- **Event Sourcing**: While the specific term "Event Sourcing" is not used, the sources describe a functionally equivalent **distributed ledger architecture** for supply chains where "any abnormal behavior or the deletion of published or disseminated information... is **irrefutably recorded**". The ledger acts as a persistent record of all transaction data, including callback information and regulatory data. For auditability, the system ensures that "punishments and historical records will be **permanently stored**," preventing nodes from denying or destroying evidence of past actions.
+- **High-Throughput (DAG/Chain)**: The paper contrasts various consensus models, mentioning a "quantum-hybrid blockchain (QHB-DA) that **fuses DAG and chained structures**" to reduce storage overhead while maintaining end-to-end traceability. The proposed **RVI-DPoS** model focuses on high throughput by **decoupling witness selection from full-network broadcast**, reducing communication complexity from the $O(N^2)$ typical of PBFT to **$O(w^2)$**, where $w$ is a fixed number of elected witness nodes (e.g., $w=35$). This optimization allows the system to achieve a stable **TPS of 2,637**, significantly outperforming traditional linear models and PBFT in large-scale node environments.
+- **Consistency & ACID**: ACID is not explicitly named, but **data consistency** is a core requirement of the consensus layer, ensuring that "rules formulated by the consensus algorithm need to be confirmed by the whole network". To maintain consistency during high-concurrency updates, the system uses a **2/3 majority verification rule** within the witness node set before results are broadcast. The source also provides a theoretical proof of **convergence and stability**, showing that the system state vector ($S(t)$) gradually stabilizes as nodes adjust their behavior based on the **reputation-based voting and reward-punishment mechanisms**.
+- **Data Self-Repair & Integrity**: Integrity is enforced through **cryptographic hash functions and P2P broadcast mechanisms**. Automated auditing and self-repair mechanisms include:
+    - **Dynamic Voting Weight**: Each node's voting weight is adjusted based on a **reputation score** derived from KPIs like order fulfillment and historical accuracy.
+    - **Dual-Mode Punishment**: Malicious behavior (data tampering) is punished **exponentially**, while technical failures (timeouts) are punished **linearly**, ensuring the system differentiates between intentional attacks and hardware instability.
+    - **Appeal Mechanism**: A specific "transaction-level accountability mechanism" allows for the **automated restoration of credit scores** and compensation for honest nodes if a valid transaction is mistakenly rejected by the system.
+    - **Collective Responsibility**: Even nodes that vote for a malicious producer face a "Voter Punishment Value" (calculated as 1/5 of the producer's penalty) to **deter collusion**.
+- **Other Relevant Implementation Details**: The system introduces a **dual-reward mechanism** that motivates nodes for both "supply chain activities" (e.g., timely delivery) and "blockchain activities" (e.g., block generation), preventing nodes from neglecting real-world duties in favor of on-chain mining. A **sliding window mechanism** recalibrates reputation thresholds every 30 days to ensure the model remains self-adaptive to changing network conditions.
+```
+
+---
+
+```
+---
+title: "FabricTCA: A two-level conflict avoidance approach to consortium blockchains"
+year: 2026
+main_author: "Haibo Wu, Hui Liu, Lili Zhang, Yi Sun, and Jianhui Li"
+main_contribution: "FabricTCA (Fabric Two-level Conflict Avoidance), a scheme that optimizes consortium blockchain throughput by mitigating intra-block conflicts using a dependency chain and inter-block conflicts using an orderer-side cache."
+evidence_type: "Research Article"
+technical_constraints: "Throughput improvement (up to 9.51x vs. Fabric); storage reduction (88.27%); linear time complexity for conflict detection ($O(n^2 \times m)$ for intra-block and $O(n)$ for inter-block)."
+reference: "Wu, H., Liu, H., Zhang, L., Sun, Y., & Li, J. (2026). FabricTCA: A two-level conflict avoidance approach to consortium blockchains. Future Generation Computer Systems, 174, 108029."
+doi: "https://doi.org/10.1016/j.future.2025.108029"
+---
+
+### FabricTCA: A two-level conflict avoidance approach to consortium blockchains
+
+**Findings:**
+- **Event Sourcing**: While not explicitly using the term "Event Sourcing," the source describes a **consortium blockchain architecture** (Hyperledger Fabric) that serves as an **append-only, tamper-proof, and traceable ledger**. For financial applications like the **Smallbank workload**, the ledger records an identical chain of blocks containing batches of transactions that represent state changes. The primary advantage for auditability is that the system establishes a **trust environment** through immutability and transparency, eliminating the need for a trusted third party while ensuring every transaction can be verified and traced back.
+- **High-Throughput (DAG/Chain)**: The source analyzes the performance of a **linear chain of blocks** and identifies that traditional models suffer from low throughput because they package conflicting transactions into blocks, only to mark them invalid later. It evaluates high-throughput alternatives, noting that while **Directed Acyclic Graphs (DAGs)** or conflict graphs can handle concurrency, **cycle detection** in these graphs often incurs significant computational overhead, making them hard to apply in industrial settings. FabricTCA addresses this by using a **two-dimensional dependency chain** that allows for **topological sorting** and reordering, achieving a **9.51-fold increase in throughput** compared to standard Hyperledger Fabric.
+- **Consistency (ACID)**: The system maintains consistency and **serializability** through **Multi-Version Concurrency Control (MVCC)** and an **execute-order-validate (EOV)** architecture. To manage high-concurrency updates, FabricTCA identifies three types of dependencies (**wr, anti-rw, and ww**) that cause conflicts. It enforces ACID-like consistency by detecting **"dangerous structures"** (circular dependencies) and **"stale reads"** before the ledger is committed. Inter-block consistency is maintained via an **orderer cache** that stores the latest key versions, ensuring that transactions with outdated read sets are aborted early.
+- **Self-Repair/Integrity**: Integrity is enforced through **cryptographic links and encrypted signatures** between blocks. Practical mechanisms for automated auditing and self-correction include:
+    - **Dangerous Structure Detection**: Uses simulated timestamps to automatically identify and **abort transactions** that would cause dependency loops.
+    - **Pruning Optimization**: An automated mechanism that **deletes nodes and edges** associated with aborted transactions from the dependency graph to reduce the calculation scale and prevent further erroneous aborts.
+    - **Orderer Caching**: Early conflict detection that **paints invalid transactions** based on version mismatches and triggers an **automated resubmission** by the client, ensuring the final block remains valid and compact.
+    - **DDoS Robustness**: The early detection mechanism provides a defense against DDoS attacks on specific accounts by **filtering and aborting invalid traffic** during the ordering phase before it consumes system resources.
+- **Other Relevant Implementation Details**: The "dependency chain" consists of a **vertical transaction chain** and a **horizontal key chain**, which allows the system to determine conflict-free sequences in linear time. The implementation reduces space consumption by **88.27%** because it prevents the permanent storage of aborted, invalid transaction data.
+```
+
+---
+
+```
+---
+title: "MBFT: A Modular Byzantine Fault Tolerance Protocol for high adaptability"
+year: 2024
+main_author: "Dongxu Zhu and Yepeng Guan"
+main_contribution: "Deconstruction of single-layer leader-based BFT into three independent modular phases (Ordering, Message Locking, and Commit Confirm) to allow for the flexible construction of consensus protocols tailored to specific scenario requirements."
+evidence_type: "Research Article"
+technical_constraints: "Fault tolerance of $f = (N-1)/3$ Byzantine replicas; throughput varies by complexity ($O(n)$ for linear vs. $O(n^2)$ for quadratic); latency is determined by 'path length' (number of communication rounds)."
+reference: "Zhu, D., & Guan, Y. (2024). MBFT: A Modular Byzantine Fault Tolerance Protocol for high adaptability. Expert Systems with Applications, 257, 125102."
+doi: "https://doi.org/10.1016/j.eswa.2024.125102"
+---
+
+### MBFT: A Modular Byzantine Fault Tolerance Protocol for high adaptability
+
+**Findings:**
+- **Event Sourcing**: While the specific term is not used, the source describes a **State Machine Replication (SMR)** approach where the cluster maintains integrity and consistency of the operating state. For financial ledgers, the source emphasizes the importance of the **correct order of transactions**, noting that the execution order on a ledger can significantly impact financial rewards. Auditability is fundamentally supported by the **irrefutable recording of abnormal behavior** and the permanent storage of historical records, which prevents nodes from denying or destroying evidence of past malicious actions.
+- **High-Throughput (DAG/Chain)**: The paper contrasts traditional **linear leader-based chains** (like PBFT) with high-throughput models like **HotStuff** and various **MBFT configurations**. It notes that $O(n^2)$ communication complexity is more prone to network congestion and limits scalability, whereas **$O(n)$ linear complexity** (used in MBFT's 1-1-1 and 2-1-1 variants) allows for higher scalability and throughput, though it may increase path length. While focusing on single-layer chains, the authors identify extending modular approaches to **DAG protocols** as a key future research direction to reduce leader centralization.
+- **Consistency (ACID)**: ACID properties are maintained through the **majority requirement of non-faulty replicas**, where a request must reach a **local-locked state** on more than half of the non-faulty replicas ($2f+1$ total nodes) before it can be committed. To handle high-concurrency updates and prevent "split-brain" states during view changes, the system uses a **two-dimensional dependency chain** (in related Fabric-based analysis) or **notarized certificates** to ensure that once a request is executed by one non-faulty replica, it remains consistent across all others even after leadership transitions.
+- **Self-Repair/Integrity**: Integrity is enforced through **digital signatures and Public-Key Infrastructure (PKI)** to verify message authenticity. A robust mechanism for automated auditing is the **fault location mechanism**, which can detect and provide **"malicious evidence messages"** for failure types such as message tampering, "split-brain attacks," and "Byzantine oligarchy". This evidence allows the cluster to **automatically expel faulty replicas**. Experimental results show that this self-repair capability leads to an **exponential decrease** in the number of Byzantine replicas over successive view changes, rapidly returning the system to baseline performance levels.
+- **Other Relevant Implementation Details**: The source introduces **"Byzantine democracy"** as a property that allows nodes to collectively determine transaction order via voting, preventing a single malicious leader from manipulating the ledger for personal gain. It also includes a **built-in cluster clock synchronization algorithm** that reduces synchronous deviation without increasing communication costs, further enhancing the fairness of the ordering process.
+```
+
+---
+
+```
+---
+title: "OverShard: Scaling blockchain by full sharding with overlapping network and virtual accounts"
+year: 2023
+main_author: "Bin Yu, He Zhao, Tong Zhou, Nianzu Sheng, Xiaofeng Li, and Jinlin Xu"
+main_contribution: "OverShard, a full sharding architecture combining an overlapping network (nodes join multiple shards) and a virtual accounts model to eliminate cross-shard transaction complexity and achieve linear scalability."
+evidence_type: "Research Article"
+technical_constraints: "Target 12s block interval; throughput ~15–20 TPS per shard; scalability tested up to 128 shards; 100ms message latency; 20Mbps node bandwidth."
+reference: "Yu, B., Zhao, H., Zhou, T., Sheng, N., Li, X., & Xu, J. (2023). OverShard: Scaling blockchain by full sharding with overlapping network and virtual accounts. Journal of Network and Computer Applications, 220, 103748."
+doi: "https://doi.org/10.1016/j.jnca.2023.103748"
+---
+
+### OverShard: Scaling blockchain by full sharding with overlapping network and virtual accounts
+
+**Findings:**
+- **Event Sourcing**: While the specific term "Event Sourcing" is not used, the source describes blockchain as a **decentralized distributed ledger** characterized by **data transparency, integrity, and immutability**. For financial record-keeping, it utilizes an **account balance model** where the system tracks the balance of each account as a **global state**. A unique implementation detail is the use of **virtual accounts** attached to master accounts; these are used within shards to process transactions without requiring complex cross-shard coordination, which enhances **auditability** by ensuring all transactions are processed atomically in a single consensus round.
+- **High-Throughput (DAG/Chain)**: The paper identifies that traditional **linear single-chain structures** and standard sharding models struggle with the complexity and latency of **cross-shard transactions**. OverShard employs a **Directed Acyclic Graph (DAG) structure for accounts and transactions**. The primary trade-off is that while the **overlapping network** increases storage and communication overhead per node (as nodes join multiple shards), it allows the system to scale **linearly up to 128x the throughput** of a non-sharded system. This architecture achieves a **confirmation latency of only one block interval** (~12s), compared to the multiple rounds or sub-transactions required by linear sharding models like Monoxide or RapidChain.
+- **Consistency (ACID)**: ACID properties, particularly **atomicity and consistency**, are maintained by the **virtual accounts model**, which ensures that **all transactions are processed in a single shard**. This eliminates the need for typical distributed database consistency mechanisms like Two-Phase Commit (2PC) used in other sharded systems. For high-concurrency ledger updates, the system uses **changed-state data synchronization**; whenever a block is verified, the updated state and its **Merkle tree root** are broadcast to neighbor nodes in other shards to ensure a consistent global view of account balances.
+- **Self-Repair/Integrity**: Integrity is enforced through **cryptographic immutability**, where each block header contains hashes of multiple parent blocks from different shards to enable **simultaneous PoW mining and cross-shard confirmation**. Practical mechanisms for automated auditing include **individual transaction verification** (checking signatures and balances) and **double-spending detection**. The system features a **malicious node detection** mechanism where the P2P network periodically refreshes neighbor nodes; nodes that send incorrect block or transaction data are **automatically deleted from neighbor lists** and isolated. Additionally, the **"White flag" approach** (referenced as a related concept) and **reputation-based mining power** in each shard ensure that the ledger remains secure against 51% attacks even with a high number of shards.
+- **Other Relevant Implementation Details**: The system uses the **Kademlia (Kad) algorithm** with multiple **Distributed Hash Tables (DHTs)** for each shard a node joins to manage neighbors. It also supports a **state merging** process that regularly deletes virtual account data for "cold accounts" (those without frequent transactions) to reduce the storage overhead caused by the overlapping network.
+```
+
+---
+
+```
+---
+title: "PChain: A scalable and efficient parallel-chain consensus protocol"
+year: 2026
+main_author: "Huimei Liao, Haixia Xu, Siyuan Leng, Jinling Tang, Yaobing Xu, and Yinchang Zhou"
+main_contribution: "PChain, a parallel-chain consensus protocol that employs a leader-based model with deterministic task allocation to achieve high concurrency while ensuring the sequential consistency of related transactions."
+evidence_type: "Research Article"
+technical_constraints: "Tolerates $f = (n-1)/3$ Byzantine nodes; $O(n)$ communication complexity in honest rounds; throughput peaks at ~1218 TPS with 80 nodes; latency ~500-600ms."
+reference: "Liao, H., Xu, H., Leng, S., Tang, J., Xu, Y., & Zhou, Y. (2026). PChain: A scalable and efficient parallel-chain consensus protocol. Future Generation Computer Systems, 174, 107943."
+doi: "https://doi.org/10.1016/j.future.2025.107943"
+---
+
+### PChain: A scalable and efficient parallel-chain consensus protocol
+
+**Findings:**
+- **Event Sourcing**: While the specific term is not used, the source describes a **shared history of records** across $k$ parallel blockchains where all transactions are recorded. For auditability, the system stores the **"world state"** at the end of each epoch in a **Merkle tree**, which facilitates efficient and secure verification of all historical data. The deterministic allocation of transactions to specific leaders ensures that consensus transactions are **non-repetitive**, reducing storage overhead and making the audit trail cleaner by eliminating redundant entries.
+- **High-Throughput (DAG/Chain)**: The source analyzes the trade-offs between **linear chains**, **DAGs**, and **parallel chains**. Linear single-chain structures are limited by the bottleneck of a single leader and the overhead of strict sequentiality. **Directed Acyclic Graphs (DAGs)** allow concurrency $n$, but the source notes they are "generally more complex than parallel-chain structure" and making **global serialization** a significantly more challenging problem. Furthermore, the source argues many DAG-based protocols (like GHOST or Phantom) have "questionable" security levels regarding double-spending. PChain adopts a **parallel-chain structure** with $k$ shards, achieving $O(n)$ complexity and higher scalability by allowing $k$ leaders to add blocks simultaneously.
+- **Consistency (ACID)**: ACID properties are maintained through **"sequential consistency of related transactions"**. The system recognizes that it is not always necessary to maintain a strict global order for all transactions; instead, it focuses on related ones (e.g., Alice paying Bob). Consistency is managed by:
+    1.  Ensuring **serialization on a single chain** within a shard for transactions from the same node.
+    2.  Using **reference sets** where blocks on one chain reference blocks on others to prove legitimacy and maintain cross-chain sequentiality.
+    3.  Executing a global **epoch-change phase** where nodes agree on a Merkle tree root ($R_e$) to ensure all honest nodes enter the next epoch with a **consistent state**.
+- **Self-Repair/Integrity**: Integrity is enforced through **Merkle trees, SHA-based hashing, and (t, n) threshold signatures** for block validation. A key self-repair mechanism is the **Supplementary Mechanism** for "stranded transactions". If a leader ignores a valid transaction for longer than a threshold $\delta$, a replica is permitted to propose a **stranded block** containing that transaction, ensuring it eventually reaches the ledger despite leader inaction. Additionally, a **Reliable Value ($R_i$)** incentive mechanism is mentioned; nodes that successfully lead consensus see their $R_i$ increase, while those experiencing timeouts or creating stranded transactions face $R_i$ reductions.
+- **Other Relevant Implementation Details**: PChain decouples the task of **propagating transactions** from the leader, allowing replicas to broadcast transaction data while the consensus process focuses only on **transaction hashes** to reduce leader-side bandwidth bottlenecks. The protocol utilizes a **pipeline paradigm** where the commit phase of one block serves as the prepare phase for the next to reduce latency.
+```
+
+---
+
+```
+---
+title: "Performance Comparison of Directed Acyclic Graph-Based Distributed Ledgers and Blockchain Platforms"
+year: 2023
+main_author: "Felix Kahmann, Fabian Honecker, Julian Dreyer, Marten Fischer, and Ralf Tönjes"
+main_contribution: "A systematic performance comparison and scalability evaluation of pure DAG (IOTA), blockchain (Hyperledger Fabric, Ethereum), and hybrid DLT platforms (Fantom, Avalanche) using Transactions Per Second (TPS) and latency (Time to Finality) as key metrics."
+evidence_type: "Research Article"
+technical_constraints: "PoW score of 4000 (IOTA); Ethereum block times (12–15s); hardware scenarios ranging from Raspberry Pi 3 to high-performance Intel/AMD servers; fixed milestone intervals for IOTA finalization."
+reference: "Kahmann, F., Honecker, F., Dreyer, J., Fischer, M., & Tönjes, R. (2023). Performance Comparison of Directed Acyclic Graph-Based Distributed Ledgers and Blockchain Platforms. Computers, 12(12), 257."
+doi: "https://doi.org/10.3390/computers12120257"
+---
+
+### Performance Comparison of Directed Acyclic Graph-Based Distributed Ledgers and Blockchain Platforms
+
+**Findings:**
+- **Event Sourcing**: While the specific term "Event Sourcing" is not explicitly used, the sources describe a functionally identical **world-state paradigm** in Hyperledger Fabric, where a key-value database stores the current state while the underlying **transactional blockchain logs every operation** (Create, Read, Update, Delete). This architecture provides a fully transparent and **tamperproof versioning history**, allowing the local database to be **reverted to any state in history** using the data stored on the ledger. For financial and audit purposes, this provides inherent **auditability** through the cryptographic design of the DLT, ensuring that once data is securely and immutably stored, it cannot be modified or deleted without a record.
+- **High-Throughput (DAG/Chain)**: The paper identifies a fundamental bottleneck in **linear, one-dimensional blockchains**: they cannot be trivially parallelized because only one block can be appended at a time. In contrast, **Directed Acyclic Graphs (DAGs)** allow for more than one edge per vertex, enabling **full parallelization** and theoretically arbitrary scaling potential. **Hybrid DLTs** (Fantom, Avalanche) leverage DAGs to accelerate consensus while maintaining a linear blockchain for smart contract execution order. Experimental results show that while linear chains experience **diminished TPS as node counts increase**, DAG-based platforms like IOTA scale **linearly and positively** with the number of network participants. Specifically, the hybrid Fantom Lachesis testnet achieved **476.19 TPS**, significantly outperforming the evaluated private Ethereum (~32-40 TPS) and Fabric (~50-73 TPS) networks.
+- **Consistency (ACID)**: "ACID" is not used as an acronym, but the sources address its properties through the requirement for **strict consistency and order** for smart contract execution. In hybrid systems, transactions are first mapped to a DAG for high-speed consensus and then **consecutively arranged in a strict order on a blockchain** to ensure the consistent state required for contract assessment. Fantom utilizes the **Lachesis asynchronous Byzantine Fault Tolerance (aBFT)** algorithm to provide **guaranteed and instant finality**, ensuring transactions are irreversible unless more than one-third of validators are Byzantine. Avalanche employs the **Snowball/Snowman** consensus, which uses a metastable voting process to reach a secure, decentralized decision across thousands of nodes.
+- **Self-Repair/Integrity**: Integrity is enforced through **cryptographic design and asymmetric-key infrastructure (PKI)**. A practical mechanism for automated auditing and data recovery involves the **world-state paradigm**, where the ledger serves as the "source of truth" to **restore a local database** to any previous valid state. For automated transaction finalization, IOTA currently uses a **centralized coordinator** to issue "milestones," though this is slated for replacement by a decentralized **Proof-of-Stake (PoS)** model in IOTA 2.0. In IoT and smart grid scenarios, **authenticity** is maintained via a PKI that issues certificates to identifiable devices; these certificates are stored on the DLT, allowing any participant to **validate log messages and audit certificate revocations** automatically.
+- **Other Relevant Implementation Details**: The research identifies a **scalability trilemma** where developers must choose between performance and the level of decentralization. It also highlights that **Proof-of-Work (PoW)** in platforms like IOTA is used primarily as a **rate-limiting mechanism** to prevent network flooding rather than for block mining, with the "PoW score" directly influencing client-side latency and resource consumption.
+```
+
+---
+
+```
+---
+title: "SP-PoR: Improve blockchain performance by semi-parallel processing transactions"
+year: 2024
+main_author: "Kaiyu Wang, Guangsheng Feng, Zhenzhou Ji, Zhiying Tu, and Shufan He"
+main_contribution: "Semi-Parallel Proof-of-Relevance (SP-PoR) protocol that improves blockchain throughput by utilizing a compact Relation Certification (RC) structure to determine transaction relevance, allowing unrelated blocks to be processed in parallel while maintaining a linear order for related ones."
+evidence_type: "Research Article"
+technical_constraints: "Shortening block generation intervals or expanding capacity is ineffective due to network propagation latency; experimental throughput improvements of 8.575x for normal transactions and 2.54x for contract transactions; performance advantage depends on the execution proportion parameter ($\sigma < 0.462$)."
+reference: "Wang, K., Feng, G., Ji, Z., Tu, Z., & He, S. (2024). SP-PoR: Improve blockchain performance by semi-parallel processing transactions. Computer Networks, 245, 110394."
+doi: "https://doi.org/10.1016/j.comnet.2024.110394"
+---
+
+### SP-PoR: Improve blockchain performance by semi-parallel processing transactions
+
+**Findings:**
+- **Event Sourcing**: The source defines blockchain technology as a robust network infrastructure characterized by **tamper-proofing, traceability, and decentralization**. While not explicitly using the term "Event Sourcing," it describes an architecture where **every transaction—whether a normal transfer or a smart contract invocation—is recorded as an immutable event** that can be tracked back to its origin. This functionality provides the foundation for **auditability**, as the distributed ledger ensures that any attempt to modify or delete published information is irrefutably recorded and permanently stored.
+- **High-Throughput (DAG/Chain)**: The authors identify that traditional **linear blockchain structures**, where each block has only one preceding block, suffer from limited processing capabilities due to network propagation latency. To achieve higher throughput, the source proposes a **multi-way tree Directed Acyclic Graph (DAG) and a tangle structure** that allow for the generation and processing of multiple concurrent blocks. A significant trade-off is that while parallel processing of **unrelated blocks** (those with no shared accounts or dependencies) does not affect consensus achievement, **related blocks must be processed in a deterministic linear order** to prevent permanent forks or double-spending.
+- **Consistency (ACID)**: Consistency is maintained through the consensus protocol, which ensures that all honest nodes achieve **agreement on the final state of the shared ledger**. To manage high-concurrency updates, the system requires **consistency of users' local views** for any related ordered block pair, forcing a deterministic execution sequence for transactions that might conflict. The protocol employs an **epoch-based system**—defined as the interval between adjacent confirmed contract blocks—to coordinate updates and ensure a single, consistent version of the global state across the network.
+- **Self-Repair/Integrity**: Integrity is enforced through **cryptographic tamper-proofing and digital signatures** that verify transaction ownership. A practical mechanism for automated auditing and self-repair is the **Relation Certification (RC)**, a compact data structure (only 23–33% of a full block) that allows nodes to **rapidly determine transaction relevance and verify block validity** without waiting for the full block broadcast. The system also utilizes a **cross-verification consensus method** where normal and contract blocks are nested via parent hashes to form a tangle; if a fork occurs, the **longest-chain mechanism** is used to ensure the network eventually converges on the honest branch.
+- **Other Relevant Implementation Details**: The SP-PoR protocol utilizes **two distinct relevance determination paradigms**: $D_I$ for normal transfers based on input/output accounts, and $D_{II}$ for smart contracts, which accounts for **internal state space and contract invocation logic**. The research identifies an **advantage boundary** using the execution proportion parameter ($\sigma$); the proposed parallel synchronization method outperforms parallel execution methods when the **time spent on block execution is less than 46.2%** of the total consensus cycle.
+```
+
+---
+
+```
+---
+title: "SSChain: A full sharding protocol for public blockchain without data migration overhead"
+year: 2019
+main_author: "Huan Chen and Yijie Wang"
+main_contribution: "SSChain, a novel two-layer full sharding architecture (transaction and state sharding) that eliminates data migration overhead by using a market incentive mechanism to allow nodes to freely join shards without periodic network reshuffling."
+evidence_type: "Research Article"
+technical_constraints: "Throughput (over 6,500 TPS); network size (1,800 nodes); network bandwidth bottleneck (13 Mbps); security parameter ($\Theta = 1/4$); shard block time (30s) vs. root chain (2.5 min)."
+reference: "Chen, H., & Wang, Y. (2019). SSChain: A full sharding protocol for public blockchain without data migration overhead. Pervasive and Mobile Computing, 59, 101055."
+doi: "https://doi.org/10.1016/j.pmcj.2019.101055"
+---
+
+### SSChain: A full sharding protocol for public blockchain without data migration overhead
+
+**Findings:**
+- **Event Sourcing**: While not explicitly using the term "Event Sourcing," the source defines blockchain as a **distributed append-only ledger** where state can be **regenerated by executing the history from scratch**. For financial record-keeping, it implements the **UTXO (Unspent Transaction Output) model**, which decouples transaction verification from state updates. Auditability is fundamentally supported because every shard-block undergoes **strict verification by the root chain network**, and all transactions are permanently stored unless specifically pruned, creating a transparent record of all value exchanges.
+- **High-Throughput (DAG/Chain)**: The source highlights that traditional linear blockchains (Bitcoin, Ethereum) suffer from low throughput (3–15 TPS) because every node must process every transaction. SSChain utilizes a **two-layer sharding structure** to achieve **horizontal scaling**, processing disjoint transaction sets in parallel across multiple shards. While individual shards maintain linear chains, the overall structure forms a **Directed Acyclic Graph (DAG)** where the root-block confirms multiple shard-blocks simultaneously. Empirical evaluations show that the system scales linearly, achieving over **6,500 TPS in a 1,800-node network**.
+- **Consistency (ACID)**: "ACID" is addressed through **atomicity and consistency mechanisms** for cross-shard transactions. To manage high-concurrency across shards, SSChain employs a **transaction splitting strategy**, where a cross-shard transaction is automatically decomposed into multiple intra-shard transactions (e.g., a debit and a credit) to avoid heavy coordination overhead. **Consistency** is guaranteed by the root chain network, which maintains the entire ledger to solve **data availability challenges** and provides final confirmation for all transactions across the sharded ecosystem.
+- **Self-Repair/Integrity**: Integrity is maintained through **Proof of Work (PoW) consensus** and cryptographic verification at both the shard and root levels. A core automated auditing mechanism is the **Market Incentive Mechanism**, which prevents malicious nodes from concentrating in a single shard to perform a 51% attack by ensuring the root chain always controls at least **50% of the total network hash power**. For ledger maintenance, the system uses **checkpoints and sorted Merkle trees** to summarize state, allowing nodes to **safely discard old transaction history** (ledger pruning) while maintaining the ability to verify current balances. **Bloom filters** are also utilized in block headers to allow shards to efficiently detect and retrieve relevant state updates from other chains without scanning entire blocks.
+- **Other Relevant Implementation Details**: SSChain eliminates **data migration overhead** (bandwidth consumption during shard re-organization) by allowing miners to freely join shards based on profitability rather than being randomly reshuffled by a central protocol. The system identifies **network bandwidth** (13 Mbps) as the primary bottleneck for scaling TPS, rather than CPU processing capacity.
+```
+
+---
+
+```
+---
+title: "Scalable blockchains — A systematic review"
+year: 2022
+main_author: "Muhammad Hassan Nasir, Junaid Arshad, Muhammad Mubashir Khan, Mahawish Fatima, Khaled Salah, and Raja Jayaraman"
+main_contribution: "A comprehensive systematic review and classification of blockchain scalability into horizontal (node and client) and vertical (throughput, block generation rate, latency, and storage) dimensions, while identifying open challenges in core enhancements and applications."
+evidence_type: "Systematic Review"
+technical_constraints: "Bitcoin throughput (~7 TPS) vs. VISA (~24,000 TPS); block size limits (e.g., 1 MB for Bitcoin); block generation rate (e.g., 10 min for Bitcoin); 280 GB chain size; latency and propagation delay trade-offs."
+reference: "Nasir, M. H., Arshad, J., Khan, M. M., Fatima, M., Salah, K., & Jayaraman, R. (2022). Scalable blockchains — A systematic review. Future Generation Computer Systems, 126, 136–162."
+doi: "https://doi.org/10.1016/j.future.2021.07.035"
+---
+
+### Scalable blockchains — A systematic review
+
+**Findings:**
+- **Event Sourcing**: While not explicitly using the term "Event Sourcing," the source defines blockchain as a **distributed ledger technology** where data is stored in the form of a **chained block** where each participant stores transaction records. This architecture is inherently **immutable and traceable**, as every participating node has an equal opportunity to view and maintain the ledger. For financial and audit purposes, **auditability** is ensured because the ledger can only be altered through the consensus of mining nodes, and any modification to a block is detectable via its **cryptographic hash**.
+- **High-Throughput (DAG/Chain)**: The source contrasts the **linear chained-block structure** of traditional blockchains like Bitcoin, which suffers from low throughput (7 TPS), with non-linear alternatives. It identifies **Directed Acyclic Graphs (DAG)** (e.g., Graphchain, HashGraph) as a solution for **non-linear block generation** to improve scalability. Additionally, the review discusses **parallel mining/processing** as an on-chain approach to accelerate throughput by concurrently mining multiple blocks without altering the basic structure.
+- **Consistency (ACID)**: Consistency is managed by the **consensus layer**, which enforces rules to ensure the generation of a **single continuous chain** and prevents forks. The sources distinguish between **probabilistic consensus** (e.g., PoW in Bitcoin/Ethereum where forks are resolved by the longest chain rule) and **deterministic consensus** (e.g., PBFT in Hyperledger where forks are prevented), ensuring nodes remain synchronized. To maintain order during high-concurrency updates, the system relies on the **validation and ordering** of blocks by consensus participants distributed over the P2P network.
+- **Self-Repair/Integrity**: Integrity is enforced through **cryptographic hash algorithms (SHA 256)**, **digital signatures**, and **Merkle Trees**, which allow for the detection of any malicious tampering in the data body. A practical mechanism for automated auditing and repair is the **punishment or penalty system** implemented in various off-chain protocols (like the Lightning Network) to mitigate malpractice and discourage dishonest behavior. For storage-related integrity, the concept of a **Temporal Blockchain** is discussed, where spent blocks older than a certain period are **automatically deleted** to maintain a manageable chain size while preserving the properties of the traditional blockchain.
+- **Other Relevant Implementation Details**: The review presents a **layered architecture** of blockchain, including Infrastructure, Data, Network, Consensus, and Application layers. It defines scalability as a composite concept involving **horizontal scaling** (adding machines/nodes) and **vertical scaling** (enhancing processing, storage, and strategy). The paper also notes a **scalability trilemma** involving the trade-off between decentralization, security, and scalability.
+```
+
+---
+
+```
+---
+title: "SharAcc: Enhancing scalability and security in Attribute-Based Access Control with sharding-based blockchain and full decentralization"
+year: 2025
+main_author: "Yuqing Ding, Zhongcheng Wu, Yongchun Miao, and Manyu Ding"
+main_contribution: "SharAcc, an innovative sharded blockchain-based access control system that decentralizes attribute management and access control processes using a multi-shard architecture, an improved Merkle Patricia Trie (iMPT), a Merkle Directed Acyclic Graph (Merkle DAG), and a skip list-based batch consensus mechanism."
+evidence_type: "Research Article"
+technical_constraints: "Throughput up to 10,000 transactions per second (TPS); confirmation latency as low as 200 ms; tolerates up to $f$ malicious nodes out of $3f+1$ total nodes; maximum block size of 40 MB; average transaction size of 116B."
+reference: "Ding, Y., Wu, Z., Miao, Y., & Ding, M. (2025). SharAcc: Enhancing scalability and security in Attribute-Based Access Control with sharding-based blockchain and full decentralization. Computer Networks, 257, 110992."
+doi: "https://doi.org/10.1016/j.comnet.2024.110992"
+---
+
+### SharAcc: Enhancing scalability and security in Attribute-Based Access Control with sharding-based blockchain and full decentralization
+
+**Findings:**
+- **Event Sourcing**: While not explicitly using the term "Event Sourcing," the source defines blockchain as an **append-only, tamper-evident digital ledger** characterized by data transparency, integrity, and non-repudiation. For access control, the system records every state change—such as attribute updates and access decisions—permanently in the ledger. **Auditability** is a core design feature; the system establishes a reliable trust chain where any abnormal behavior or manipulation of attributes by an authority is **irrefutably recorded**, preventing unauthorized data interactions.
+- **High-Throughput (DAG/Chain)**: The paper identifies that traditional centralized and linear blockchain-based access control systems suffer from **significant scalability bottlenecks** and high consensus overhead. To address this, SharAcc utilizes **sharding technology** to distribute attribute management and access control processes across multiple parallel shards. A specialized **validation shard** utilizes a **Merkle Directed Acyclic Graph (Merkle DAG)** to organize both intra-shard and cross-shard transactions, allowing for precise recording and high-speed verification. This architecture achieves a massive performance boost, reaching a throughput of up to **10,000 TPS**.
+- **Consistency (ACID)**: Consistency is maintained through the **PBFT protocol** implemented within each attribute authority shard to reach agreement on proposed blocks. To manage high-concurrency updates across the system, the validation shard establishes a **total order of all transactions** by analyzing their read and write set dependencies and merging them into the global Merkle DAG. Furthermore, a **skip list structure** is integrated into the consensus process to enable **batch verification**; transactions are sequentially arranged by version numbers, allowing the path from the head of the skip list to a transaction node to function as a verifiable **"DAG proof"** for a transaction set.
+- **Self-Repair/Integrity**: Integrity is enforced through **cryptographic hash functions** and a novel **improved Merkle Patricia Trie (iMPT)**, which uses additional flag and epoch fields to efficiently manage attribute validity and **trace historical access**. Practical mechanisms for automated auditing and self-repair include:
+    - **Malicious Node Detection**: Shard members persistently monitor the leader; if at least half of the members detect malicious activity, they broadcast alerts to trigger a **view change and a rollback operation**.
+    - **Reputation-based Removal**: Leaders identify Byzantine or crashed nodes by verifying whether their voting results align with the majority and **subsequently remove them** from the shard.
+    - **Periodic Reconfiguration**: During a reconfiguration phase at the start of each epoch, nodes are randomly reassigned to different shards using a **Verifiable Random Function (VRF)** to prevent the concentration and collusion of malicious nodes.
+- **Other Relevant Implementation Details**: The system architecture consists of **multiple Attribute Authority Shards** (acting as both Policy Decision Points and Attribute Authorities) and a **Validation Shard** (managing the global Merkle DAG). The prototype was evaluated using the **BlockEmulator platform** on Alibaba Cloud servers, demonstrating that SharAcc's maximum manageable workload is significantly higher than traditional centralized ABAC methods.
+```
+
+---
+
+```
+---
+title: "Shard-DAG: A scalable and secure block-DAG sharding scheme for AI-driven 6G networks"
+year: 2025
+main_author: "Yongkai Fan, Wenyuan Zhang, Guodong Wu, Le Zhang, Chengnian Long, Gang Tan, and Neal N. Xiong"
+main_contribution: "The development of Shard-DAG, a decentralized security architecture that integrates Block-DAG structures within a sharded network to enable parallel block processing, near-linear scalability, and robust defense against double-spending attacks."
+evidence_type: "Research Article"
+technical_constraints: "Network of 1,200 nodes with 8 shards; 102 ms average end-to-end delay; fault tolerance requires $n \ge 3f+1$ for inter-shard PBFT and $n \ge 2f+1$ for sharded environments; throughput improvements peak at 14.64x over traditional blockchain."
+reference: "Fan, Y., Zhang, W., Wu, G., Zhang, L., Long, C., Tan, G., & Xiong, N. N. (2025). Shard-DAG: A scalable and secure block-DAG sharding scheme for AI-driven 6G networks. Digital Communications and Networks, 11, 1738–1750."
+doi: "https://doi.org/10.1016/j.dcan.2025.04.005"
+---
+
+### Shard-DAG: A scalable and secure block-DAG sharding scheme for AI-driven 6G networks
+
+**Findings:**
+- **Event Sourcing**: The source defines blockchain as a **decentralized, tamper-resistant foundation** that facilitates distributed trust management while ensuring data integrity and confidentiality. While not explicitly using the term "Event Sourcing," it describes an architecture where every transaction is an **immutable record** stored in a distributed ledger. For auditability, the system ensures that any attempt to modify or delete published information is **irrefutably recorded and permanently stored**, providing a reliable trust mechanism for edge nodes and terminal devices.
+- **High-Throughput (DAG/Chain)**: The paper identifies that traditional **linear chain structures** are limited by "orphan blocks"—valid blocks that are discarded because they do not belong to the longest chain. In contrast, a **Block-DAG structure** accepts all valid concurrent blocks, enabling parallel block processing and significantly improving system scalability. Shard-DAG integrates these two concepts by adopting a Block-DAG structure **within each shard** to overcome the performance bottlenecks of traditional sharded blockchains. Experimental results show that Shard-DAG achieves **peak throughput improvements of 14.64 times** over traditional blockchains and **8.61 times** over standalone Block-DAG architectures.
+- **Consistency (ACID)**: The sources address consistency by reintroducing sequentiality into the non-linear DAG structure through a **transaction sorting mechanism**. This mechanism provides a structured approach to block ordering that is essential for defending against double-spending attacks and ensuring **transaction order consistency**. To maintain consistency across shards, Shard-DAG utilizes a **"black box" interaction model** where only the ordered outputs of each shard are visible to others, reducing the complexity and synchronization overhead of cross-shard communication.
+- **Self-Repair/Integrity**: Integrity is fundamentally maintained through **cryptographic hash functions** and the decentralized nature of the architecture, which mitigates centralized performance bottlenecks. A practical mechanism for automated auditing and self-repair is the **sorting consensus mechanism**, which has high fault tolerance; blocks that are delayed by network disruptions are eventually incorporated into the DAG to maintain **global consistency**. To ensure long-term inter-shard security, the system employs **periodic and random reconfiguration of shard memberships**, which prevents long-term collusion and makes single-shard takeover attacks significantly more difficult.
+- **Other Relevant Implementation Details**: The architecture employs four distinct sharding strategies: **network sharding** (clustering nodes), **transaction sharding** (assigning tasks based on the first $k$ bits of addresses), **computation sharding**, and **storage (state) sharding** (storing only a portion of the global state). The system also features a **black-box mode** that allows it to remain compatible with existing sharding tools and engines by exposing a linear sequence of transactions to external users while maintaining a DAG internally.
+```
