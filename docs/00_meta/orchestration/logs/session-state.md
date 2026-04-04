@@ -3,9 +3,9 @@
 > Live AI context snapshot. Overwrite this file at the start of each session; do not append historical logs here.
 
 ## Overview
-Current Date: Thursday, 2026-04-02
+Current Date: Friday, 2026-04-03
 Current Week: w14
-Status: Phase 2: Architecture & Detailed Design - Lesson 04 Completed
+Status: Transitioning from Discovery to Preparation (ISO/IEC 29110 Alignment)
 Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w14/2026-04-02.md`
 
 ## Navigation
@@ -17,8 +17,13 @@ Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w14/2026-04-02.md`
 - **Lesson 04**: Drafted and cross-referenced with BPA v1.2 research anchors.
 - **Traceability**: Key concepts (TPS, latency, SLO/SLA, backpressure) linked to primary sources.
 - **Workflow**: Knowledge Transfer in progress; Lessons 05–07 shifted across Apr 3–4.
+- **Milestone**: All 7 Domain Lessons complete.
+
+## New Roadmap
+- **w15**: Preparation (Stories, Use Cases, ADRs 001-002).
+- **w16-w20**: Iterative Sprints (Construction).
+- **w21-w22**: Transition and Closing.
 
 ## Immediate Focus
-1. **Lessons 05 & 06**: Distributed Consensus and Regulatory Guardrails (Planned for 2026-04-03).
-2. **ADR Work**: ADR-001/002 moved to Week 15 for formal drafting and legal review.
-3. **HLD Initiation**: Prepare service boundary sketches for Apr 4 alongside Lesson 07.
+1. **Monday (Apr 06)**: Start "Requirements Extraction" from BPA v1.2.
+2. **Goal**: Create user-stories.md with clear Acceptance Criteria grounded in research.

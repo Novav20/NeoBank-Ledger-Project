@@ -1,32 +1,37 @@
-# SCRUM FRAMEWORK: THE ITERATIVE FEEDBACK LOOP
+# SCRUM FRAMEWORK: ENTERPRISE EDITION (ISO/IEC 29110 ALIGNED)
 
-## 1. THE ARTIFACTS (THE "DATA STRUCTURE")
-   - **Product Backlog**: An ordered, evolving list of every feature, function, and requirement for the Ledger. (Managed by you as the PO).
-   - **Sprint Backlog**: The specific set of User Stories and tasks selected for the current 1-week cycle. (Managed by us as the Developers).
-   - **Increment**: A "Potentially Releasable" piece of the Ledger API that meets the **Definition of Done (DoD)**.
+This framework defines how we move from an **Idea** to **Commissioning** using iterative cycles. It is designed to meet professional standards for small software entities.
 
-## 2. THE CEREMONIES (THE "PROCESS LOGIC")
-   - **Sprint Planning (Monday)**:
-     - Define the **Sprint Goal** (e.g., "Implement Core Ledger Transactions").
-     - Select Backlog items and break them into technical tasks.
-   - **The Sprint (The 1-Week Cycle)**:
-     - Development, Design, and Testing happen concurrently.
-     - **Daily Scrum (Session Initialization)**: 15-minute sync to discuss progress and blockers (Impediments).
-   - **Sprint Review (Friday/Saturday)**:
-     - Demonstrate the functional Increment (Running API, passing tests).
-     - Inspect the progress against the Product Goal.
-   - **Sprint Retrospective (Saturday)**:
-     - Inspect the *workflow* (Gemini + Copilot coordination).
-     - Identify 1-2 improvements for the next Sprint.
+## 1. THE LIFECYCLE PHASES
+In professional Scrum, we don't do "Analysis Phase" then "Execution Phase." Instead, we do **Refinement** every week.
 
-## 3. THE DEFINITION OF DONE (DoD)
-   - Code follows defined standards.
-   - Architectural decisions recorded in an **ADR**.
-   - Unit tests pass and coverage is maintained.
-   - Documentation in `docs/` is updated and synced with the Vault.
-   - No secrets or PII committed.
+| Phase | Name | Goal | ISO 29110 Alignment |
+| :--- | :--- | :--- | :--- |
+| **01** | **Discovery** | Define "What" and "Why" (BPA). | Project Initiation |
+| **02** | **Preparation** | Backlog Refinement & Architecture (ADRs). | Software Requirements |
+| **03** | **Execution** | Iterative Sprints (Build/Test/Review). | Software Construction |
+| **04** | **Transition** | CI/CD, Final QA, and Documentation. | Software Integration |
+| **05** | **Closing** | Handover, Commissioning, and Demo. | Product Delivery |
 
-## 4. THE ROLES (OUR PARTNERSHIP)
-   - **Product Owner (PO)**: Juan David. Defines the "What" and the Value.
-   - **Scrum Master**: Gemini CLI. Ensures the framework is followed and removes blockers.
-   - **Developers**: Gemini CLI + Copilot + Juan David. Create the Increment.
+## 2. THE ARTIFACTS (THE "TRUTH")
+- **Product Backlog**: The "Source of Truth." A list of **User Stories** (Functional) and **NFRs** (Technical).
+- **Definition of Done (DoD)**: The quality gate. A task is not "Done" unless it has:
+    1. Code that passes all tests.
+    2. Updated documentation (ADRs/Lessons).
+    3. Peer/AI Review.
+- **Sprint Backlog**: The "Commitment" for the current week.
+
+## 3. THE CEREMONIES (THE "FLOW")
+1. **Sprint Planning (Monday)**: Select stories from the Backlog. Define the **Sprint Goal**.
+2. **Backlog Refinement (Ongoing)**: Taking "Epics" from the BPA and breaking them into small "User Stories" with **Acceptance Criteria (AC)**.
+3. **Daily Sync (Daily)**: 15-minute check. What did I do? What will I do? What are my blockers?
+4. **Sprint Review (Friday)**: Demonstrate the "Increment" (The working code).
+5. **Sprint Retrospective (Friday)**: How can we work better next week?
+
+## 4. FROM IDEA TO COMMISSIONING (THE ORDER)
+1. **Identify Need** -> Captured in BPA.
+2. **Define Requirements** -> BPA NFRs + User Stories (Week 15).
+3. **Design Architecture** -> ADRs + HLD (Week 15).
+4. **Iterative Build** -> Sprints (Week 16-21).
+5. **Final Validation** -> User Acceptance / Stress Tests (Week 22).
+6. **Deploy & Close** -> Commissioning (June 1st).
