@@ -1,29 +1,26 @@
-# Session State: Week 14 (Mar 30 - Apr 05)
+# Session State: Week 14-15 Transition (Apr 03 - Apr 06)
 
 > Live AI context snapshot. Overwrite this file at the start of each session; do not append historical logs here.
 
 ## Overview
 Current Date: Friday, 2026-04-03
-Current Week: w14
-Status: Transitioning from Discovery to Preparation (ISO/IEC 29110 Alignment)
-Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w14/2026-04-02.md`
+Current Week: w14 (Closing)
+Status: Preparation Phase A (Requirements Refinement) - Planned
+Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w14/2026-04-03.md`
 
 ## Navigation
-- **Active Plan:** `docs/00_meta/plans/w14.md`
-- **Lessons Index:** `docs/01_lessons/w14/index.md`
+- **Project Roadmap:** `docs/00_meta/plans/project-roadmap.md`
+- **Scrum Framework:** `docs/00_meta/plans/scrum-framework.md`
+- **Next Week's Plan:** `docs/00_meta/plans/w15.md`
 - **BPA Report:** `docs/02_analysis/bpa/BPA_Report.md` (v1.2)
 
 ## Latest Synchronization
-- **Lesson 04**: Drafted and cross-referenced with BPA v1.2 research anchors.
-- **Traceability**: Key concepts (TPS, latency, SLO/SLA, backpressure) linked to primary sources.
-- **Workflow**: Knowledge Transfer in progress; Lessons 05–07 shifted across Apr 3–4.
-- **Milestone**: All 7 Domain Lessons complete.
+- **Milestone M2 Complete**: All 7 Domain Lessons drafted and verified.
+- **ISO/IEC 29110 Alignment**: Methodology stabilized for MVP delivery.
+- **Deadline Locked**: June 1st, 2026.
+- **Preparation Phase Split**: w15 (Requirements) and w16 (Architecture) plans frozen.
 
-## New Roadmap
-- **w15**: Preparation (Stories, Use Cases, ADRs 001-002).
-- **w16-w20**: Iterative Sprints (Construction).
-- **w21-w22**: Transition and Closing.
-
-## Immediate Focus
-1. **Monday (Apr 06)**: Start "Requirements Extraction" from BPA v1.2.
-2. **Goal**: Create user-stories.md with clear Acceptance Criteria grounded in research.
+## Immediate Focus (Monday, Apr 06)
+1. **BPA Deep-Dive**: Final extraction of business logic and stakeholder needs from BPA v1.2.
+2. **Backlog Initiation**: Create `docs/02_analysis/requirements/user-stories.md`.
+3. **Epic Mapping**: Align BPA technical clusters with high-level user goals.
