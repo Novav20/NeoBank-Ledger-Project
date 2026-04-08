@@ -5,7 +5,7 @@
 ## Overview
 Current Date: Tuesday, 2026-04-07
 Current Week: w15
-Status: Preparation Phase A (Process & Requirements) - BPA Reading Active
+Status: Preparation Phase A (Process & Requirements) - BPA Reading Complete; BPMN/Use Case Extraction Next
 Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w15/2026-04-07.md`
 
 ## Navigation
@@ -14,10 +14,10 @@ Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w15/2026-04-07.md`
 - **BPA Report:** `docs/02_analysis/bpa/BPA_Report.md` (v1.2)
 
 ## Latest Synchronization
-- **Schedule Shift**: Tuesday's modeling tasks moved to Wednesday to allow more time for deep BPA reading.
-- **Current Task**: Finishing BPA v1.2 reading pass (Sections 1-7).
+- **Schedule Shift**: Week 15 now starts with BPMN and use cases before moving to FR and user stories.
+- **Current Task**: Preparation for Wednesday's BPMN and Use Case analysis.
 - **Daily Log**: Created the 2026-04-07 session log for the BPA reading pass.
 
 ## Immediate Focus (Tuesday, Apr 07)
-1. **BPA Deep-Dive**: User completing reading to ensure artifacts are grounded in technical anchors.
+1. **Plan Alignment**: Confirm BPMN and Use Cases come before user stories and AC.
 2. **Mental Model**: Internalize the "Execute-Order-Validate" (EOV) flow.
