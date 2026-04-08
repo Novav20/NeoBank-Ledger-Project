@@ -90,7 +90,7 @@ Ordered from foundational to dependent. Each definition only uses terms already 
 - **Multi-Path Intrusion-Tolerant Overlay**: A redundant network layer that can route around attack or failure.
 
 ## 6. Risk and infrastructure terms
-- **BGP Hijacking**: Rerouting internet traffic by falsifying route announcements.
+- **BGP (Border Gateway Protocol) Hijacking**: Rerouting internet traffic by falsifying route announcements.
 - **AS-Level Network Partition**: A split caused by upstream network or routing failures.
 - **Floating Point Error**: Inaccuracy caused by using binary floating-point types for money.
 - **Network-Bound Ceiling**: A throughput limit caused by network capacity or propagation, not CPU.
