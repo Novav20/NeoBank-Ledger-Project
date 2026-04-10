@@ -58,14 +58,14 @@ Lane 2: Manual / Legacy System
 Lane 3: Sponsor Bank
 
 Start event: User or API submits transaction intent
-1. Platform / Fintech sends unstructured payment intent
-2. Manual / Legacy System performs manual data validation
-3. Manual / Legacy System records the entry in spreadsheet or legacy DB
-4. Manual / Legacy System checks for data issues and float errors
-5. Manual / Legacy System sends batch file upload to Sponsor Bank at end of day
-6. Sponsor Bank processes the batch
-7. Sponsor Bank returns reconciliation errors or exceptions if data does not match
-8. Manual / Legacy System notifies Platform / Fintech of delayed settlement or exception
+1. [Lane 1] sends unstructured payment intent
+2. [Lane 2] performs manual data validation
+3. [Lane 2] records the entry in spreadsheet or legacy DB
+4. [Lane 2] checks for data issues and float errors
+5. [Lane 2] sends batch file upload to Sponsor Bank at end of day
+6. [Lane 3] processes the batch
+7. [Lane 3] returns reconciliation errors or exceptions if data does not match
+8. [Lane 2] notifies Platform / Fintech of delayed settlement or exception
 End event: Settlement completed or exception raised
 ```
 
@@ -130,18 +130,52 @@ Lane 2: Manual / Legacy System
 Lane 3: Sponsor Bank
 
 Start event: Message start event - transaction intent received
-1. Send task: submit payment intent
-2. Manual task: validate transaction data
-3. User task: record entry in spreadsheet or legacy DB
-4. Manual task: check data issues and float errors
+1. [Lane 1] Send task: submit payment intent
+2. [Lane 2] Manual task: validate transaction data
+3. [Lane 2] User task: record entry in spreadsheet or legacy DB
+4. [Lane 2] Manual task: check data issues and float errors
 5. XOR gateway: data issues found?
-	- Yes -> Send task: notify platform of delayed settlement or exception -> End event: exception raised
+	- Yes -> [Lane 1] Send task: notify platform of delayed settlement or exception -> End event: exception raised
 	- No -> Timer-driven send task: upload batch file to Sponsor Bank
-6. Service task: process batch file
+6. [Lane 3] Service task: process batch file
 7. XOR gateway: batch reconciles?
 	- Yes -> End event: settlement completed
-	- No -> Send task: notify platform of delayed settlement or exception -> End event: exception raised
+	- No -> [Lane 1] Send task: notify platform of delayed settlement or exception -> End event: exception raised
 ```
 
 ### Open modeling choice
 If the next revision needs to show cross-party communication more explicitly, split Platform / Fintech and Sponsor Bank into separate pools and convert the handoffs into message flows.
+
+## Appendix B: Exception / reconciliation handling
+
+### Purpose
+This branch models the path where the sponsor bank reports a mismatch and the manual/legacy side must react to the reconciliation exception.
+
+### Lane map
+- Lane 1: Sponsor Bank
+- Lane 2: Manual / Legacy System
+- Lane 3: Platform / Fintech
+
+### Suggested revised flow
+```text
+Pool: Transaction handling
+
+Lane 1: Sponsor Bank
+Lane 2: Manual / Legacy System
+Lane 3: Platform / Fintech
+
+Start event: Batch reconciliation result available
+1. [Lane 1] Service task: process batch file
+2. [Lane 1] Exclusive gateway: batch reconciles?
+	- Yes -> [Lane 1] End event: settlement completed
+	- No -> [Lane 1] Send task: return reconciliation errors or exceptions
+3. [Lane 2] Message catch event: receive reconciliation errors or exceptions
+4. [Lane 2] Manual task: review the mismatch
+5. [Lane 2] Send task: notify Platform / Fintech of delayed settlement or exception
+6. [Lane 3] End event: exception raised
+```
+
+### Notes
+- If the next revision needs to show resolution activities, add them inside the Manual / Legacy System lane as a subprocess.
+
+---

@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e" pages="2">
     <diagram id="7EAoN8XZ7LWlpAhgaxTN" name="Ver 1.0">
-        <mxGraphModel dx="592" dy="609" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="514" dy="609" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -77,7 +77,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="Wsm3MLKbp3K9ywOitSKa" name="Ver 2.0">
-        <mxGraphModel dx="402" dy="305" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1394" dy="716" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -155,7 +155,7 @@
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="tizqMEcm3MHN2oyW2UB1-1" style="edgeStyle=none;html=1;" edge="1" parent="uWzMFKtDdnj_PFTZWiny-7" source="LZYZCtDpvRYTnJPCYsbZ-13" target="uWzMFKtDdnj_PFTZWiny-13">
+                <mxCell id="tizqMEcm3MHN2oyW2UB1-1" style="edgeStyle=none;html=1;" parent="uWzMFKtDdnj_PFTZWiny-7" source="LZYZCtDpvRYTnJPCYsbZ-13" target="uWzMFKtDdnj_PFTZWiny-13" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="LZYZCtDpvRYTnJPCYsbZ-13" value="Scheduled upload &lt;br&gt;time reached" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=top;labelBackgroundColor=#ffffff;verticalAlign=bottom;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=catching;symbol=timer;labelPosition=center;" parent="uWzMFKtDdnj_PFTZWiny-7" vertex="1">
@@ -203,7 +203,147 @@
                 <mxCell id="LZYZCtDpvRYTnJPCYsbZ-21" value="&lt;p&gt;Exception raised&lt;/p&gt;" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=end;symbol=terminate2;" parent="uWzMFKtDdnj_PFTZWiny-20" vertex="1">
                     <mxGeometry x="1085" y="140" width="50" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="tizqMEcm3MHN2oyW2UB1-2" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="uWzMFKtDdnj_PFTZWiny-1" source="uWzMFKtDdnj_PFTZWiny-13" target="uWzMFKtDdnj_PFTZWiny-21">
+                <mxCell id="tizqMEcm3MHN2oyW2UB1-2" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="uWzMFKtDdnj_PFTZWiny-1" source="uWzMFKtDdnj_PFTZWiny-13" target="uWzMFKtDdnj_PFTZWiny-21" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="ver-3-exception-reconciliation" name="Ver 3.0">
+        <mxGraphModel dx="1394" dy="716" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="v3-root" value="Transaction Handling (As-Is)" style="swimlane;html=1;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;whiteSpace=wrap;" parent="1" vertex="1">
+                    <mxGeometry x="430" y="80" width="1150" height="700" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-flow-5" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;rounded=0;curved=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="v3-root" source="v3-gateway-data" target="v3-batch-window" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="gtyClbauzXUnd8Jcfumx-1" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="v3-flow-5">
+                    <mxGeometry x="-0.0435" y="-2" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="v3-flow-15" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=default;rounded=0;curved=0;" parent="v3-root" source="v3-notify" target="v3-exception-end" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="LuW4jJ7M3lKgFoRn11sh-1" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="v3-root" source="v3-submit" target="v3-validate">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-platform" value="Platform / Fintech" style="swimlane;html=1;startSize=20;horizontal=0;" parent="v3-root" vertex="1">
+                    <mxGeometry y="20" width="1150" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-start" value="&lt;p&gt;Transaction &lt;br&gt;intent received&lt;/p&gt;" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=standard;symbol=message;" parent="v3-platform" vertex="1">
+                    <mxGeometry x="60" y="30" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-submit" value="&lt;p&gt;Submit payment intent&lt;/p&gt;" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=send;" parent="v3-platform" vertex="1">
+                    <mxGeometry x="190" y="20" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-flow-1" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;strokeColor=default;rounded=0;" parent="v3-platform" source="v3-start" target="v3-submit" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-exception-end" value="&lt;p&gt;Exception raised&lt;/p&gt;" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=top;labelBackgroundColor=#ffffff;verticalAlign=bottom;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=end;symbol=terminate2;labelPosition=center;" parent="v3-platform" vertex="1">
+                    <mxGeometry x="1020" y="70" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-manual" value="Manual / Legacy System" style="swimlane;html=1;startSize=20;horizontal=0;" parent="v3-root" vertex="1">
+                    <mxGeometry y="190" width="1150" height="240" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-validate" value="&lt;p&gt;&lt;/p&gt;&lt;p&gt;Validate transaction data&lt;/p&gt;" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=manual;" parent="v3-manual" vertex="1">
+                    <mxGeometry x="30" y="30" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-record" value="&lt;p&gt;Record entry in spreadsheet or legacy DB&lt;/p&gt;" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=user;" parent="v3-manual" vertex="1">
+                    <mxGeometry x="190" y="30" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-check" value="&lt;p&gt;Check for data issues and float errors&lt;/p&gt;" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=manual;" parent="v3-manual" vertex="1">
+                    <mxGeometry x="350" y="30" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-gateway-data" value="&lt;p&gt;data issues found?&lt;/p&gt;" style="points=[[0.25,0.25,0],[0.5,0,0],[0.75,0.25,0],[1,0.5,0],[0.75,0.75,0],[0.5,1,0],[0.25,0.75,0],[0,0.5,0]];shape=mxgraph.bpmn.gateway2;html=1;verticalLabelPosition=top;labelBackgroundColor=#ffffff;verticalAlign=bottom;align=center;perimeter=rhombusPerimeter;outlineConnect=0;outline=none;symbol=none;gwType=exclusive;labelPosition=center;" parent="v3-manual" vertex="1">
+                    <mxGeometry x="510" y="45" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="gtyClbauzXUnd8Jcfumx-2" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;curved=0;" edge="1" parent="v3-manual" source="v3-batch-window" target="v3-upload">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-batch-window" value="Scheduled upload &lt;br&gt;time reached" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=top;labelBackgroundColor=#ffffff;verticalAlign=bottom;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=catching;symbol=timer;labelPosition=center;" parent="v3-manual" vertex="1">
+                    <mxGeometry x="450" y="150" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-upload" value="&lt;p&gt;Upload batch file to Sponsor Bank&lt;/p&gt;" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=send;symbol=general;" parent="v3-manual" vertex="1">
+                    <mxGeometry x="240" y="135" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-flow-2" style="edgeStyle=none;html=1;" parent="v3-manual" source="v3-validate" target="v3-record" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-flow-3" style="edgeStyle=none;html=1;" parent="v3-manual" source="v3-record" target="v3-check" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-flow-4" style="edgeStyle=none;html=1;" parent="v3-manual" source="v3-check" target="v3-gateway-data" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-notify" value="&lt;p&gt;Notify Platform / Fintech of delayed settlement or exception&lt;/p&gt;" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=send;symbol=general;" parent="v3-manual" vertex="1">
+                    <mxGeometry x="980" y="30" width="130" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-review" value="&lt;p&gt;Review mismatch&lt;/p&gt;" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=manual;" parent="v3-manual" vertex="1">
+                    <mxGeometry x="780" y="30" width="130" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-flow-14" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;curved=0;" parent="v3-manual" source="v3-review" target="v3-notify" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-recon-catch" value="&lt;p&gt;Reconciliation &lt;br&gt;errors received&lt;/p&gt;" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=middle;labelBackgroundColor=#ffffff;verticalAlign=middle;align=left;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=catching;symbol=message;labelPosition=right;" parent="v3-manual" vertex="1">
+                    <mxGeometry x="820" y="150" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-flow-13" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;curved=0;" parent="v3-manual" source="v3-recon-catch" target="v3-review" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pqLS1nhMGxCFUp79CSOZ-2" value="&lt;p&gt;Exception raised&lt;/p&gt;" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=end;symbol=terminate2;" vertex="1" parent="v3-manual">
+                    <mxGeometry x="655" y="150" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-sponsor" value="Sponsor Bank" style="swimlane;html=1;startSize=20;horizontal=0;" parent="v3-root" vertex="1">
+                    <mxGeometry y="430" width="1150" height="270" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-process" value="&lt;p&gt;Process batch file&lt;/p&gt;" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=service;isLoopSub=1;" parent="v3-sponsor" vertex="1">
+                    <mxGeometry x="240" y="40" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-gateway-batch" value="&lt;p&gt;batch reconciles?&lt;/p&gt;" style="points=[[0.25,0.25,0],[0.5,0,0],[0.75,0.25,0],[1,0.5,0],[0.75,0.75,0],[0.5,1,0],[0.25,1,0],[0,0.5,0]];shape=mxgraph.bpmn.gateway2;html=1;verticalLabelPosition=top;labelBackgroundColor=#ffffff;verticalAlign=bottom;align=center;perimeter=rhombusPerimeter;outlineConnect=0;outline=none;symbol=none;gwType=exclusive;labelPosition=center;" parent="v3-sponsor" vertex="1">
+                    <mxGeometry x="410" y="55" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-settlement" value="&lt;p&gt;Settlement completed&lt;/p&gt;" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=end;symbol=terminate2;labelPosition=center;" parent="v3-sponsor" vertex="1">
+                    <mxGeometry x="410" y="170" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-return-errors" value="&lt;p&gt;Return reconciliation errors or exceptions&lt;/p&gt;" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=send;symbol=general;" parent="v3-sponsor" vertex="1">
+                    <mxGeometry x="530" y="40" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-flow-6" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;curved=0;" parent="v3-sponsor" source="v3-process" target="v3-gateway-batch" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-flow-8" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="v3-sponsor" source="v3-gateway-batch" target="v3-settlement" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-flow-9" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="v3-flow-8" connectable="0" vertex="1">
+                    <mxGeometry x="0.3084" y="4" relative="1" as="geometry">
+                        <mxPoint x="-4" y="-15" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="v3-flow-10" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;curved=0;" parent="v3-sponsor" source="v3-gateway-batch" target="v3-return-errors" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3-flow-11" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="v3-flow-10" connectable="0" vertex="1">
+                    <mxGeometry x="-0.6937" relative="1" as="geometry">
+                        <mxPoint x="13" y="-15" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="v3-flow-12" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;curved=0;" parent="v3-root" source="v3-return-errors" target="v3-recon-catch" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="NdbPS3vDlebJ7r7dYSJe-1" style="edgeStyle=orthogonalEdgeStyle;shape=connector;curved=0;rounded=0;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="v3-root" source="v3-upload" target="v3-process">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pqLS1nhMGxCFUp79CSOZ-4" style="edgeStyle=orthogonalEdgeStyle;shape=connector;curved=0;rounded=0;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="1" source="pqLS1nhMGxCFUp79CSOZ-1" target="pqLS1nhMGxCFUp79CSOZ-2">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pqLS1nhMGxCFUp79CSOZ-1" value="&lt;p&gt;&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;Notify platform of delayed settlement or exception&lt;/p&gt;" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=send;symbol=general;" vertex="1" parent="1">
+                    <mxGeometry x="1050" y="300" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="pqLS1nhMGxCFUp79CSOZ-3" style="edgeStyle=orthogonalEdgeStyle;shape=connector;curved=0;rounded=0;html=1;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;" edge="1" parent="1" source="v3-gateway-data" target="pqLS1nhMGxCFUp79CSOZ-1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
             </root>
