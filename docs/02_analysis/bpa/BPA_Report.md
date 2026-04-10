@@ -2,7 +2,6 @@
 version: 1.2
 last_modified: 2026-03-29
 ---
-	
 # Business Process Analysis (BPA) Report: Neobank Ledger API
 
 ## 1. Introduction and Context

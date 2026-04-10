@@ -178,4 +178,45 @@ Start event: Batch reconciliation result available
 ### Notes
 - If the next revision needs to show resolution activities, add them inside the Manual / Legacy System lane as a subprocess.
 
+## Appendix C: To-Be transaction lifecycle (Ver 1.0)
+
+### Purpose
+This process models the BPA target flow for the ledger architecture: command capture, execute, order, validate, append, materialize, and settle / observe.
+
+### Lane map
+- Lane 1: Client / Fintech API
+- Lane 2: Ledger API Gateway
+- Lane 3: Event Store
+- Lane 4: Sequencer / Orderer
+- Lane 5: Validation Shards
+- Lane 6: State Projection
+
+### Suggested revised flow
+```text
+Pool: Transaction lifecycle
+
+Lane 1: Client / Fintech API
+Lane 2: Ledger API Gateway
+Lane 3: Event Store
+Lane 4: Sequencer / Orderer
+Lane 5: Validation Shards
+Lane 6: State Projection
+
+Start event: Command received
+1. [Lane 1] Submit command / intent
+2. [Lane 2] Authenticate and normalize command
+3. [Lane 2] Check schema and compliance gates
+4. [Lane 3] Persist immutable command event
+5. [Lane 4] Order transaction for replay and audit
+6. [Lane 5] Execute validation and conflict checks
+7. [Lane 3] Append validated transaction to event log
+8. [Lane 6] Project balances and reporting views
+9. [Lane 6] Emit finality status and audit evidence
+End event: Settle and observe
+```
+
+### Notes
+- This is the target-state process, not the legacy As-Is flow.
+- If the diagram needs more detail later, split the validation work into separate shards, but keep the same process order.
+
 ---
