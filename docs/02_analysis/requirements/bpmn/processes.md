@@ -48,7 +48,7 @@ That lifecycle is the process family. A transfer is one instance of it.
 ## Next extraction step
 Use this process inventory to sketch one BPMN diagram for the As-Is flow and one BPMN diagram for the To-Be flow.
 
-## First BPMN process sketch (As-Is transaction handling)
+## First BPMN process sketch (Ver 1.0)
 
 ```text
 Pool: Transaction handling
@@ -75,3 +75,73 @@ End event: Settlement completed or exception raised
 - Put the batch upload and reconciliation steps at the Sponsor Bank boundary.
 - Show the exception path as a separate end state, not only as a note.
 - Keep the diagram focused on the legacy flow first; do not add the To-Be EOV steps yet.
+- If the diagram starts to feel crowded, collapse steps 2-4 into a subprocess and keep the gateways visible.
+
+## Appendix A: BPMN 2.0 refinement notes
+
+### Purpose
+This note turns the first As-Is transaction draft into a more precise BPMN 2.0 model.
+It keeps the current diagram aligned with the BPA while making the event, task, and gateway types explicit.
+
+### Refinement rules
+- Use a message start event when the process is triggered by an external request.
+- Use send tasks for outward handoffs.
+- Use manual tasks for human-led checks.
+- Use user tasks when a person works through a tool or legacy UI.
+- Use service tasks for automated platform-side execution.
+- Use exclusive gateways when the flow splits on a yes/no decision.
+- Use separate end events for success and exception outcomes.
+- If a step is really a schedule, model it as a timer event or a timer-driven task, not as a generic task.
+
+### Current draft to BPMN 2.0 subtype mapping
+
+| Current draft step | Recommended BPMN subtype | Why this fits better | Gateway or note |
+| --- | --- | --- | --- |
+| User or API submits transaction intent | Message start event | The process is triggered by an incoming request | If the model later adds a client pool, this becomes a message flow from that participant |
+| Send unstructured payment intent | Send task | This is an outbound handoff from Platform / Fintech | Keep it as a verb phrase |
+| Perform manual data validation | Manual task | The step is a human review, not an automated system action | Add an XOR gateway if invalid requests must stop here |
+| Record the entry in spreadsheet or legacy DB | User task | The person is interacting with a tool or legacy interface | If the diagram gets crowded, this can collapse into a subprocess |
+| Check for data issues and float errors | Manual task, or business rule task if the rule becomes explicit | The step is still a rule-based human check in the As-Is flow | Add an XOR gateway: "Data issues found?" |
+| Send batch file upload to Sponsor Bank at end of day | Timer-driven send task, or an intermediate timer event followed by a send task | The action is scheduled, not immediate | If needed, model the schedule with a timer event before the send task |
+| Process the batch | Service task | Sponsor bank processing is the clearest automated action in the current draft | This can also become a collapsed subprocess if bank internals stay out of scope |
+| Return reconciliation errors or exceptions if data does not match | Exclusive gateway plus send task on the exception path | The real BPMN decision is whether the batch reconciles | Gateway question: "Batch reconciles?" |
+| Notify Platform / Fintech of delayed settlement or exception | Send task | This is the outbound notification to the originating side | Reuse it for both upstream exception paths |
+| Settlement completed or exception raised | Two end events | BPMN should separate success from failure | One end event for settlement complete, one end event for exception |
+
+### Recommended gateway set for the first refinement pass
+
+1. **Data issues found?** after manual validation and float checking.
+2. **Batch reconciles?** after sponsor bank processing.
+3. **Request valid?** only if the team wants an explicit reject path before the batch window.
+4. **Response timed out?** only if we want to show a waiting state instead of assuming the bank always replies.
+
+### Notes for the diagram revision
+- The current draw.io file is still a first draft, so the next pass should refine symbols, not expand scope.
+- Keep the Sponsor Bank lane unless we decide to turn the view into a collaboration diagram with separate pools.
+- Add data objects if the diagram needs more traceability: transaction intent, batch file, reconciliation report, exception notice.
+- Keep the exception path visible as a real branch, not as a footnote.
+
+### Suggested revised flow
+```text
+Pool: Transaction handling
+
+Lane 1: Platform / Fintech
+Lane 2: Manual / Legacy System
+Lane 3: Sponsor Bank
+
+Start event: Message start event - transaction intent received
+1. Send task: submit payment intent
+2. Manual task: validate transaction data
+3. User task: record entry in spreadsheet or legacy DB
+4. Manual task: check data issues and float errors
+5. XOR gateway: data issues found?
+	- Yes -> Send task: notify platform of delayed settlement or exception -> End event: exception raised
+	- No -> Timer-driven send task: upload batch file to Sponsor Bank
+6. Service task: process batch file
+7. XOR gateway: batch reconciles?
+	- Yes -> End event: settlement completed
+	- No -> Send task: notify platform of delayed settlement or exception -> End event: exception raised
+```
+
+### Open modeling choice
+If the next revision needs to show cross-party communication more explicitly, split Platform / Fintech and Sponsor Bank into separate pools and convert the handoffs into message flows.
