@@ -35,8 +35,6 @@ Distinguish between the History (the immutable Event Log) and the Current Realit
 | **TPS**                      | Transactions Per Second — the number of fully processed, committed and projected transactions the ledger can sustain per second under a specified test profile and topology (e.g., intra-cluster LAN vs. WAN). Measured on end-to-end committed throughput, not merely received commands. |
 | **RTO**                      | Recovery Time Objective — the maximum acceptable time to restore operational state after an outage. For a ledger this is the time to recover projections to a usable point (snapshot + replay) so normal processing and balance guarantees resume.                                        |
 
----
-
 ## Key Concepts
 
 ### 1. The Append-Only Log (The "Truth")
