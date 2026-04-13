@@ -220,3 +220,4 @@ End event: Settle and observe
 - If the diagram needs more detail later, split the validation work into separate shards, but keep the same process order.
 
 ---
+
