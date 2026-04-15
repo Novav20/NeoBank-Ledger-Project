@@ -6,7 +6,7 @@ last_modified: 2026-03-29
 
 ## 1. Introduction and Context
 
-### Project Objectives
+### 1.1 Project Objectives
 
 The objective of this project is to instantiate a high-integrity, B2B-grade ledger system that serves as a "common semantic layer" for Banking-as-a-Service (BaaS) architectures.
 
@@ -14,14 +14,14 @@ The objective of this project is to instantiate a high-integrity, B2B-grade ledg
 - **Auditability**: Provide evidence-grade logging to satisfy regulatory mandates (e.g., FDIC custodial account requirements).
 - **Automation**: Enable Straight-Through Processing (STP) to eliminate manual reconciliation gaps.
 
-### Scope
+### 1.2 Scope
 
 The system covers the internal ledgering of funds within a Neobank ecosystem, including Account management, Journal Entry instantiation, and Balance verification.
 
 - **In-Scope**: Digital ledgering, double-entry validation, balance management, and metadata extensibility.
 - **Out-of-Scope**: Physical payment rail execution (Fedwire/RTGS), Customer KYC/Onboarding, and front-end UI.
 
-### Stakeholders & Ecosystem
+### 1.3 Stakeholders & Ecosystem
 
 The ecosystem is evolving from solitary institutional silos to federated platform networks. The primary relationships map as follows:
 
@@ -32,7 +32,7 @@ The ecosystem is evolving from solitary institutional silos to federated platfor
 
 ## 2. Analysis of the Current State (As-Is)
 
-### Foundational Logic (As-Is)
+### 2.1 Foundational Logic (As-Is)
 
 Despite the shift toward distributed architectures, the automated transaction lifecycle relies on formalizing logic heavily influenced by legacy constraints. Current manual or legacy-based processes involve high degrees of "exception handling" due to unstructured data. The traditional lifecycle operates as follows:
 
@@ -41,7 +41,7 @@ Despite the shift toward distributed architectures, the automated transaction li
 3. **Journaling (Data Recording)**: Moves from siloed double-entry databases to shared, immutable, append-only logs ensuring system-wide state consistency ([[fulbier_2023|Fülbier & Sellhorn, 2023]]).
 4. **Settlement**: The finalization of state, previously taking multiple days (often T+2), now aiming for near real-time execution via smart contracts, though frequently constrained by network latency and cross-ledger interoperability barriers ([[cisar_2025|Cisar et al., 2025]]; [[quamara_2024|Quamara et al., 2024]]).
 
-### "As-Is" Process Map
+### 2.2 "As-Is" Process Map
 
 ```mermaid
 sequenceDiagram
@@ -58,7 +58,7 @@ sequenceDiagram
     M-->>P: Delayed Settlement Notification
 ```
 
-### Data Inventory
+### 2.3 Data Inventory
 
 Current "As-Is" data often lacks structure, but the transition to ISO 20022 mandates:
 
@@ -67,7 +67,7 @@ Current "As-Is" data often lacks structure, but the transition to ISO 20022 mand
 - **Currency**: ISO 4217 code.
 - **Timestamps**: Event creation/update.
 
-### Pain Points (System Entropy)
+### 2.4 Pain Points (System Entropy)
 
 The researched domain presents several critical risks and inefficiencies:
 

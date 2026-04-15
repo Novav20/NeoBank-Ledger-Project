@@ -112,5 +112,7 @@ SO --> UC05
 | **Alternate Flows** | AF-001: Telemetry is unavailable, so the operator cannot complete a full health review.<br>AF-002: A critical component fails a health check, so the system raises an incident or alert. |
 | **Postconditions** | - Operational status is documented.<br>- Alerts or incidents are created when required.<br>- No transaction data is mutated by the monitoring action. |
 
-## Gap Note
-Any behavior that remains unsupported after checking the BPA, BPMN notes, and research artifacts is recorded in `gaps.md` rather than invented here.
+
+>[!INFO]- Gap Note
+> Any behavior that remains unsupported after checking the BPA, BPMN notes, and research artifacts is recorded in `gaps.md` rather than invented here.
+

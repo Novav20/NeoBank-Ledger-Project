@@ -16,7 +16,7 @@ depends_on: []
 related_use_cases:
   - [UC-XX]
 related_gaps:
-  - [docs/02_analysis/requirements/use_cases/gaps.md#gap-name]
+  - [docs/02_analysis/requirements/gaps.md#gap-name]
 related_standards:
   - [ISO 20022]
   - [GDPR]
