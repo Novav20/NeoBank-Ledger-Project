@@ -1,9 +1,9 @@
----
 type: user-story
 version: 1.0
 last_edited: 2026-04-15
 status: draft
 story_id: [TXEN-001]
+epic: [TXEN|PROJ|AUDT|RECN|OBSV]
 epic_id: [TXEN]
 epic_name: [Transaction Engine (EOV)]
 title: [Short story title]
@@ -29,7 +29,6 @@ verification:
   - [acceptance test]
 risk_level: [Low|Medium|High|Critical]
 notes: []
----
 
 # [Story Title]
 

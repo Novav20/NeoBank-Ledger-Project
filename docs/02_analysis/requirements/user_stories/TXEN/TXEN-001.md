@@ -49,8 +49,5 @@ Use a Gherkin-inspired table. Keep one row per atomic criterion.
 | AC-002 | The caller is unauthenticated | The request reaches the gateway | The system rejects the command before any transaction processing begins | |
 | AC-003 | The caller is authenticated but unauthorized | The request reaches the gateway | The system rejects the command before any transaction processing begins | |
 
-## Dependencies
-- None.
-
 ## Notes
 Normalization and event shaping are intentionally out of scope here and will appear in TXEN-002.

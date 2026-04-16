@@ -1,6 +1,6 @@
 ---
 type: user-story
-version: 1.0
+version: 1
 last_edited: 2026-04-15
 status: draft
 story_id: TXEN-002
@@ -23,7 +23,7 @@ related_use_cases:
 related_fr:
   - "[[FR-002]]"
 related_nfr:
-  - "[[NFR-COMP-01]]"
+  - "[[NFR-007]]"
 depends_on:
   - "[[TXEN-001]]"
 priority: Must
@@ -50,9 +50,6 @@ Use a Gherkin-inspired table. Keep one row per atomic criterion.
 | AC-001 | A transaction command has passed authentication and authorization | The normalization step runs | The system produces a structured internal event | |
 | AC-002 | A structured internal event has been produced | Downstream execution or ordering begins | Normalization is complete before further processing starts | |
 | AC-003 | The structured event is reviewed against the project message model | The schema mapping is checked | The payload remains compatible with the ISO 20022 alignment path | Specific ISO 20022 profiles remain pending. |
-
-## Dependencies
-- TXEN-001.
 
 ## Notes
 Specific ISO 20022 message profiles remain placeholders until the schema research is completed.
