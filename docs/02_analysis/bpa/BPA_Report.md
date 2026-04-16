@@ -99,28 +99,28 @@ To build a robust, high-transaction B2B Ledger, the architecture must strictly e
 
 Derived from Meta-Analysis of 37 technical sources:
 
-| ID            | Category     | Statement                                                 | Primary Source(s)               | Evidence Mode |
-| ------------- | ------------ | --------------------------------------------------------- | ------------------------------- | ------------- |
-| NFR-AVAIL-01  | Availability | $3F+1$ nodes, BFT, view-change <30s                       | [[barger_2021]]; [[berger_2023b]]; [[chuen_2017]] | Synthesis |
-| NFR-PERF-01   | Performance  | <210ms intra-cluster latency (normal load)                | [[al_bassam_2018]]                | Direct |
-| NFR-PERF-02   | Performance  | ≥2,500 TPS in 7-node LAN                                  | [[barger_2021]]                   | Direct |
-| NFR-PERF-03   | Performance  | τ₀ ≥ 3σ consensus timer                                   | [[chan_2018]]                     | Direct |
-| NFR-PERF-04   | Performance  | <100ms target, 1.5s WAN ceiling (tiered SLA)              | [[sonnino_2021]]; [[guggenberger_2022]] | Synthesis |
-| NFR-SAFE-01   | Safety       | QC-enforced finality, double-spend impossible             | [[berger_2023b]]; [[benedetti_2022]]; [[praveen_2024]] | Synthesis |
-| NFR-SAFE-02   | Safety       | Committed vs. Audited finality formally distinguished     | [[mishra_2025]]                   | Direct |
-| NFR-SAFE-03   | Safety       | Formal verification (IVy/Z3) of fork-freedom              | [[praveen_2024]]                  | Direct |
-| NFR-AUDIT-01  | Audit        | $2F+1$ QC per block, independently auditable              | [[barger_2021]]; [[praveen_2024]]; [[benedetti_2022]] | Synthesis |
-| NFR-COMP-01   | Compliance   | ISO 20022 inter-ledger messaging                          | [[chuen_2017]]; [[sonnino_2021]] | Direct |
-| NFR-COMP-02   | Compliance   | LEI + UTI + 1ms timestamp per trade event (MiFID II)      | [[chuen_2017]]                    | Direct |
-| NFR-COMP-03   | Compliance   | Fair-ordering policy on Ordering Service (MEV mitigation) | [[li_2024]]                       | Direct |
-| NFR-COMP-04   | Compliance   | RTGS settlement model (no net-settlement exposure)        | [[sonnino_2021]]                  | Direct |
-| NFR-COMP-05   | Compliance   | Post-quantum cryptographic migration roadmap              | [[wang_2026]]; [[mishra_2025]]    | Synthesis |
-| NFR-RISK-01   | Risk         | OSS dependency SLA + CVE patching policy                  | [[chuen_2017]]; [[mishra_2025]]   | Synthesis |
-| NFR-CONFIG-01 | Config       | LevelDB over CouchDB; PDC only if justified               | [[guggenberger_2022]]             | Direct |
-| NFR-CONFIG-02 | Config       | 20–25% m-node shard ratio                                 | [[liu_2025]]                      | Direct |
-| NFR-CONFIG-03 | Config       | PBFT k=7 shards at 1,000 nodes                            | [[wang_2026]]                     | Direct |
-| NFR-STORE-01  | Storage      | Epoch checkpointing; per-node cap defined at design time  | [[nasir_2022_batch03]]; [[al_bassam_2018]]; [[sonnino_2021]] | Synthesis |
-| NFR-INFRA-01  | Infra        | Multi-path intrusion-tolerant inter-ledger overlay        | [[trestioreanu_2021]]             | Direct |
+| ID            | Category     | Statement                                                 | Primary Source(s)                                            | Evidence Mode |
+| ------------- | ------------ | --------------------------------------------------------- | ------------------------------------------------------------ | ------------- |
+| NFR-AVAIL-01  | Availability | $3F+1$ nodes, BFT, view-change <30s                       | [[barger_2021]]; [[berger_2023b]]; [[chuen_2017]]            | Synthesis     |
+| NFR-PERF-01   | Performance  | <210ms intra-cluster latency (normal load)                | [[al_bassam_2018]]                                           | Direct        |
+| NFR-PERF-02   | Performance  | ≥2,500 TPS in 7-node LAN                                  | [[barger_2021]]                                              | Direct        |
+| NFR-PERF-03   | Performance  | τ₀ ≥ 3σ consensus timer                                   | [[chan_2018]]                                                | Direct        |
+| NFR-PERF-04   | Performance  | <100ms target, 1.5s WAN ceiling (tiered SLA)              | [[sonnino_2021]]; [[guggenberger_2022]]                      | Synthesis     |
+| NFR-SAFE-01   | Safety       | QC-enforced finality, double-spend impossible             | [[berger_2023b]]; [[benedetti_2022]]; [[praveen_2024]]       | Synthesis     |
+| NFR-SAFE-02   | Safety       | Committed vs. Audited finality formally distinguished     | [[mishra_2025]]                                              | Direct        |
+| NFR-SAFE-03   | Safety       | Formal verification (IVy/Z3) of fork-freedom              | [[praveen_2024]]                                             | Direct        |
+| NFR-AUDIT-01  | Audit        | $2F+1$ QC per block, independently auditable              | [[barger_2021]]; [[praveen_2024]]; [[benedetti_2022]]        | Synthesis     |
+| NFR-COMP-01   | Compliance   | ISO 20022 inter-ledger messaging                          | [[chuen_2017]]; [[sonnino_2021]]                             | Direct        |
+| NFR-COMP-02   | Compliance   | LEI + UTI + 1ms timestamp per trade event (MiFID II)      | [[chuen_2017]]                                               | Direct        |
+| NFR-COMP-03   | Compliance   | Fair-ordering policy on Ordering Service (MEV mitigation) | [[li_2024]]                                                  | Direct        |
+| NFR-COMP-04   | Compliance   | RTGS settlement model (no net-settlement exposure)        | [[sonnino_2021]]                                             | Direct        |
+| NFR-COMP-05   | Compliance   | Post-quantum cryptographic migration roadmap              | [[wang_2026]]; [[mishra_2025]]                               | Synthesis     |
+| NFR-RISK-01   | Risk         | OSS dependency SLA + CVE patching policy                  | [[chuen_2017]]; [[mishra_2025]]                              | Synthesis     |
+| NFR-CONFIG-01 | Config       | LevelDB over CouchDB; PDC only if justified               | [[guggenberger_2022]]                                        | Direct        |
+| NFR-CONFIG-02 | Config       | 20–25% m-node shard ratio                                 | [[liu_2025]]                                                 | Direct        |
+| NFR-CONFIG-03 | Config       | PBFT k=7 shards at 1,000 nodes                            | [[wang_2026]]                                                | Direct        |
+| NFR-STORE-01  | Storage      | Epoch checkpointing; per-node cap defined at design time  | [[nasir_2022_batch03]]; [[al_bassam_2018]]; [[sonnino_2021]] | Synthesis     |
+| NFR-INFRA-01  | Infra        | Multi-path intrusion-tolerant inter-ledger overlay        | [[trestioreanu_2021]]                                        | Direct        |
 
 ## 5. Technical Architecture & "To-Be" Model
 
