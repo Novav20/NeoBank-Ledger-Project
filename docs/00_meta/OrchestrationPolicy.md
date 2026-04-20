@@ -41,7 +41,7 @@ If multiple distinct milestones are achieved within the same day's session, the 
 
 ```
 ---
-### UPDATE-02
+### UPDATE-01
 
 **New Key Decision(s):**
 - [Decision text]

@@ -31,13 +31,6 @@ Use the BPA like this:
 7. Keep technical implementation details out of the use case body.
 8. Link the use case to the BPMN note and later to user stories.
 
-## Obsidian-friendly workflow
-1. Start from the BPMN flow.
-2. Identify actors.
-3. Write each actor goal as a use case.
-4. Add preconditions, trigger, main flow, alternatives, and postconditions.
-5. Link the use case note to the BPMN note and the user-story note.
-
 ## PlantUML conventions
 - Use one diagram per use-case cluster.
 - Use `left to right direction` for readability.

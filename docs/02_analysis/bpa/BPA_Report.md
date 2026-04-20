@@ -6,7 +6,7 @@ last_modified: 2026-03-29
 
 ## 1. Introduction and Context
 
-### Project Objectives
+### 1.1 Project Objectives
 
 The objective of this project is to instantiate a high-integrity, B2B-grade ledger system that serves as a "common semantic layer" for Banking-as-a-Service (BaaS) architectures.
 
@@ -14,14 +14,14 @@ The objective of this project is to instantiate a high-integrity, B2B-grade ledg
 - **Auditability**: Provide evidence-grade logging to satisfy regulatory mandates (e.g., FDIC custodial account requirements).
 - **Automation**: Enable Straight-Through Processing (STP) to eliminate manual reconciliation gaps.
 
-### Scope
+### 1.2 Scope
 
 The system covers the internal ledgering of funds within a Neobank ecosystem, including Account management, Journal Entry instantiation, and Balance verification.
 
 - **In-Scope**: Digital ledgering, double-entry validation, balance management, and metadata extensibility.
 - **Out-of-Scope**: Physical payment rail execution (Fedwire/RTGS), Customer KYC/Onboarding, and front-end UI.
 
-### Stakeholders & Ecosystem
+### 1.3 Stakeholders & Ecosystem
 
 The ecosystem is evolving from solitary institutional silos to federated platform networks. The primary relationships map as follows:
 
@@ -32,7 +32,7 @@ The ecosystem is evolving from solitary institutional silos to federated platfor
 
 ## 2. Analysis of the Current State (As-Is)
 
-### Foundational Logic (As-Is)
+### 2.1 Foundational Logic (As-Is)
 
 Despite the shift toward distributed architectures, the automated transaction lifecycle relies on formalizing logic heavily influenced by legacy constraints. Current manual or legacy-based processes involve high degrees of "exception handling" due to unstructured data. The traditional lifecycle operates as follows:
 
@@ -41,7 +41,7 @@ Despite the shift toward distributed architectures, the automated transaction li
 3. **Journaling (Data Recording)**: Moves from siloed double-entry databases to shared, immutable, append-only logs ensuring system-wide state consistency ([[fulbier_2023|Fülbier & Sellhorn, 2023]]).
 4. **Settlement**: The finalization of state, previously taking multiple days (often T+2), now aiming for near real-time execution via smart contracts, though frequently constrained by network latency and cross-ledger interoperability barriers ([[cisar_2025|Cisar et al., 2025]]; [[quamara_2024|Quamara et al., 2024]]).
 
-### "As-Is" Process Map
+### 2.2 "As-Is" Process Map
 
 ```mermaid
 sequenceDiagram
@@ -58,7 +58,7 @@ sequenceDiagram
     M-->>P: Delayed Settlement Notification
 ```
 
-### Data Inventory
+### 2.3 Data Inventory
 
 Current "As-Is" data often lacks structure, but the transition to ISO 20022 mandates:
 
@@ -67,7 +67,7 @@ Current "As-Is" data often lacks structure, but the transition to ISO 20022 mand
 - **Currency**: ISO 4217 code.
 - **Timestamps**: Event creation/update.
 
-### Pain Points (System Entropy)
+### 2.4 Pain Points (System Entropy)
 
 The researched domain presents several critical risks and inefficiencies:
 
@@ -99,28 +99,28 @@ To build a robust, high-transaction B2B Ledger, the architecture must strictly e
 
 Derived from Meta-Analysis of 37 technical sources:
 
-| ID            | Category     | Statement                                                 | Primary Source(s)               | Evidence Mode |
-| ------------- | ------------ | --------------------------------------------------------- | ------------------------------- | ------------- |
-| NFR-AVAIL-01  | Availability | $3F+1$ nodes, BFT, view-change <30s                       | [[barger_2021]]; [[berger_2023b]]; [[chuen_2017]] | Synthesis |
-| NFR-PERF-01   | Performance  | <210ms intra-cluster latency (normal load)                | [[al_bassam_2018]]                | Direct |
-| NFR-PERF-02   | Performance  | ≥2,500 TPS in 7-node LAN                                  | [[barger_2021]]                   | Direct |
-| NFR-PERF-03   | Performance  | τ₀ ≥ 3σ consensus timer                                   | [[chan_2018]]                     | Direct |
-| NFR-PERF-04   | Performance  | <100ms target, 1.5s WAN ceiling (tiered SLA)              | [[sonnino_2021]]; [[guggenberger_2022]] | Synthesis |
-| NFR-SAFE-01   | Safety       | QC-enforced finality, double-spend impossible             | [[berger_2023b]]; [[benedetti_2022]]; [[praveen_2024]] | Synthesis |
-| NFR-SAFE-02   | Safety       | Committed vs. Audited finality formally distinguished     | [[mishra_2025]]                   | Direct |
-| NFR-SAFE-03   | Safety       | Formal verification (IVy/Z3) of fork-freedom              | [[praveen_2024]]                  | Direct |
-| NFR-AUDIT-01  | Audit        | $2F+1$ QC per block, independently auditable              | [[barger_2021]]; [[praveen_2024]]; [[benedetti_2022]] | Synthesis |
-| NFR-COMP-01   | Compliance   | ISO 20022 inter-ledger messaging                          | [[chuen_2017]]; [[sonnino_2021]] | Direct |
-| NFR-COMP-02   | Compliance   | LEI + UTI + 1ms timestamp per trade event (MiFID II)      | [[chuen_2017]]                    | Direct |
-| NFR-COMP-03   | Compliance   | Fair-ordering policy on Ordering Service (MEV mitigation) | [[li_2024]]                       | Direct |
-| NFR-COMP-04   | Compliance   | RTGS settlement model (no net-settlement exposure)        | [[sonnino_2021]]                  | Direct |
-| NFR-COMP-05   | Compliance   | Post-quantum cryptographic migration roadmap              | [[wang_2026]]; [[mishra_2025]]    | Synthesis |
-| NFR-RISK-01   | Risk         | OSS dependency SLA + CVE patching policy                  | [[chuen_2017]]; [[mishra_2025]]   | Synthesis |
-| NFR-CONFIG-01 | Config       | LevelDB over CouchDB; PDC only if justified               | [[guggenberger_2022]]             | Direct |
-| NFR-CONFIG-02 | Config       | 20–25% m-node shard ratio                                 | [[liu_2025]]                      | Direct |
-| NFR-CONFIG-03 | Config       | PBFT k=7 shards at 1,000 nodes                            | [[wang_2026]]                     | Direct |
-| NFR-STORE-01  | Storage      | Epoch checkpointing; per-node cap defined at design time  | [[nasir_2022_batch03]]; [[al_bassam_2018]]; [[sonnino_2021]] | Synthesis |
-| NFR-INFRA-01  | Infra        | Multi-path intrusion-tolerant inter-ledger overlay        | [[trestioreanu_2021]]             | Direct |
+| ID            | Category     | Statement                                                 | Primary Source(s)                                            | Evidence Mode |
+| ------------- | ------------ | --------------------------------------------------------- | ------------------------------------------------------------ | ------------- |
+| NFR-AVAIL-01  | Availability | $3F+1$ nodes, BFT, view-change <30s                       | [[barger_2021]]; [[berger_2023b]]; [[chuen_2017]]            | Synthesis     |
+| NFR-PERF-01   | Performance  | <210ms intra-cluster latency (normal load)                | [[al_bassam_2018]]                                           | Direct        |
+| NFR-PERF-02   | Performance  | ≥2,500 TPS in 7-node LAN                                  | [[barger_2021]]                                              | Direct        |
+| NFR-PERF-03   | Performance  | τ₀ ≥ 3σ consensus timer                                   | [[chan_2018]]                                                | Direct        |
+| NFR-PERF-04   | Performance  | <100ms target, 1.5s WAN ceiling (tiered SLA)              | [[sonnino_2021]]; [[guggenberger_2022]]                      | Synthesis     |
+| NFR-SAFE-01   | Safety       | QC-enforced finality, double-spend impossible             | [[berger_2023b]]; [[benedetti_2022]]; [[praveen_2024]]       | Synthesis     |
+| NFR-SAFE-02   | Safety       | Committed vs. Audited finality formally distinguished     | [[mishra_2025]]                                              | Direct        |
+| NFR-SAFE-03   | Safety       | Formal verification (IVy/Z3) of fork-freedom              | [[praveen_2024]]                                             | Direct        |
+| NFR-AUDIT-01  | Audit        | $2F+1$ QC per block, independently auditable              | [[barger_2021]]; [[praveen_2024]]; [[benedetti_2022]]        | Synthesis     |
+| NFR-COMP-01   | Compliance   | ISO 20022 inter-ledger messaging                          | [[chuen_2017]]; [[sonnino_2021]]                             | Direct        |
+| NFR-COMP-02   | Compliance   | LEI + UTI + 1ms timestamp per trade event (MiFID II)      | [[chuen_2017]]                                               | Direct        |
+| NFR-COMP-03   | Compliance   | Fair-ordering policy on Ordering Service (MEV mitigation) | [[li_2024]]                                                  | Direct        |
+| NFR-COMP-04   | Compliance   | RTGS settlement model (no net-settlement exposure)        | [[sonnino_2021]]                                             | Direct        |
+| NFR-COMP-05   | Compliance   | Post-quantum cryptographic migration roadmap              | [[wang_2026]]; [[mishra_2025]]                               | Synthesis     |
+| NFR-RISK-01   | Risk         | OSS dependency SLA + CVE patching policy                  | [[chuen_2017]]; [[mishra_2025]]                              | Synthesis     |
+| NFR-CONFIG-01 | Config       | LevelDB over CouchDB; PDC only if justified               | [[guggenberger_2022]]                                        | Direct        |
+| NFR-CONFIG-02 | Config       | 20–25% m-node shard ratio                                 | [[liu_2025]]                                                 | Direct        |
+| NFR-CONFIG-03 | Config       | PBFT k=7 shards at 1,000 nodes                            | [[wang_2026]]                                                | Direct        |
+| NFR-STORE-01  | Storage      | Epoch checkpointing; per-node cap defined at design time  | [[nasir_2022_batch03]]; [[al_bassam_2018]]; [[sonnino_2021]] | Synthesis     |
+| NFR-INFRA-01  | Infra        | Multi-path intrusion-tolerant inter-ledger overlay        | [[trestioreanu_2021]]                                        | Direct        |
 
 ## 5. Technical Architecture & "To-Be" Model
 
