@@ -1,7 +1,7 @@
 ---
 type: user-story
 version: 1.0
-last_edited: 2026-04-16
+last_edited: 2026-04-20
 status: draft
 story_id: OBSV-001
 epic_id: OBSV
@@ -32,7 +32,7 @@ related_nfr:
   - "[[NFR-012]]"
   - "[[NFR-015]]"
 depends_on: []
-priority: Must
+priority: Could
 estimate: 13
 verification:
   - acceptance test

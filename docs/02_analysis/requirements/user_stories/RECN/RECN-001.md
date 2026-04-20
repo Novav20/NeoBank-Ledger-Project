@@ -1,7 +1,7 @@
 ---
 type: user-story
 version: 1.0
-last_edited: 2026-04-16
+last_edited: 2026-04-20
 status: draft
 story_id: RECN-001
 epic_id: RECN
@@ -23,7 +23,7 @@ related_nfr:
   - "[[NFR-016]]"
 depends_on:
   - "[[PROJ-001]]"
-priority: Should
+priority: Could
 estimate: 3
 verification:
   - acceptance test

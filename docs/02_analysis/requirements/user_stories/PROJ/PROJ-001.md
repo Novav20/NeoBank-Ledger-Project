@@ -1,7 +1,7 @@
 ---
 type: user-story
 version: 1.0
-last_edited: 2026-04-16
+last_edited: 2026-04-20
 status: draft
 story_id: PROJ-001
 epic_id: PROJ
@@ -29,7 +29,7 @@ related_nfr:
   - "[[NFR-020]]"
 depends_on:
   - "[[TXEN-002]]"
-priority: Must
+priority: Should
 estimate: 5
 verification:
   - acceptance test

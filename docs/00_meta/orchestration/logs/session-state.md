@@ -1,24 +1,24 @@
-# Session State: Week 16 (Apr 13 - Apr 17)
+# Session State: Week 17 (Apr 20 - Apr 24)
 
 > Live AI context snapshot. Overwrite this file at the start of each session; do not append historical logs here.
 
 ## Overview
-Current Date: Thursday, 2026-04-16
-Current Week: w16
-Status: Requirements Phase Complete. Backlog of 7 parent User Stories frozen; all 20 NFRs and 5 FRs mapped and traceable.
-Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w16/2026-04-16.md`
+Current Date: Monday, 2026-04-20
+Current Week: w17
+Status: Week 16 requirements phase is closed. MVP selection has been logged, and the architecture baseline is now the active focus.
+Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w16/2026-04-17.md`
 
 ## Navigation
 - **Project Roadmap:** `docs/00_meta/plans/project-roadmap.md`
-- **Active Plan:** `docs/00_meta/plans/w16.md`
+- **Active Plan:** `docs/00_meta/plans/w17.md`
 - **BPA Report:** `docs/02_analysis/bpa/BPA_Report.md` (v1.2)
 
 ## Latest Synchronization
-- **Schedule State**: Week 16 is ahead of schedule. The "What" (Requirements) is finished.
-- **Current Task**: Preparing for MVP selection and the transition to the Architecture Baseline (Phase C).
-- **Daily Log**: Appended the final consistency audit and story-derivation milestones.
+- **Schedule State**: Week 17 is starting. Week 16 backlog selection is complete.
+- **Current Task**: Research ADR-001 for GDPR vs. Immutability and prepare the architectural baseline.
+- **Daily Log**: Week 16 closed with the MVP selection log.
 
-## Immediate Focus (Friday, Apr 17)
-1. **MVP Selection**: Apply MoSCoW prioritization to the 7 parent stories to define the Sprint 1 scope.
-2. **Requirements Sign-off**: Final review of the traceability matrix (`user_stories.base`).
-3. **Architecture Handoff**: Prepare the folder structure for `docs/03_architecture/` and initial ADR candidates.
+## Immediate Focus (Monday, Apr 20)
+1. **ADR-001 Research**: Compare Redactable Ledger implementations with Chameleon Hash options.
+2. **ADR-001 Drafting**: Capture the GDPR "Right to Erasure" decision in an ADR.
+3. **Release Boundary**: Keep the Week 17 architecture work aligned with the Must/Should/Could MVP selection.
