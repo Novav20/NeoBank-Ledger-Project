@@ -5,8 +5,8 @@
 ## Overview
 Current Date: Monday, 2026-04-20
 Current Week: w17
-Status: Week 16 requirements phase is closed. MVP selection has been logged, and the architecture baseline is now the active focus.
-Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w16/2026-04-17.md`
+Status: Architecture Baseline Phase (Phase C) Active. MVP selected (4 Must-Have stories); ADR-001 completed; GDPR backlog hardening finished.
+Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w17/2026-04-20.md`
 
 ## Navigation
 - **Project Roadmap:** `docs/00_meta/plans/project-roadmap.md`
@@ -14,11 +14,11 @@ Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w16/2026-04-17.md`
 - **BPA Report:** `docs/02_analysis/bpa/BPA_Report.md` (v1.2)
 
 ## Latest Synchronization
-- **Schedule State**: Week 17 is starting. Week 16 backlog selection is complete.
-- **Current Task**: Research ADR-001 for GDPR vs. Immutability and prepare the architectural baseline.
-- **Daily Log**: Week 16 closed with the MVP selection log.
+- **Schedule State**: On schedule for Week 17; ADR-001 is stable.
+- **Current Task**: Transitioning to ADR-002 (Finality Model) and ADR-003 (Sharding Topology).
+- **Daily Log**: Updated 2026-04-20 log with ADR-001 findings and GDPR gap resolutions.
 
-## Immediate Focus (Monday, Apr 20)
-1. **ADR-001 Research**: Compare Redactable Ledger implementations with Chameleon Hash options.
-2. **ADR-001 Drafting**: Capture the GDPR "Right to Erasure" decision in an ADR.
-3. **Release Boundary**: Keep the Week 17 architecture work aligned with the Must/Should/Could MVP selection.
+## Immediate Focus (Tuesday, Apr 21)
+1. **ADR-002 (Finality)**: Formalize the decision for PBFT (Immediate Finality) for the core cluster.
+2. **ADR-003 (Sharding)**: Define the shard topology and m-node ratio configuration based on research.
+3. **HLD Prep**: Begin drafting the High-Level Design Mermaid diagram based on the ADR-001/002/003 stack.
