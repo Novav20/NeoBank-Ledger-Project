@@ -3,10 +3,10 @@
 > Live AI context snapshot. Overwrite this file at the start of each session; do not append historical logs here.
 
 ## Overview
-Current Date: Monday, 2026-04-20
+Current Date: Tuesday, 2026-04-21
 Current Week: w17
-Status: Architecture Baseline Phase (Phase C) Active. MVP selected (4 Must-Have stories); ADR-001 completed; GDPR backlog hardening finished.
-Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w17/2026-04-20.md`
+Status: Architecture Baseline Complete; HLD and ADRs (001-003) stable.
+Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w17/2026-04-21.md`
 
 ## Navigation
 - **Project Roadmap:** `docs/00_meta/plans/project-roadmap.md`
@@ -14,11 +14,11 @@ Last Daily Log: `docs/00_meta/orchestration/logs/weekly/w17/2026-04-20.md`
 - **BPA Report:** `docs/02_analysis/bpa/BPA_Report.md` (v1.2)
 
 ## Latest Synchronization
-- **Schedule State**: On schedule for Week 17; ADR-001 is stable.
-- **Current Task**: Transitioning to ADR-002 (Finality Model) and ADR-003 (Sharding Topology).
-- **Daily Log**: Updated 2026-04-20 log with ADR-001 findings and GDPR gap resolutions.
+- **Schedule State**: Architecture Baseline Complete; HLD and ADRs (001-003) stable.
+- **Current Task**: Preparing ERD and domain entity mapping (pre-coding).
+- **Daily Log**: Updated 2026-04-21 log with the architecture baseline closeout.
 
-## Immediate Focus (Tuesday, Apr 21)
-1. **ADR-002 (Finality)**: Formalize the decision for PBFT (Immediate Finality) for the core cluster.
-2. **ADR-003 (Sharding)**: Define the shard topology and m-node ratio configuration based on research.
-3. **HLD Prep**: Begin drafting the High-Level Design Mermaid diagram based on the ADR-001/002/003 stack.
+## Immediate Focus (Tomorrow)
+1. **ERD**: Draft the Entity-Relationship Diagram for Account, Event, Balance, and JournalEntry.
+2. **Domain Mapping**: Map the domain entities and relationships before any C# implementation.
+3. **Pre-Coding Track**: Keep the ERD aligned with the completed HLD and ADR stack.
