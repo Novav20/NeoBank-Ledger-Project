@@ -1,7 +1,7 @@
 ---
 type: user-story
 version: 1.0
-last_edited: 2026-04-16
+last_edited: 2026-04-20
 status: draft
 story_id: AUDT-001
 epic_id: AUDT
@@ -20,6 +20,8 @@ source:
   - docs/02_analysis/requirements/non_functional_requirements/NFR-017.md
   - docs/02_analysis/requirements/non_functional_requirements/NFR-018.md
   - docs/02_analysis/requirements/non_functional_requirements/NFR-019.md
+  - docs/02_analysis/research/w17/Technical-and-Functional-Requirements-Specification_GDPR-Compliance-for High-Integrity-Financial-Ledgers.md
+  - docs/02_analysis/research/w17/High-Integrity Financial Ledger Requirements from GDPR.csv
 derived_from:
   - docs/02_analysis/requirements/epics.md#AUDT
 related_use_cases:
@@ -66,6 +68,8 @@ Use a Gherkin-inspired table. Keep one row per atomic criterion.
 | AC-003 | A transaction has been committed | Audit reconciliation runs | The system distinguishes committed finality from audited finality | |
 | AC-004 | A formal verification run is executed | Proof artifacts are generated | The artifacts demonstrate fork-freedom and safety-error-freedom | |
 | AC-005 | A block is published for oversight | Quorum evidence is attached | The block is independently auditable through a QC-backed record | |
+| AC-006 | A processing record or lineage request is made | The audit evidence is queried | The system returns machine-readable lineage for the request, transformation, and disclosure history | |
 
 ## Notes
-This parent story covers the audit-grade evidence chain and the proof obligations that support it.
+- This parent story covers the audit-grade evidence chain and the proof obligations that support it.
+- Rationale: GDPR Article 30 requires records of processing activities, so the audit vault must expose machine-readable lineage rather than only preserving cryptographic proof material.

@@ -19,6 +19,8 @@ source:
   - docs/02_analysis/requirements/non_functional_requirements/NFR-011.md
   - docs/02_analysis/requirements/non_functional_requirements/NFR-012.md
   - docs/02_analysis/requirements/non_functional_requirements/NFR-015.md
+  - docs/02_analysis/research/w17/Technical-and-Functional-Requirements-Specification_GDPR-Compliance-for High-Integrity-Financial-Ledgers.md
+  - docs/02_analysis/research/w17/High-Integrity Financial Ledger Requirements from GDPR.csv
 derived_from:
   - docs/02_analysis/requirements/epics.md#OBSV
 related_use_cases:
@@ -62,6 +64,9 @@ Use a Gherkin-inspired table. Keep one row per atomic criterion.
 | AC-004 | The cryptography roadmap is reviewed | The security posture is assessed | The system maintains a documented post-quantum migration roadmap | |
 | AC-005 | Open-source dependencies are triaged | Vulnerability response is evaluated | The project follows a defined OSS dependency SLA and CVE patching discipline | |
 | AC-006 | The storage policy is reviewed | Epoch checkpointing is inspected | The system enforces epoch checkpoints and a design-time per-node storage cap | |
+| AC-007 | A non-privileged operator opens the default monitoring view | Operational telemetry is requested | Only least-privilege fields are returned and restricted data remains hidden unless elevated access is granted | |
+| AC-008 | Ledger data is stored or transmitted between components | The system persists or relays the data | Encryption at rest and in transit is enforced according to the security policy | |
 
 ## Notes
-This parent story covers the operational controls that keep availability, storage, and governance visible to the operator.
+- This parent story covers the operational controls that keep availability, storage, and governance visible to the operator.
+- Rationale: GDPR Articles 25 and 32 require restrictive defaults, confidentiality, and encrypted processing for operational data that may contain sensitive ledger metadata.
