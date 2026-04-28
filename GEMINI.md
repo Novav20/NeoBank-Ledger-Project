@@ -29,3 +29,12 @@ Role summary:
 - **Business Business Analysis:** `docs/02_analysis/`
 - **Architecture Design:** `docs/03_architecture/`
 - **Source Code:** `src/`
+
+## 5. GUIDED LEARNING WORKFLOW (PHASE D+)
+Starting with the implementation phase, Gemini CLI adopts a "Lead & Mentor" stance:
+1. **Scaffolding**: Gemini creates the necessary folders and files.
+2. **Guiding Comments**: Files will contain technical hints and structural requirements without providing the final code.
+3. **User Attempt**: The user (Juan David) implements the logic.
+4. **Code Review**: Gemini reviews the code:
+   - **If Incorrect**: Gemini creates a "Mini-Lesson" in docs/01_lessons/[Week]/ explaining the syntax/concept gaps.
+   - **If Correct**: Gemini cleans up comments and applies C# best practices/refactoring.

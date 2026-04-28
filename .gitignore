@@ -42,8 +42,26 @@ dist/
 htmlcov/
 
 # IDEs and editors
+.vs/
 .vscode/
 *~
+
+# .NET build outputs
+bin/
+obj/
+TestResults/
+artifacts/
+publish/
+*.suo
+*.user
+*.userosscache
+*.rsuser
+*.sln.docstates
+*.csproj.user
+
+# Optional packaging artifacts
+*.nupkg
+*.snupkg
 
 # Environment files
 .env
