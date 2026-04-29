@@ -120,7 +120,7 @@ classDiagram
     }
 
     class Entry {
-        <<Value Object>>
+        <<Entity>>
         +Guid EntryId
         +Guid TransactionId
         +Guid EventId
