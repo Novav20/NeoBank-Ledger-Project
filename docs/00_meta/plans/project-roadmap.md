@@ -12,7 +12,7 @@
 | **w15**     | Apr 06 - Apr 10 | **M3: Requirements**             | ✅      | BPMN As-Is/To-Be drafts and requirements extraction baseline. |
 | **w16**     | Apr 13 - Apr 17 | **M3: Requirements (Carryover)** | ⚪      | Use Cases, FR, User Stories, AC, and backlog freeze.          |
 | **w17**     | Apr 20 - Apr 24 | **M4: Architecture**             | ⚪      | ADRs, HLD, and Domain Entity Schemas.                         |
-| **w18**     | Apr 27 - May 01 | **M5: Sprint 01**                | ⚪      | Base Persistence & Event Store.                               |
+| **w18**     | Apr 27 - May 01 | **M5: Sprint 01**                | defer  | Base Persistence & Event Store.                               |
 | **w19**     | May 04 - May 08 | **M6: Sprint 02**                | ⚪      | Double-Entry Engine & Validation.                             |
 | **w20**     | May 11 - May 15 | **M7: Sprint 03**                | ⚪      | Account Management & Balance Logic.                           |
 | **w21**     | May 18 - May 22 | **M8: Sprint 04**                | ⚪      | API Layer & ISO 20022 Mapping.                                |
