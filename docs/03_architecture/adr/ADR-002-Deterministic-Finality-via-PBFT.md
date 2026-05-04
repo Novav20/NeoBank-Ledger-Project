@@ -1,10 +1,11 @@
-# ADR-002: Deterministic Finality via PBFT
-**Status:** Proposed
-**Date:** 2026-04-21
-**Deciders:** Gemini CLI / Juan David
-**Supersedes:** None
-
 ---
+Status: Proposed
+Date: 2026-04-21
+Deciders: Gemini CLI / Juan David
+Supersedes: None
+---
+
+# ADR-002: Deterministic Finality via PBFT
 
 ## Context
 BPA v1.2 requires explicit finality for the B2B ledger core, and the foundational principles in section 4.1 state that deterministic finality is required for trust-sensitive settlement. A consensus model that permits unresolved fork risk would weaken the auditability and non-repudiation guarantees expected by financial partners.

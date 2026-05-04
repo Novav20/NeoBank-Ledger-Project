@@ -1,0 +1,82 @@
+using System.Text.Json;
+using NeoBank.Ledger.Domain.Entities;
+using NeoBank.Ledger.Infrastructure.Persistence.DTOs;
+using NeoBank.Ledger.Infrastructure.Persistence.Mappers;
+using RocksDbNet;
+
+namespace NeoBank.Ledger.Infrastructure.Persistence;
+
+public sealed class RocksDbStore : IDisposable
+{
+    private readonly RocksDb _db;
+    private readonly JsonSerializerOptions _jsonOptions = new(JsonSerializerDefaults.General);
+
+    public RocksDbStore(string? databasePath = null)
+    {
+        var resolvedPath = Path.GetFullPath(databasePath ?? Path.Combine(AppContext.BaseDirectory, "rocksdb"));
+        Directory.CreateDirectory(resolvedPath);
+
+        var options = new DbOptions { CreateIfMissing = true };
+
+        try
+        {
+            _db = RocksDb.Open(options, resolvedPath);
+        }
+        catch (Exception exception)
+        {
+            throw new InvalidOperationException($"Failed to open the RocksDB store at '{resolvedPath}'.", exception);
+        }
+    }
+
+    public void Dispose() => _db.Dispose();
+
+    public void Save(Account account) => Put(BuildAccountKey(account.AccountId), account.ToDto());
+
+    public void Save(Event eventEntity) => Put(BuildEventKey(eventEntity.SequenceNumber), eventEntity.ToDto());
+
+    public void Save(Balance balance) => Put(BuildBalanceKey(balance.AccountId), balance.ToDto());
+
+    public void Save(Party party) => Put(BuildPartyKey(party.PartyId), party.ToDto());
+
+    public void Save(AuditBlock auditBlock) => Put(BuildAuditBlockKey(auditBlock.BlockHeight), auditBlock.ToDto());
+
+    public void Save(RejectionRecord rejectionRecord) => Put(BuildRejectionRecordKey(rejectionRecord.UTI.Value), rejectionRecord.ToDto());
+
+    public Account? GetAccount(Guid accountId) => Get<AccountDto>(BuildAccountKey(accountId))?.ToEntity();
+
+    public Event? GetEvent(long sequenceNumber) => Get<EventDto>(BuildEventKey(sequenceNumber))?.ToEntity();
+
+    public Balance? GetBalance(Guid accountId) => Get<BalanceDto>(BuildBalanceKey(accountId))?.ToEntity();
+
+    public Party? GetParty(Guid partyId) => Get<PartyDto>(BuildPartyKey(partyId))?.ToEntity();
+
+    public AuditBlock? GetAuditBlock(long blockHeight) => Get<AuditBlockDto>(BuildAuditBlockKey(blockHeight))?.ToEntity();
+
+    public RejectionRecord? GetRejectionRecord(string uti) => Get<RejectionRecordDto>(BuildRejectionRecordKey(uti))?.ToEntity();
+
+    private void Put<TDto>(string key, TDto dto)
+    {
+        string json = JsonSerializer.Serialize(dto, _jsonOptions);
+        _db.Put(key, json);
+    }
+
+    private TDto? Get<TDto>(string key) where TDto : class
+    {
+        string? json = _db.GetString(key);
+        return string.IsNullOrWhiteSpace(json)
+            ? null
+            : JsonSerializer.Deserialize<TDto>(json, _jsonOptions);
+    }
+
+    private static string BuildAccountKey(Guid accountId) => $"acc:{accountId}";
+
+    private static string BuildEventKey(long sequenceNumber) => $"evt:{sequenceNumber:D20}";
+
+    private static string BuildBalanceKey(Guid accountId) => $"bal:{accountId}";
+
+    private static string BuildPartyKey(Guid partyId) => $"pty:{partyId}";
+
+    private static string BuildAuditBlockKey(long blockHeight) => $"aud:{blockHeight:D20}";
+
+    private static string BuildRejectionRecordKey(string uti) => $"rej:{uti}";
+}

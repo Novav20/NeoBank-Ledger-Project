@@ -1,10 +1,11 @@
-# ADR-001: GDPR Compliance via Redactable Ledger
-**Status:** Proposed
-**Date:** 2026-04-20
-**Deciders:** Gemini CLI / Juan David
-**Supersedes:** None
-
 ---
+Status: Proposed
+Date: 2026-04-20
+Deciders: Gemini CLI / Juan David
+Supersedes: None
+---
+
+# ADR-001: GDPR Compliance via Redactable Ledger
 
 ## Context
 BPA v1.2 section 4.1 requires immutable history, cryptographic provenance, and explicit finality for the B2B ledger core. At the same time, GDPR Article 17 requires the system to support erasure of personal data when legally justified. A pure append-only ledger cannot satisfy both requirements for PII carried directly on-chain without an additional redaction mechanism.
