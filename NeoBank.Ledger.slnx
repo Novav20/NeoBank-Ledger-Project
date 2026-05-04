@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/NeoBank.Ledger.Api/NeoBank.Ledger.Api.csproj" />
+    <Project Path="src/NeoBank.Ledger.Application/NeoBank.Ledger.Application.csproj" />
+    <Project Path="src/NeoBank.Ledger.Domain/NeoBank.Ledger.Domain.csproj" />
+    <Project Path="src/NeoBank.Ledger.Infrastructure/NeoBank.Ledger.Infrastructure.csproj" />
+  </Folder>
+</Solution>
