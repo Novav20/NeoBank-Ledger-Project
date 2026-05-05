@@ -24,7 +24,7 @@ This lesson explains the Week 19 persistence implementation in plain language. I
 - JSON serialization with `System.Text.Json`
 - Safe read paths that return `null` when a key does not exist
 
-## Mental Model (Mermaid)
+## Mental Model
 ```mermaid
 flowchart TD
     Domain[Domain Entity] --> Mapper[Static Mapper]
@@ -40,7 +40,7 @@ flowchart TD
 ## Guided Review of the Implementation
 
 ### 1. Dependency Change
-The Infrastructure project now references [RocksDb.Net](/home/novillus/Documents/vscode/NeoBank-Ledger-Project/src/NeoBank.Ledger.Infrastructure/NeoBank.Ledger.Infrastructure.csproj) instead of `LevelDB.Net`.
+The Infrastructure project now references `RocksDb.Net` instead of `LevelDB.Net`.
 
 Why this matters:
 - The repository pivoted from the older LevelDB path to the RocksDB-based design described in ADR-008.

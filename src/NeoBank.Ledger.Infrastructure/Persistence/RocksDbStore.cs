@@ -42,6 +42,23 @@ public sealed class RocksDbStore : IDisposable
 
     public void Save(RejectionRecord rejectionRecord) => Put(BuildRejectionRecordKey(rejectionRecord.UTI.Value), rejectionRecord.ToDto());
 
+    public void Write(WriteBatch writeBatch)
+    {
+        var writeOptions = new WriteOptions();
+
+        try
+        {
+            _db.Write(writeBatch, writeOptions);
+        }
+        finally
+        {
+            if (writeOptions is IDisposable disposableWriteOptions)
+            {
+                disposableWriteOptions.Dispose();
+            }
+        }
+    }
+
     public Account? GetAccount(Guid accountId) => Get<AccountDto>(BuildAccountKey(accountId))?.ToEntity();
 
     public Event? GetEvent(long sequenceNumber) => Get<EventDto>(BuildEventKey(sequenceNumber))?.ToEntity();
@@ -53,6 +70,22 @@ public sealed class RocksDbStore : IDisposable
     public AuditBlock? GetAuditBlock(long blockHeight) => Get<AuditBlockDto>(BuildAuditBlockKey(blockHeight))?.ToEntity();
 
     public RejectionRecord? GetRejectionRecord(string uti) => Get<RejectionRecordDto>(BuildRejectionRecordKey(uti))?.ToEntity();
+
+    internal static string BuildTransactionKey(Guid transactionId) => $"txn:{transactionId}";
+
+    internal static string BuildEntryKey(Guid transactionId, long postingOrder) => $"ent:{transactionId}:{postingOrder:D20}";
+
+    internal static string BuildBalanceKey(Guid accountId) => $"bal:{accountId}";
+
+    internal static string BuildAccountKey(Guid accountId) => $"acc:{accountId}";
+
+    internal static string BuildEventKey(long sequenceNumber) => $"evt:{sequenceNumber:D20}";
+
+    internal static string BuildPartyKey(Guid partyId) => $"pty:{partyId}";
+
+    internal static string BuildAuditBlockKey(long blockHeight) => $"aud:{blockHeight:D20}";
+
+    internal static string BuildRejectionRecordKey(string uti) => $"rej:{uti}";
 
     private void Put<TDto>(string key, TDto dto)
     {
@@ -67,16 +100,4 @@ public sealed class RocksDbStore : IDisposable
             ? null
             : JsonSerializer.Deserialize<TDto>(json, _jsonOptions);
     }
-
-    private static string BuildAccountKey(Guid accountId) => $"acc:{accountId}";
-
-    private static string BuildEventKey(long sequenceNumber) => $"evt:{sequenceNumber:D20}";
-
-    private static string BuildBalanceKey(Guid accountId) => $"bal:{accountId}";
-
-    private static string BuildPartyKey(Guid partyId) => $"pty:{partyId}";
-
-    private static string BuildAuditBlockKey(long blockHeight) => $"aud:{blockHeight:D20}";
-
-    private static string BuildRejectionRecordKey(string uti) => $"rej:{uti}";
 }
