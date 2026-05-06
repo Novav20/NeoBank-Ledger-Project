@@ -10,6 +10,7 @@ public sealed class RocksDbStore : IDisposable
 {
     private readonly RocksDb _db;
     private readonly JsonSerializerOptions _jsonOptions = new(JsonSerializerDefaults.General);
+    private long _lastSequence;
 
     public RocksDbStore(string? databasePath = null)
     {
@@ -21,12 +22,15 @@ public sealed class RocksDbStore : IDisposable
         try
         {
             _db = RocksDb.Open(options, resolvedPath);
+            _lastSequence = LoadLastSequence();
         }
         catch (Exception exception)
         {
             throw new InvalidOperationException($"Failed to open the RocksDB store at '{resolvedPath}'.", exception);
         }
     }
+
+    internal RocksDb Database => _db;
 
     public void Dispose() => _db.Dispose();
 
@@ -71,6 +75,10 @@ public sealed class RocksDbStore : IDisposable
 
     public RejectionRecord? GetRejectionRecord(string uti) => Get<RejectionRecordDto>(BuildRejectionRecordKey(uti))?.ToEntity();
 
+    internal long GetLastSequence() => Interlocked.Read(ref _lastSequence);
+
+    internal void SetLastSequence(long seq) => Interlocked.Exchange(ref _lastSequence, seq);
+
     internal static string BuildTransactionKey(Guid transactionId) => $"txn:{transactionId}";
 
     internal static string BuildEntryKey(Guid transactionId, long postingOrder) => $"ent:{transactionId}:{postingOrder:D20}";
@@ -86,6 +94,14 @@ public sealed class RocksDbStore : IDisposable
     internal static string BuildAuditBlockKey(long blockHeight) => $"aud:{blockHeight:D20}";
 
     internal static string BuildRejectionRecordKey(string uti) => $"rej:{uti}";
+
+    internal static string BuildLastSequenceKey() => "meta:last_sequence";
+
+    private long LoadLastSequence()
+    {
+        string? rawValue = _db.GetString(BuildLastSequenceKey());
+        return long.TryParse(rawValue, out long parsedValue) ? parsedValue : 0;
+    }
 
     private void Put<TDto>(string key, TDto dto)
     {

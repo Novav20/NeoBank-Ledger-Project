@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using NeoBank.Ledger.Application.Persistence;
 using NeoBank.Ledger.Domain.Entities;
@@ -9,7 +11,7 @@ namespace NeoBank.Ledger.Infrastructure.Persistence.Repositories;
 
 public sealed class RocksDbLedgerUnitOfWork(RocksDbStore rocksDbStore) : ILedgerUnitOfWork
 {
-    private readonly JsonSerializerOptions  jsonOptions = new(JsonSerializerDefaults.General);
+    private readonly JsonSerializerOptions jsonOptions = new(JsonSerializerDefaults.General);
 
     public Task CommitAsync(
         Transaction transaction,
@@ -30,6 +32,29 @@ public sealed class RocksDbLedgerUnitOfWork(RocksDbStore rocksDbStore) : ILedger
                 }
 
                 AppendBalances(batch, updatedBalances);
+                rocksDbStore.Write(batch);
+            }
+            finally
+            {
+                if (batch is IDisposable disposableBatch)
+                {
+                    disposableBatch.Dispose();
+                }
+            }
+        });
+    }
+
+    public Task SaveAuditBlockAsync(AuditBlock auditBlock)
+    {
+        return Task.Run(() =>
+        {
+            AuditBlock preparedBlock = PrepareAuditBlock(auditBlock);
+            var batch = new WriteBatch();
+
+            try
+            {
+                AuditBlockDto dto = preparedBlock.ToDto();
+                batch.Put(RocksDbStore.BuildAuditBlockKey(preparedBlock.BlockHeight), JsonSerializer.Serialize(dto, jsonOptions));
                 rocksDbStore.Write(batch);
             }
             finally
@@ -64,5 +89,22 @@ public sealed class RocksDbLedgerUnitOfWork(RocksDbStore rocksDbStore) : ILedger
             BalanceDto dto = balance.ToDto();
             batch.Put(RocksDbStore.BuildBalanceKey(balance.AccountId), JsonSerializer.Serialize(dto, jsonOptions));
         }
+    }
+
+    private static AuditBlock PrepareAuditBlock(AuditBlock auditBlock)
+    {
+        string payload = string.Join(
+            '|',
+            auditBlock.AuditBlockId,
+            auditBlock.EventId,
+            auditBlock.BlockHeight,
+            Convert.ToHexString(auditBlock.PreviousBlockHash),
+            Convert.ToHexString(auditBlock.QuorumCert),
+            auditBlock.CommittedAt.ToUniversalTime().ToString("O"),
+            auditBlock.ShardId,
+            auditBlock.ConsensusZoneId);
+
+        byte[] hash = SHA256.HashData(Encoding.UTF8.GetBytes(payload));
+        return auditBlock with { ChameleonHash = hash };
     }
 }

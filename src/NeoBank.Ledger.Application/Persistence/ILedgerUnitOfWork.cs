@@ -8,4 +8,6 @@ public interface ILedgerUnitOfWork
         Transaction transaction,
         IReadOnlyCollection<Balance> updatedBalances,
         IReadOnlyCollection<Entry>? entries = null);
+
+    Task SaveAuditBlockAsync(AuditBlock auditBlock);
 }
