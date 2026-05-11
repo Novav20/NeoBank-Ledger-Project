@@ -397,43 +397,95 @@ The ERD fields below are backed by explicit allowed-value constraints so status 
 
 ### Physical Column Traceability
 
-| Entity.Column                          | Physical type     | Source note                                  | Critical synthesis                                            |
-| -------------------------------------- | ----------------- | -------------------------------------------- | ------------------------------------------------------------- |
-| PARTIES.lei                            | nchar(20)         | MiFID II Art. 10 / ISO 17442                 | Legal entity identity anchor                                  |
-| PARTIES.target_market_eligible         | bit               | MiFID II Recital 71                          | Controls whitelist and eligibility checks                     |
-| PARTY_ELIGIBLE_INSTRUMENTS.isin        | nchar(12)         | MiFID II Recital 71                          | Instrument whitelist entry                                    |
-| ACCOUNTS.owner_lei                     | nchar(20)         | MiFID II Art. 10 / 16.3                      | Legal entity ownership anchor                                 |
-| ACCOUNTS.partition_key                 | nvarchar(64)      | Shard routing policy                         | Deterministic shard routing by OwnerLEI or fallback AccountId |
-| ACCOUNTS.shard_id                      | nvarchar(32)      | [[ADR-003-Sharding-Topology-via-MSSP]]       | Physical shard placement                                      |
-| TRANSACTIONS.uti                       | nvarchar(52)      | MiFID II Art. 16.7                           | Unique transaction identifier                                 |
-| TRANSACTIONS.initiator_lei             | nchar(20)         | MiFID II Art. 10                             | Initiating legal entity                                       |
-| TRANSACTIONS.counterparty_lei          | nchar(20)         | MiFID II Art. 10 / Recital 71                | Counterparty legal entity                                     |
-| TRANSACTIONS.isin                      | nchar(12)         | MiFID II Recital 71                          | Instrument eligibility and target market checks               |
-| TRANSACTIONS.partition_key             | nvarchar(64)      | Shard routing policy                         | Deterministic routing for ingress and replay                  |
-| TRANSACTIONS.shard_id                  | nvarchar(32)      | [[ADR-003-Sharding-Topology-via-MSSP]]       | Stores the assigned shard at ingress                          |
-| TRANSACTIONS.consensus_zone_id         | nvarchar(32)      | [[ADR-003-Sharding-Topology-via-MSSP]]       | Tracks the zone used by the m-node bridge                     |
-| TRANSACTIONS.validation_level          | nvarchar(30)      | ISO 20022 validation sequence                | Records the highest validation gate reached                   |
-| TRANSACTIONS.amount_minor_units        | bigint            | ISO 20022 Amount + ledger precision policy   | Stored as smallest currency unit                              |
-| TRANSACTIONS.event_timestamp           | datetimeoffset(7) | MiFID II RTS 25                              | Deterministic temporal ordering in UTC Z                      |
-| EVENTS.sequence_number                 | bigint            | Sequencer ordering rule                      | Global monotonic event order                                  |
-| EVENTS.delivery_order                  | nvarchar(20)      | ISO 20022 delivery order rules               | FIFO / causal ordering trace                                  |
-| EVENTS.delivery_assurance              | nvarchar(20)      | ISO 20022 delivery assurance rules           | Exactly-once delivery contract                                |
-| EVENTS.payload_json                    | nvarchar(max)     | Normalized business payload                  | Immutable event body for audit and replay                     |
-| EVENTS.non_repudiation_proof           | bit               | ISO 20022 non-repudiation rules              | Proof that the event was accepted and signed                  |
-| TRANSACTION_ENTRIES.amount_minor_units | bigint            | ISO 20022 Amount + serialization constraints | Immutable ledger line value                                   |
-| TRANSACTION_ENTRIES.booked_at          | datetimeoffset(7) | MiFID II RTS 25                              | Posting timestamp in UTC Z                                    |
-| BALANCES.ledger_minor_units            | bigint            | BPA 5.2 balance projection                   | Ledger-side projection total                                  |
-| BALANCES.available_minor_units         | bigint            | BPA 5.2 balance projection                   | Available spendable projection                                |
-| BALANCES.projection_version            | bigint            | Projection versioning rule                   | Stale-read defense for high-frequency throughput              |
-| BALANCES.last_applied_sequence_number  | bigint            | Sequencer ordering rule                      | Replay-safe projection updates                                |
-| BALANCES.as_of_timestamp               | datetimeoffset(7) | MiFID II RTS 25                              | Projection freshness timestamp                                |
-| AUDIT_BLOCKS.previous_block_hash       | varbinary(32)     | Hash-chain audit trail                       | Chain continuity                                              |
-| AUDIT_BLOCKS.chameleon_hash            | varbinary(32)     | [[ADR-001-GDPR-Compliance]]                  | Redactable integrity anchor                                   |
-| AUDIT_BLOCKS.quorum_cert               | varbinary(1024)   | [[ADR-002-Deterministic-Finality-via-PBFT]]  | Finality proof artifact                                       |
-| AUDIT_BLOCKS.committed_at              | datetimeoffset(7) | MiFID II RTS 25 / audit trail                | Commit timestamp                                              |
-| REJECTION_RECORDS.pacs002_code         | nvarchar(20)      | ISO 20022 negative acknowledgement mapping   | Standard failure code for rejected commands                   |
-| REJECTION_RECORDS.failed_at_level      | nvarchar(30)      | Validation sequence                          | Records where the command stopped                             |
-| REJECTION_RECORDS.rejected_at          | datetimeoffset(7) | MiFID II RTS 25                              | Time the rejection became observable                          |
+| Entity.Column                          | Physical type     | Source note                                     | Critical synthesis                                                |
+| -------------------------------------- | ----------------- | ----------------------------------------------- | ----------------------------------------------------------------- |
+| PARTIES.party_id                       | uniqueidentifier  | ISO 20022 repository identity                   | Primary party surrogate key                                       |
+| PARTIES.lei                            | nchar(20)         | MiFID II Art. 10 / ISO 17442                    | Legal entity identity anchor                                      |
+| PARTIES.legal_name                     | nvarchar(200)     | ISO 20022 reference data / KYC registry         | Human-readable legal name                                         |
+| PARTIES.target_market_eligible         | bit               | MiFID II Recital 71                             | Controls whitelist and eligibility checks                         |
+| PARTIES.party_role                     | nvarchar(20)      | ISO 20022 participant role classification       | Governs client, counterparty, sponsor-bank, and auditor semantics |
+| PARTIES.registration_status            | nvarchar(20)      | ISO 20022 lifecycle status policy               | Tracks registry lifecycle and obsolescence                        |
+| PARTIES.created_at                     | datetimeoffset(7) | MiFID II RTS 25                                 | Registration timestamp in UTC Z                                   |
+| PARTY_ELIGIBLE_INSTRUMENTS.id          | uniqueidentifier  | ISO 20022 repository identity                   | Primary whitelist surrogate key                                   |
+| PARTY_ELIGIBLE_INSTRUMENTS.party_lei   | nchar(20)         | MiFID II Art. 10 / ISO 17442                    | Links whitelist entry to the owning legal entity                  |
+| PARTY_ELIGIBLE_INSTRUMENTS.isin        | nchar(12)         | MiFID II Recital 71                             | Instrument whitelist entry                                        |
+| ACCOUNTS.account_id                    | uniqueidentifier  | ISO 20022 repository identity                   | Primary account surrogate key                                     |
+| ACCOUNTS.owner_lei                     | nchar(20)         | MiFID II Art. 10 / 16.3                         | Legal entity ownership anchor                                     |
+| ACCOUNTS.account_number                | nvarchar(35)      | ISO 20022 IdentifierSet                         | External account identifier                                       |
+| ACCOUNTS.base_currency_code            | nchar(3)          | ISO 4217 / ISO 20022 currency semantics         | Base currency for the account                                     |
+| ACCOUNTS.account_status                | nvarchar(20)      | ISO 20022 lifecycle status policy               | Account lifecycle state                                           |
+| ACCOUNTS.opened_at                     | datetimeoffset(7) | MiFID II RTS 25                                 | Account opening timestamp                                         |
+| ACCOUNTS.closed_at                     | datetimeoffset(7) | MiFID II RTS 25                                 | Account closure timestamp                                         |
+| ACCOUNTS.partition_key                 | nvarchar(64)      | Shard routing policy                            | Deterministic shard routing by OwnerLEI or fallback AccountId     |
+| ACCOUNTS.shard_id                      | nvarchar(32)      | [[ADR-003-Sharding-Topology-via-MSSP]]          | Physical shard placement                                          |
+| ACCOUNTS.consensus_zone_id             | nvarchar(32)      | [[ADR-003-Sharding-Topology-via-MSSP]]          | Consensus zone used by the bridge                                 |
+| TRANSACTIONS.transaction_id            | uniqueidentifier  | ISO 20022 repository identity                   | Primary transaction surrogate key                                 |
+| TRANSACTIONS.uti                       | nvarchar(52)      | MiFID II Art. 16.7                              | Unique transaction identifier                                     |
+| TRANSACTIONS.end_to_end_id             | nvarchar(35)      | ISO 20022 IdentifierSet / message traceability  | End-to-end business correlation                                   |
+| TRANSACTIONS.initiator_lei             | nchar(20)         | MiFID II Art. 10                                | Initiating legal entity                                           |
+| TRANSACTIONS.counterparty_lei          | nchar(20)         | MiFID II Art. 10 / Recital 71                   | Counterparty legal entity                                         |
+| TRANSACTIONS.isin                      | nchar(12)         | MiFID II Recital 71                             | Instrument eligibility and target market checks                   |
+| TRANSACTIONS.message_definition_id     | nvarchar(35)      | ISO 20022 message definition metadata           | Message family and business intent                                |
+| TRANSACTIONS.message_function          | nvarchar(8)       | ISO 20022 message function rules                | Transaction function semantics (NEWM / CANC)                      |
+| TRANSACTIONS.amount_minor_units        | bigint            | ISO 20022 Amount + ledger precision policy      | Stored as smallest currency unit                                  |
+| TRANSACTIONS.currency_code             | nchar(3)          | ISO 4217 / ISO 20022 currency semantics         | Currency explicit in storage                                      |
+| TRANSACTIONS.event_timestamp           | datetimeoffset(7) | MiFID II RTS 25                                 | Deterministic temporal ordering in UTC Z                          |
+| TRANSACTIONS.transaction_status        | nvarchar(20)      | ISO 20022 lifecycle status policy               | Transaction lifecycle state                                       |
+| TRANSACTIONS.partition_key             | nvarchar(64)      | Shard routing policy                            | Deterministic routing for ingress and replay                      |
+| TRANSACTIONS.shard_id                  | nvarchar(32)      | [[ADR-003-Sharding-Topology-via-MSSP]]          | Stores the assigned shard at ingress                              |
+| TRANSACTIONS.consensus_zone_id         | nvarchar(32)      | [[ADR-003-Sharding-Topology-via-MSSP]]          | Tracks the zone used by the m-node bridge                         |
+| TRANSACTIONS.validation_level          | nvarchar(30)      | ISO 20022 validation sequence                   | Records the highest validation gate reached                       |
+| EVENTS.event_id                        | uniqueidentifier  | ISO 20022 repository identity                   | Ordered log surrogate key                                         |
+| EVENTS.sequence_number                 | bigint            | Sequencer ordering rule                         | Global monotonic event order                                      |
+| EVENTS.correlation_id                  | uniqueidentifier  | ISO 20022 traceability / correlation policy     | Correlates the event across commands and audit trails             |
+| EVENTS.transaction_id                  | uniqueidentifier  | ISO 20022 traceability to transaction           | Links the log entry to its source transaction                     |
+| EVENTS.uti                             | nvarchar(52)      | MiFID II Art. 16.7                              | Propagates the transaction identifier into the log                |
+| EVENTS.timestamp                       | datetimeoffset(7) | MiFID II RTS 25                                 | Event commit/occurrence time in UTC Z                             |
+| EVENTS.timestamp_precision             | nvarchar(20)      | MiFID II RTS 25                                 | Captures HFT versus standard precision                            |
+| EVENTS.delivery_order                  | nvarchar(20)      | ISO 20022 delivery order rules                  | FIFO / causal ordering trace                                      |
+| EVENTS.delivery_assurance              | nvarchar(20)      | ISO 20022 delivery assurance rules              | Exactly-once delivery contract                                    |
+| EVENTS.payload_json                    | nvarchar(max)     | Normalized business payload                     | Immutable event body for audit and replay                         |
+| EVENTS.non_repudiation_proof           | bit               | ISO 20022 non-repudiation rules                 | Proof that the event was accepted and signed                      |
+| EVENTS.shard_id                        | nvarchar(32)      | [[ADR-003-Sharding-Topology-via-MSSP]]          | Physical shard placement for event storage                        |
+| EVENTS.consensus_zone_id               | nvarchar(32)      | [[ADR-003-Sharding-Topology-via-MSSP]]          | Consensus zone used by the bridge                                 |
+| TRANSACTION_ENTRIES.entry_id           | uniqueidentifier  | ISO 20022 repository identity                   | Posting surrogate key                                             |
+| TRANSACTION_ENTRIES.transaction_id     | uniqueidentifier  | COMPOSITE / ISO 20022 trace rule to transaction | Parent transaction link                                           |
+| TRANSACTION_ENTRIES.event_id           | uniqueidentifier  | Event materialization traceability              | Source event link                                                 |
+| TRANSACTION_ENTRIES.account_id         | uniqueidentifier  | Account ownership traceability                  | Account being booked against                                      |
+| TRANSACTION_ENTRIES.entry_side         | nvarchar(8)       | BPA 5.2 double-entry policy                     | Debit/Credit side of the posting                                  |
+| TRANSACTION_ENTRIES.amount_minor_units | bigint            | ISO 20022 Amount + serialization constraints    | Immutable ledger line value                                       |
+| TRANSACTION_ENTRIES.currency_code      | nchar(3)          | ISO 4217 / ISO 20022 currency semantics         | Currency explicit in posting                                      |
+| TRANSACTION_ENTRIES.booked_at          | datetimeoffset(7) | MiFID II RTS 25                                 | Posting timestamp in UTC Z                                        |
+| TRANSACTION_ENTRIES.posting_order      | bigint            | Sequencer ordering rule                         | Stable line ordering within a transaction                         |
+| TRANSACTION_ENTRIES.shard_id           | nvarchar(32)      | [[ADR-003-Sharding-Topology-via-MSSP]]          | Physical shard placement for postings                             |
+| BALANCES.balance_id                    | uniqueidentifier  | ISO 20022 repository identity                   | Projection surrogate key                                          |
+| BALANCES.account_id                    | uniqueidentifier  | Account ownership traceability                  | Projection anchor account                                         |
+| BALANCES.ledger_minor_units            | bigint            | BPA 5.2 balance projection                      | Ledger-side projection total                                      |
+| BALANCES.available_minor_units         | bigint            | BPA 5.2 balance projection                      | Available spendable projection                                    |
+| BALANCES.currency_code                 | nchar(3)          | ISO 4217 / ISO 20022 currency semantics         | Projection currency                                               |
+| BALANCES.projection_version            | bigint            | Projection versioning rule                      | Stale-read defense for high-frequency throughput                  |
+| BALANCES.last_applied_sequence_number  | bigint            | Sequencer ordering rule                         | Replay-safe projection updates                                    |
+| BALANCES.as_of_timestamp               | datetimeoffset(7) | MiFID II RTS 25                                 | Projection freshness timestamp                                    |
+| BALANCES.shard_id                      | nvarchar(32)      | [[ADR-003-Sharding-Topology-via-MSSP]]          | Projection shard placement                                        |
+| AUDIT_BLOCKS.audit_block_id            | uniqueidentifier  | ISO 20022 repository identity                   | Immutable audit surrogate key                                     |
+| AUDIT_BLOCKS.event_id                  | uniqueidentifier  | Event sealing traceability                      | Event sealed by this block                                        |
+| AUDIT_BLOCKS.block_height              | bigint            | Sequencer ordering rule                         | Monotonic audit chain height                                      |
+| AUDIT_BLOCKS.previous_block_hash       | varbinary(32)     | Hash-chain audit trail                          | Chain continuity                                                  |
+| AUDIT_BLOCKS.chameleon_hash            | varbinary(32)     | [[ADR-001-GDPR-Compliance]]                     | Redactable integrity anchor                                       |
+| AUDIT_BLOCKS.quorum_cert               | varbinary(1024)   | [[ADR-002-Deterministic-Finality-via-PBFT]]     | Finality proof artifact                                           |
+| AUDIT_BLOCKS.committed_at              | datetimeoffset(7) | MiFID II RTS 25 / audit trail                   | Commit timestamp                                                  |
+| AUDIT_BLOCKS.shard_id                  | nvarchar(32)      | [[ADR-003-Sharding-Topology-via-MSSP]]          | Physical shard placement for audit evidence                       |
+| AUDIT_BLOCKS.consensus_zone_id         | nvarchar(32)      | [[ADR-003-Sharding-Topology-via-MSSP]]          | Consensus zone tracking for audit evidence                        |
+| REJECTION_RECORDS.rejection_id         | uniqueidentifier  | ISO 20022 repository identity                   | Negative acknowledgement surrogate key                            |
+| REJECTION_RECORDS.transaction_id       | uniqueidentifier  | ISO 20022 negative acknowledgement mapping      | Failed transaction link                                           |
+| REJECTION_RECORDS.uti                  | nvarchar(52)      | MiFID II Art. 16.7                              | Propagates the transaction identifier into rejection flow         |
+| REJECTION_RECORDS.shard_id             | nvarchar(32)      | [[ADR-003-Sharding-Topology-via-MSSP]]          | Rejection shard placement                                         |
+| REJECTION_RECORDS.consensus_zone_id    | nvarchar(32)      | [[ADR-003-Sharding-Topology-via-MSSP]]          | Consensus zone for rejection evidence                             |
+| REJECTION_RECORDS.pacs002_code         | nvarchar(20)      | ISO 20022 negative acknowledgement mapping      | Standard failure code for rejected commands                       |
+| REJECTION_RECORDS.reason_code          | nvarchar(50)      | ISO 20022 rejection semantics                   | Machine-readable failure reason                                   |
+| REJECTION_RECORDS.reason_text          | nvarchar(500)     | ISO 20022 rejection semantics                   | Human-readable failure detail                                     |
+| REJECTION_RECORDS.failed_at_level      | nvarchar(30)      | Validation sequence                             | Records where the command stopped                                 |
+| REJECTION_RECORDS.rejected_at          | datetimeoffset(7) | MiFID II RTS 25                                 | Time the rejection became observable                              |
 
 ## 6. Compliance Attribute List
 
