@@ -1,3 +1,5 @@
+using NeoBank.Ledger.Domain.Enums;
+
 namespace NeoBank.Ledger.Infrastructure.Persistence.DTOs;
 
 /// <summary>
@@ -14,4 +16,6 @@ public class AuditBlockDto
     public required DateTimeOffset CommittedAt { get; set; }
     public required string ShardId { get; set; }
     public required string ConsensusZoneId { get; set; }
+    public required RegistrationStatus RegistrationStatus { get; set; }
+    public required ChangeType ChangeType { get; set; }
 }

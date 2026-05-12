@@ -1,7 +1,15 @@
+---
+Status:
+  - Proposed
+Date: 2026-04-29
+Deciders: Gemini CLI / Juan David
+Supersedes: None
+---
+
 # ADR-006: LevelDB Key Schema and Serialization Strategy
 
 ## Status
-Proposed
+Superseded by ADR-008
 
 ## Context
 The Ledger requires a high-performance, append-only persistence layer for the Event Store and World State (Balances). We have selected LevelDB as the storage engine (Phase D). LevelDB is a flat Key-Value store with no built-in schema or table support. We need a deterministic strategy to:

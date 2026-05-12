@@ -1,3 +1,5 @@
+using NeoBank.Ledger.Domain.Enums;
+
 namespace NeoBank.Ledger.Domain.Entities;
 
 /// <summary>
@@ -13,4 +15,6 @@ public record AuditBlock(
     byte[] QuorumCert,
     DateTimeOffset CommittedAt,
     string ShardId,
-    string ConsensusZoneId);
+    string ConsensusZoneId,
+    RegistrationStatus RegistrationStatus = RegistrationStatus.Registered,
+    ChangeType ChangeType = ChangeType.Create);

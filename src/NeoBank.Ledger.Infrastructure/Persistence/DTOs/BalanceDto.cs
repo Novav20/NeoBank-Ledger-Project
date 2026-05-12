@@ -1,3 +1,5 @@
+using NeoBank.Ledger.Domain.Enums;
+
 namespace NeoBank.Ledger.Infrastructure.Persistence.DTOs;
 
 /// <summary>
@@ -14,4 +16,5 @@ public class BalanceDto
     public required long ProjectionVersion { get; set; }
     public required long LastAppliedSequenceNumber { get; set; }
     public required string ShardId { get; set; }
+    public required RegistrationStatus RegistrationStatus { get; set; }
 }

@@ -13,8 +13,8 @@ public class EventDto
     public required string UTI { get; set; }
     public required DateTimeOffset Timestamp { get; set; }
     public required TimestampPrecision Precision { get; set; }
-    public required string DeliveryOrder { get; set; }
-    public required string DeliveryAssurance { get; set; }
+    public required DeliveryOrder DeliveryOrder { get; set; }
+    public required DeliveryAssurance DeliveryAssurance { get; set; }
     public required string PayloadJson { get; set; }
     public required bool NonRepudiationProof { get; set; }
     public required string ShardId { get; set; }

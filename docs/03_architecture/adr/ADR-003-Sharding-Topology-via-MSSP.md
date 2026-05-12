@@ -1,10 +1,11 @@
-# ADR-003: Sharding Topology via MSSP
-**Status:** Proposed
-**Date:** 2026-04-21
-**Deciders:** Gemini CLI / Juan David
-**Supersedes:** None
-
 ---
+Status: Proposed
+Date: 2026-04-21
+Deciders: Gemini CLI / Juan David
+Supersedes: None
+---
+
+# ADR-003: Sharding Topology via MSSP
 
 ## Context
 The BPA architecture requires a scalable execution and validation model without sacrificing ledger integrity. Cross-shard transactions become unnecessarily complex when the topology requires heavyweight coordination such as 2PC for every boundary crossing, especially in a high-transaction B2B ledger.

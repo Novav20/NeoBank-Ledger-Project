@@ -11,12 +11,13 @@ public class Party(
     string lei,
     string legalName,
     bool targetMarketEligible,
-    PartyRole role)
+    PartyRole role,
+    RegistrationStatus registrationStatus = RegistrationStatus.Registered)
 {
     public Guid PartyId { get; init; } = partyId;
     public string LEI { get; init; } = lei;
     public string LegalName { get; init; } = legalName;
     public bool TargetMarketEligible { get; init; } = targetMarketEligible;
     public PartyRole Role { get; init; } = role;
-    public string RegistrationStatus { get; private set; } = "Registered";
+    public RegistrationStatus RegistrationStatus { get; private set; } = registrationStatus;
 }

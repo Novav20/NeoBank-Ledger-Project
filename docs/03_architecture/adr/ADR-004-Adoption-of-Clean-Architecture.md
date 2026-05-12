@@ -1,10 +1,11 @@
-# ADR-004: Adoption of Clean Architecture
-**Status:** Accepted
-**Date:** 2026-04-24
-**Deciders:** Gemini CLI / Juan David
-**Supersedes:** None
-
 ---
+Status: Accepted
+Date: 2026-04-24
+Deciders: Gemini CLI / Juan David
+Supersedes: None
+---
+
+# ADR-004: Adoption of Clean Architecture
 
 ## Context
 The NeoBank Ledger is a logic-heavy B2B system. The core implementation must keep the domain rules for double-entry bookkeeping, ISO 20022 validation, PBFT-driven finality, and shard-aware routing isolated from delivery concerns such as LevelDB persistence, API endpoints, and gRPC transport.

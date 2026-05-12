@@ -26,6 +26,40 @@ A traditional SQL database (like SQL Server or PostgreSQL) typically uses **B-Tr
 
 **LevelDB** uses an **LSM-Tree (Log-Structured Merge-Tree)**, which is designed for **extreme write performance**.
 
+### A Simple Example
+Imagine an account receives three balance updates in a short burst:
+
+1. `acc-1001` starts at `100.00`
+2. A deposit changes it to `150.00`
+3. A payment changes it to `120.00`
+
+With an LSM-tree, each write is handled as a fast append-style operation:
+
+```mermaid
+flowchart TD
+    W1[Write 100.00] --> WAL[Append to WAL]
+    W2[Write 150.00] --> WAL
+    W3[Write 120.00] --> WAL
+    WAL --> MT[MemTable keeps the newest value in memory]
+    MT --> SST[Flush to immutable SSTable]
+    SST --> CMP[Compaction merges older versions later]
+```
+
+The important idea is that LevelDB does not keep rewriting the same disk page every time the balance changes. It appends the new version, keeps the latest value in memory, and cleans up older versions later in the background.
+
+### How This Compares to SQL Server or PostgreSQL
+SQL Server and PostgreSQL are general-purpose relational databases. They are excellent at querying, joining, and enforcing constraints, but their storage engines are built around different tradeoffs.
+
+| Aspect | LevelDB / LSM-Tree | SQL Server / PostgreSQL |
+| :--- | :--- | :--- |
+| Write pattern | Append new versions quickly | Update indexed structures and table pages |
+| Disk access | Mostly sequential writes | More random writes during updates |
+| Background work | Compaction merges old files | Vacuum, checkpointing, page maintenance |
+| Query power | Key-value lookups | SQL queries, joins, filters, transactions |
+| Best fit | High-throughput write-heavy storage | Relational data and rich querying |
+
+In practical terms, LevelDB is a better fit when the ledger mostly needs to store and retrieve records by key as fast as possible. SQL Server or PostgreSQL are better when you need complex queries, relational joins, or a full relational transaction model.
+
 ### How it works:
 1.  **The MemTable (In-Memory)**: When you save an `Event`, it is first written to a sorted memory buffer (the MemTable). Writing to RAM is nearly instantaneous.
 2.  **The WAL (Write-Ahead Log)**: To ensure we don't lose data if the power goes out, the write is also appended to a simple log file on disk. Appending to a log is a "sequential write," which is the fastest way to write to a disk.

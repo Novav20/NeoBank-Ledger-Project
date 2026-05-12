@@ -14,8 +14,8 @@ public class Event(
     UniqueTransactionIdentifier uti,
     DateTimeOffset timestamp,
     TimestampPrecision precision,
-    string deliveryOrder,
-    string deliveryAssurance,
+    DeliveryOrder deliveryOrder,
+    DeliveryAssurance deliveryAssurance,
     string payloadJson,
     bool nonRepudiationProof,
     string shardId,
@@ -27,8 +27,8 @@ public class Event(
     public UniqueTransactionIdentifier UTI { get; init; } = uti;
     public DateTimeOffset Timestamp { get; init; } = timestamp;
     public TimestampPrecision Precision { get; init; } = precision;
-    public string DeliveryOrder { get; init; } = deliveryOrder;
-    public string DeliveryAssurance { get; init; } = deliveryAssurance;
+    public DeliveryOrder DeliveryOrder { get; init; } = deliveryOrder;
+    public DeliveryAssurance DeliveryAssurance { get; init; } = deliveryAssurance;
     public string PayloadJson { get; init; } = payloadJson;
     public bool NonRepudiationProof { get; init; } = nonRepudiationProof;
     public string ShardId { get; init; } = shardId;

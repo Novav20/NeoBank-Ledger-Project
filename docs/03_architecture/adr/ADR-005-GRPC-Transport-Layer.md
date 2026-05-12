@@ -1,10 +1,11 @@
-# ADR-005: gRPC Transport Layer
-**Status:** Accepted
-**Date:** 2026-04-27
-**Deciders:** Gemini CLI / Juan David
-**Supersedes:** None
-
 ---
+Status: Accepted
+Date: 2026-04-27
+Deciders: Gemini CLI / Juan David
+Supersedes: None
+---
+
+# ADR-005: gRPC Transport Layer
 
 ## Context
 The NeoBank Ledger needs a transport layer that can sustain low-latency, high-throughput communication across sharded BFT nodes while also supporting partner integrations in a regulated fintech environment.
