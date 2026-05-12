@@ -12,13 +12,12 @@ public class Party(
     string legalName,
     bool targetMarketEligible,
     PartyRole role,
-    string registrationStatus = "Registered")
-    // TODO: Limit registration status to closed options with an Enum
+    RegistrationStatus registrationStatus = RegistrationStatus.Registered)
 {
     public Guid PartyId { get; init; } = partyId;
     public string LEI { get; init; } = lei;
     public string LegalName { get; init; } = legalName;
     public bool TargetMarketEligible { get; init; } = targetMarketEligible;
     public PartyRole Role { get; init; } = role;
-    public string RegistrationStatus { get; private set; } = registrationStatus;
+    public RegistrationStatus RegistrationStatus { get; private set; } = registrationStatus;
 }

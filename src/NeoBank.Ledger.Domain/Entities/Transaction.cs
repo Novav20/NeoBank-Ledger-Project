@@ -15,7 +15,7 @@ public class Transaction(
     LegalEntityIdentifier counterpartyLei,
     string isin,
     string messageDefinitionId,
-    string messageFunction,
+    MessageFunction messageFunction,
     CurrencyAmount amount,
     DateTimeOffset eventTimestamp,
     string partitionKey,
@@ -29,7 +29,7 @@ public class Transaction(
     public LegalEntityIdentifier CounterpartyLEI { get; init; } = counterpartyLei;
     public string ISIN { get; init; } = isin;
     public string MessageDefinitionId { get; init; } = messageDefinitionId;
-    public string MessageFunction { get; init; } = messageFunction;
+    public MessageFunction MessageFunction { get; init; } = messageFunction;
     public CurrencyAmount Amount { get; init; } = amount;
     public DateTimeOffset EventTimestamp { get; init; } = eventTimestamp;
     public ValidationLevel ValidationLevel { get; private set; } = ValidationLevel.NoValidation;

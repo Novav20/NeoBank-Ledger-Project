@@ -15,7 +15,8 @@ public static class BalanceMapper
         AsOfTimestamp = entity.AsOfTimestamp,
         ProjectionVersion = entity.ProjectionVersion,
         LastAppliedSequenceNumber = entity.LastAppliedSequenceNumber,
-        ShardId = entity.ShardId
+        ShardId = entity.ShardId,
+        RegistrationStatus = entity.RegistrationStatus
     };
 
     public static Balance ToEntity(this BalanceDto dto) => new(
@@ -27,5 +28,6 @@ public static class BalanceMapper
         dto.AsOfTimestamp,
         dto.ProjectionVersion,
         dto.LastAppliedSequenceNumber,
-        dto.ShardId);
+        dto.ShardId,
+        dto.RegistrationStatus);
 }

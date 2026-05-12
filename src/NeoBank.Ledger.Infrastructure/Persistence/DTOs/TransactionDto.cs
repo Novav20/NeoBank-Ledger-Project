@@ -11,7 +11,7 @@ public class TransactionDto
     public required string CounterpartyLEI { get; set; }
     public required string ISIN { get; set; }
     public required string MessageDefinitionId { get; set; }
-    public required string MessageFunction { get; set; }
+    public required MessageFunction MessageFunction { get; set; }
     public required long AmountMinorUnits { get; set; }
     public required string AmountCurrencyCode { get; set; }
     public required DateTimeOffset EventTimestamp { get; set; }

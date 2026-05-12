@@ -12,5 +12,5 @@ public class PartyDto
     public required string LegalName { get; set; }
     public required bool TargetMarketEligible { get; set; }
     public required PartyRole Role { get; set; }
-    public required string RegistrationStatus { get; set; }
+    public required RegistrationStatus RegistrationStatus { get; set; }
 }

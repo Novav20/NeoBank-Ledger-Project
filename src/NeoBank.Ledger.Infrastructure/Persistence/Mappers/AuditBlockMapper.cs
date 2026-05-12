@@ -10,22 +10,26 @@ public static class AuditBlockMapper
         AuditBlockId = entity.AuditBlockId,
         EventId = entity.EventId,
         BlockHeight = entity.BlockHeight,
-        PreviousBlockHash = entity.PreviousBlockHash.ToArray(),
-        ChameleonHash = entity.ChameleonHash.ToArray(),
-        QuorumCert = entity.QuorumCert.ToArray(),
+        PreviousBlockHash = [.. entity.PreviousBlockHash],
+        ChameleonHash = [.. entity.ChameleonHash],
+        QuorumCert = [.. entity.QuorumCert],
         CommittedAt = entity.CommittedAt,
         ShardId = entity.ShardId,
-        ConsensusZoneId = entity.ConsensusZoneId
+        ConsensusZoneId = entity.ConsensusZoneId,
+        RegistrationStatus = entity.RegistrationStatus,
+        ChangeType = entity.ChangeType
     };
 
     public static AuditBlock ToEntity(this AuditBlockDto dto) => new(
         dto.AuditBlockId,
         dto.EventId,
         dto.BlockHeight,
-        dto.PreviousBlockHash.ToArray(),
-        dto.ChameleonHash.ToArray(),
-        dto.QuorumCert.ToArray(),
+        [.. dto.PreviousBlockHash],
+        [.. dto.ChameleonHash],
+        [.. dto.QuorumCert],
         dto.CommittedAt,
         dto.ShardId,
-        dto.ConsensusZoneId);
+        dto.ConsensusZoneId,
+        dto.RegistrationStatus,
+        dto.ChangeType);
 }
