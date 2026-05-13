@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text.Json;
 using NeoBank.Ledger.Application.Persistence;
 using NeoBank.Ledger.Domain.Entities;
+using NeoBank.Ledger.Domain.Exceptions;
 using NeoBank.Ledger.Infrastructure.Persistence.DTOs;
 using NeoBank.Ledger.Infrastructure.Persistence.Mappers;
 using RocksDbNet;
@@ -20,6 +21,12 @@ public sealed class RocksDbEventStore(RocksDbStore rocksDbStore) : IEventStore
         return Task.Run(() =>
         {
             long nextSequence = Interlocked.Increment(ref _lastSequence);
+            if (rocksDbStore.GetEvent(nextSequence) is not null)
+            {
+                Interlocked.Decrement(ref _lastSequence);
+                throw new EventCollisionException(nextSequence);
+            }
+
             Event storedEvent = new(
                 eventEntity.EventId,
                 nextSequence,

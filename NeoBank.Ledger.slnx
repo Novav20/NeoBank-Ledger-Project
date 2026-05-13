@@ -5,4 +5,7 @@
     <Project Path="src/NeoBank.Ledger.Domain/NeoBank.Ledger.Domain.csproj" />
     <Project Path="src/NeoBank.Ledger.Infrastructure/NeoBank.Ledger.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/NeoBank.Ledger.Infrastructure.Tests/NeoBank.Ledger.Infrastructure.Tests.csproj" />
+  </Folder>
 </Solution>
