@@ -65,6 +65,10 @@ public sealed class RocksDbStore : IDisposable
 
     public Account? GetAccount(Guid accountId) => Get<AccountDto>(BuildAccountKey(accountId))?.ToEntity();
 
+    public Transaction? GetTransaction(Guid transactionId) => Get<TransactionDto>(BuildTransactionKey(transactionId))?.ToEntity();
+
+    public Entry? GetEntry(Guid transactionId, long postingOrder) => Get<EntryDto>(BuildEntryKey(transactionId, postingOrder))?.ToEntity();
+
     public Event? GetEvent(long sequenceNumber) => Get<EventDto>(BuildEventKey(sequenceNumber))?.ToEntity();
 
     public Balance? GetBalance(Guid accountId) => Get<BalanceDto>(BuildBalanceKey(accountId))?.ToEntity();

@@ -34,10 +34,10 @@ flowchart TD
     Counter --> Batch[WriteBatch]
     Batch --> Rocks[RocksDbStore]
     Rocks --> Meta[meta:last_sequence]
-    Rocks --> EventKey[evt:{SequenceNumber:D20}]
+    Rocks --> EventKey["evt:{SequenceNumber:D20}"]
     Store --> Replay[Iterator range scan]
     App --> UoW[RocksDbLedgerUnitOfWork]
-    UoW --> Audit[aud:{BlockHeight:D20}]
+    UoW --> Audit["aud:{BlockHeight:D20}"]
 ```
 
 ## Guided Review of the Implementation

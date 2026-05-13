@@ -20,7 +20,7 @@ applied-in-project: [yes | no]
 - [Concept B]
 - [Concept C]
 
-## Mental Model (Mermaid)
+## Mental Model
 ```mermaid
 flowchart TD
     A[Problem] --> B[Concept]
