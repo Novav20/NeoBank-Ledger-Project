@@ -23,6 +23,9 @@ related_fr: []
 related_nfr: []
 depends_on:
   - "[[AUDT-001]]"
+implementation_path: src/NeoBank.Ledger.Application/
+test_path: tests/NeoBank.Ledger.Infrastructure.Tests/
+sprint: Sprint 01
 priority: Should
 estimate: 5
 verification:

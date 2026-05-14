@@ -23,6 +23,9 @@ related_nfr:
   - "[[NFR-016]]"
 depends_on:
   - "[[PROJ-001]]"
+implementation_path: src/NeoBank.Ledger.Infrastructure/
+test_path: tests/NeoBank.Ledger.Infrastructure.Tests/
+sprint: Sprint 01
 priority: Could
 estimate: 3
 verification:

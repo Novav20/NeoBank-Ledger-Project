@@ -30,6 +30,9 @@ related_nfr:
   - "[[NFR-010]]"
 depends_on:
   - "[[TXEN-002]]"
+implementation_path: src/NeoBank.Ledger.Application/
+test_path: tests/NeoBank.Ledger.Infrastructure.Tests/
+sprint: Sprint 01
 priority: Must
 estimate: 8
 verification:

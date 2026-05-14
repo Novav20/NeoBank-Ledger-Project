@@ -24,6 +24,9 @@ related_fr:
   - "[[FR-001]]"
 related_nfr: []
 depends_on: []
+implementation_path: src/NeoBank.Ledger.Api/
+test_path: tests/NeoBank.Ledger.Infrastructure.Tests/
+sprint: Sprint 01
 priority: Must
 estimate: 3
 verification:

@@ -29,6 +29,9 @@ related_nfr:
   - "[[NFR-020]]"
 depends_on:
   - "[[TXEN-002]]"
+implementation_path: src/NeoBank.Ledger.Infrastructure/
+test_path: tests/NeoBank.Ledger.Infrastructure.Tests/Persistence/RocksDbLedgerUnitOfWorkTests.cs
+sprint: Sprint 01
 priority: Should
 estimate: 5
 verification:

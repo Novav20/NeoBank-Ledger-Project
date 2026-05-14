@@ -1,26 +1,31 @@
 # Traceability & Logs
 
-## Project Timeline
-- **Setup Week (w11):** Mar 09 - Mar 15. [Completed]
-- **BPA & Domain Discovery (w12):** Mar 16 - Mar 22. [Completed]
-- **Analysis Finalization & Transition (w13):** Mar 23 - Mar 29. [Completed]
-- **Architecture & Detailed Design (w14):** Mar 30 - Apr 05. [Planned]
+## Dashboard
+```mermaid
+gantt
+	title Week 11-20 Project Milestones
+	dateFormat  YYYY-MM-DD
+	axisFormat  %b %d
 
-## Weekly Logs
-### [w11] Mar 09 - Mar 15
-- **2026-03-11:** Initialized AI Orchestration workflow.
-- **2026-03-12:** Verified Source of Truth and symlink mirror.
-- **2026-03-13:** Integrated Scrum framework and updated policy.
+	section Discovery
+	Setup Week (w11)                :done, w11, 2026-03-09, 2026-03-15
+	BPA & Domain Discovery (w12)    :done, w12, 2026-03-16, 2026-03-22
+	Analysis Finalization (w13)     :done, w13, 2026-03-23, 2026-03-29
 
-### [w12] Mar 16 - Mar 22
-- **2026-03-16:** Transitioned to BPA-focused discovery. Initialized BPA prompt for NotebookLM and restructured analysis directory.
-- **2026-03-17:** Initialized AI-Powered Systematic Research pipeline. Created Batch 01 Prompt and Meta-Analysis template.
-- **2026-03-18:** Finalized Batch 01 source selection for NotebookLM extraction.
-- **2026-03-19:** Implemented individual source extraction script; updated Copilot prompt for Meta-Analysis.
-- **2026-03-20:** Integrated Batch 01 Meta-Analysis into BPA Report. Scripted citation verifications. Formalized standard Research Guide and Batch 02 Strategy.
+	section Architecture
+	Architecture & Design (w14)     :done, w14, 2026-03-30, 2026-04-05
+	Persistence Build-out (w15)     :done, w15, 2026-04-06, 2026-04-12
+	Validation Hardening (w16)      :done, w16, 2026-04-13, 2026-04-19
+	Traceability Sync (w17)         :done, w17, 2026-04-20, 2026-04-26
 
-### [w13] Mar 23 - Mar 29
-- **2026-03-23:** Harvested 15-25 technical implementation sources for Batch 02.
-- **2026-03-24:** Integrated Batch 02 findings into BPA Report and synchronized citations.
-- **2026-03-27:** Completed Batch 03 (NFRs/Compliance) extraction (37 sources) and snippet splitting.
-- **2026-03-29:** Finalized BPA Report v1.2. Implemented Iterative Sliding-Window synthesis protocol. Validated full 37-source corpus. Defined Week 14 Design roadmap.
+	section Foundation Closeout
+	Infrastructure Closeout (w18)   :done, w18, 2026-04-27, 2026-05-03
+	Test & Guard Phase (w19)        :done, w19, 2026-05-04, 2026-05-10
+	Week 20 Validation (w20)       :active, w20, 2026-05-11, 2026-05-17
+```
+
+## Requirements Matrix
+![[../02_analysis/requirements/requirements.base]]
+
+## User Story Matrix
+![[../02_analysis/requirements/user_stories.base]]
