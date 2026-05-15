@@ -18,6 +18,7 @@ This file records ambiguities and closed traceability gaps across requirements a
 | Reconciliation trigger and correction path | BPA describes external liquidity reconciliation, but it does not say whether the process is scheduled, event-driven, or tied to an exception workflow. | Open |
 | BPA availability threshold provenance | BPA NFR-AVAIL-01 sets view-change <30s, but the reviewed source summaries only explicitly support BFT quorum and view-change behavior, not the exact recovery bound. | Open |
 | RocksDB snapshot and backup strategy | The current persistence implementation proves append, replay, and validation behavior, but it does not yet define how snapshots, backups, or restore workflows should be scheduled and verified. | Open |
+| UTI-to-Initiator Alignment Rule | While the UTI value object enforces length and format, the system must still verify that the 20-character LEI prefix of the UTI matches the actual InitiatorLEI of the transaction. | Open (Sprint 02 Logic) |
 
 ## Closed Gaps
 

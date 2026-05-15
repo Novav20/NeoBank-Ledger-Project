@@ -35,7 +35,7 @@ public static class TransactionMapper
             dto.EndToEndId,
             new LegalEntityIdentifier(dto.InitiatorLEI),
             new LegalEntityIdentifier(dto.CounterpartyLEI),
-            dto.ISIN,
+            new ISIN(dto.ISIN),
             dto.MessageDefinitionId,
             dto.MessageFunction,
             new CurrencyAmount(dto.AmountMinorUnits, dto.AmountCurrencyCode),

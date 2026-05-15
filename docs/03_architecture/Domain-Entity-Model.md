@@ -386,6 +386,7 @@ The ERD fields below are backed by explicit allowed-value constraints so status 
 | `TRANSACTIONS.transaction_status`   | `RECEIVED`, `VALIDATED`, `REJECTED`, `POSTED`, `SETTLED`                                                                                              |
 | `TRANSACTIONS.validation_level`     | `NO_VALIDATION`, `SYNTAX_VALID`, `SCHEMA_VALID`, `MESSAGE_VALID`, `RULE_VALID`, `MARKET_PRACTICE_VALID`, `BUSINESS_PROCESS_VALID`, `COMPLETELY_VALID` |
 | `TRANSACTIONS.message_function`     | `NEWM`, `CANC`                                                                                                                                        |
+| `TRANSACTIONS.uti`                  | LEI (20 chars) + Unique Suffix (up to 32 chars). Total max 52 chars.                                                                                  |
 | `EVENTS.timestamp_precision`        | `HFT_1_MICROSECOND`, `STANDARD_1_MILLISECOND`                                                                                                         |
 | `EVENTS.delivery_order`             | `FIFO_ORDERED`, `EXPECTED_CAUSAL_ORDER`                                                                                                               |
 | `EVENTS.delivery_assurance`         | `EXACTLY_ONCE`                                                                                                                                        |
@@ -394,6 +395,10 @@ The ERD fields below are backed by explicit allowed-value constraints so status 
 | `AUDIT_BLOCKS.registration_status`  | `REGISTERED`, `OBSOLETE`                                                                                                                              |
 | `AUDIT_BLOCKS.change_type`          | `CREATE`, `AMEND`, `DELETE`                                                                                                                           |
 | `REJECTION_RECORDS.failed_at_level` | Same domain as `TRANSACTIONS.validation_level`                                                                                                        |
+| `ValueObject.LEI`                   | ISO 17442: 20-character alphanumeric string.                                                                                                          |
+| `ValueObject.ISIN`                  | ISO 6166: 12-character alphanumeric string.                                                                                                           |
+| `CurrencyAmount.amount`             | MUST be a non-negative integer (except for specific Entry types).                                                                                     |
+| `CurrencyAmount.currency_code`      | ISO 4217: 3-character uppercase alphabetic string.                                                                                                    |
 
 ### Physical Column Traceability
 

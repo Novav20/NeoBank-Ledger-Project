@@ -58,6 +58,7 @@ publish/
 *.rsuser
 *.sln.docstates
 *.csproj.user
+*.lscache
 
 # Optional packaging artifacts
 *.nupkg

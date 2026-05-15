@@ -26,11 +26,11 @@ public sealed class RocksDbLedgerUnitOfWorkTests : IDisposable
 
         Transaction transaction = new(
             transactionId,
-            new UniqueTransactionIdentifier("UTI-20260512-0001"),
+            new UniqueTransactionIdentifier("5493001KJTIIGC8Y1R12TXN01"),
             "E2E-20260512-0001",
             new LegalEntityIdentifier("5493001KJTIIGC8Y1R12"),
             new LegalEntityIdentifier("5493001KJTIIGC8Y1R13"),
-            "US1234567890",
+            new ISIN("US1234567890"),
             "pacs.008.001.10",
             MessageFunction.Newm,
             new CurrencyAmount(12500, "USD"),

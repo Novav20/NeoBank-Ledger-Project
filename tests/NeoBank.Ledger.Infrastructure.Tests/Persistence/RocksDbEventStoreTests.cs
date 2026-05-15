@@ -19,8 +19,8 @@ public sealed class RocksDbEventStoreTests : IDisposable
         using var rocksDbStore = new RocksDbStore(databasePath);
         var eventStore = new RocksDbEventStore(rocksDbStore);
 
-        Event firstEvent = CreateEvent("UTI-20260512-IMMUT-01", "{\"type\":\"append-1\"}");
-        Event collisionEvent = CreateEvent("UTI-20260512-IMMUT-02", "{\"type\":\"append-2\"}");
+        Event firstEvent = CreateEvent("5493001KJTIIGC8Y1R12IMMUT01", "{\"type\":\"append-1\"}");
+        Event collisionEvent = CreateEvent("5493001KJTIIGC8Y1R12IMMUT02", "{\"type\":\"append-2\"}");
 
         await eventStore.AppendAsync(firstEvent);
         Assert.NotNull(rocksDbStore.GetEvent(1));
@@ -47,7 +47,7 @@ public sealed class RocksDbEventStoreTests : IDisposable
         var eventStore = new RocksDbEventStore(rocksDbStore);
 
         DateTimeOffset originalTimestamp = new DateTimeOffset(2026, 5, 14, 9, 15, 30, 555, TimeSpan.Zero).AddTicks(1234);
-        Event originalEvent = CreateEvent("UTI-20260514-PREC-01", "{\"type\":\"precision-round-trip\"}", originalTimestamp);
+        Event originalEvent = CreateEvent("5493001KJTIIGC8Y1R12PREC001", "{\"type\":\"precision-round-trip\"}", originalTimestamp);
 
         // Act
         Event storedEvent = await eventStore.AppendAsync(originalEvent);
@@ -72,9 +72,9 @@ public sealed class RocksDbEventStoreTests : IDisposable
         DateTimeOffset secondTimestamp = firstTimestamp.AddMilliseconds(1);
         DateTimeOffset thirdTimestamp = secondTimestamp.AddMilliseconds(1);
 
-        Event firstEvent = await eventStore.AppendAsync(CreateEvent("UTI-20260514-ORDER-01", "{\"type\":\"event-1\"}", firstTimestamp));
-        Event secondEvent = await eventStore.AppendAsync(CreateEvent("UTI-20260514-ORDER-02", "{\"type\":\"event-2\"}", secondTimestamp));
-        Event thirdEvent = await eventStore.AppendAsync(CreateEvent("UTI-20260514-ORDER-03", "{\"type\":\"event-3\"}", thirdTimestamp));
+        Event firstEvent = await eventStore.AppendAsync(CreateEvent("5493001KJTIIGC8Y1R12ORDER01", "{\"type\":\"event-1\"}", firstTimestamp));
+        Event secondEvent = await eventStore.AppendAsync(CreateEvent("5493001KJTIIGC8Y1R12ORDER02", "{\"type\":\"event-2\"}", secondTimestamp));
+        Event thirdEvent = await eventStore.AppendAsync(CreateEvent("5493001KJTIIGC8Y1R12ORDER03", "{\"type\":\"event-3\"}", thirdTimestamp));
 
         // Act
         IReadOnlyList<Event> events = [.. await eventStore.GetEventsAsync(1, 3)];
