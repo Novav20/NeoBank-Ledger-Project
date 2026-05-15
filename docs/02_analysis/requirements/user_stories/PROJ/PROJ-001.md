@@ -1,7 +1,7 @@
 ---
 type: user-story
-version: 1.0
-last_edited: 2026-04-20
+version: 1.1
+last_edited: 2026-05-14
 status: draft
 story_id: PROJ-001
 epic_id: PROJ
@@ -56,7 +56,7 @@ Use a Gherkin-inspired table. Keep one row per atomic criterion.
 | AC ID | Given | When | Then | Notes |
 | --- | --- | --- | --- | --- |
 | AC-001 | A monetary amount enters the projection layer | The value is stored or computed | The value remains in integer smallest-unit form | |
-| AC-002 | The default ledger storage is being provisioned | The database is configured | LevelDB is selected and CouchDB or private data collections require documented justification | |
+| AC-002 | The default ledger storage is being provisioned | The database is configured | RocksDB is selected and CouchDB or private data collections require documented justification | |
 | AC-003 | A deployment plan is being reviewed | The m-node ratio is checked | The shard ratio stays between 20% and 25% | |
 | AC-004 | A 1,000-node deployment target is sized | The shard count is configured | The plan uses 7 PBFT shards | |
 
